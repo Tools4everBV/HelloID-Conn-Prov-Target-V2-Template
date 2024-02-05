@@ -2,7 +2,26 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com), and this project adheres to [Semantic Versioning](https://semver.org).
 
-## [0.0.2] - 2024-01-13
+## [1.0.0] - 05-02-2024
+
+### Added
+
+- Added: _resource_ script.
+- Added default value for _accountReference_ to `create` lifecycle action.
+- Added 'ToDo' in all lifecycle actions indicating that each 'POST, PUT or PATCH' call must be tested using diacritical characters.
+  
+### Changed
+
+- In case of an error, changed `Write-Verbose` to `Write-Warning`.
+- Updated correlation configuration so that the account will always be created if the correlation configuration is not enabled.
+- Improved error handling function.
+  
+### Removed
+
+- Removed `IsDebug` switch from configuration.
+- Removed `auditlog.Action` in situations where its does not reflect the value from the enum.
+
+## [0.0.2] - 13-01-2024
 
 ### Added
 
@@ -15,7 +34,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Removed
 
-## [0.0.1] - 2023-12-10
+## [0.0.1] - 10-12-2023
 
 Initial alpha release.
 
