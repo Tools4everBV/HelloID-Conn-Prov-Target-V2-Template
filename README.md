@@ -47,11 +47,10 @@ We can't wait to see the amazing PowerShell connectors you'll build with these t
 
 | FileName                    | Description                                                            |
 | --------------------------- | ---------------------------------------------------------------------- |
-| target/assets/.gitignore    | `gitignore` excluding the `test` folder when pushing commits to GitHub |
+| target/.gitignore    | `gitignore` excluding the `test` folder when pushing commits to GitHub |
 | target/test.config.json     | Prefilled _config.json_ file for easy debugging                        |
 | target/test/demoPerson.json | Prefilled _demoPerson.json_ for easy debugging                         |
 | target/test/debugStart.ps1  | Default _debugStart.ps1_ for easy debugging                            |
-| target/resources            | Contains additional scripts.                                           |
 | target/create.ps1           | PowerShell _create_ lifecycle action                                   |
 | target/delete.ps1           | PowerShell _delete_ lifecycle action                                   |
 | target/disable.ps1          | PowerShell _disable_ lifecycle action                                  |
