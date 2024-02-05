@@ -45,25 +45,25 @@ We can't wait to see the amazing PowerShell connectors you'll build with these t
 
 ## What's in this repository
 
-| FileName                      | Description                                                            |
-| ----------------------------- | ---------------------------------------------------------------------- |
-| target/assets/.gitignore      | `gitignore` excluding the `test` folder when pushing commits to GitHub |
-| target/test.config.json       | Prefilled _config.json_ file for easy debugging                        |
-| target/test/demoPerson.json   | Prefilled _demoPerson.json_ for easy debugging                         |
-| target/test/debugStart.ps1    | Default _debugStart.ps1_ for easy debugging                            |
-| target/resources              | Contains additional scripts.                                           |
-| target/create.ps1             | PowerShell _create_ lifecycle action                                   |
-| target/delete.ps1             | PowerShell _delete_ lifecycle action                                   |
-| target/disable.ps1            | PowerShell _disable_ lifecycle action                                  |
-| target/enable.ps1             | PowerShell _enable_ lifecycle action                                   |
-| target/update.ps1             | PowerShell _update_ lifecycle action                                   |
-| target/grant.ps1              | PowerShell _grant_ lifecycle action                                    |
-| target/revoke.ps1             | PowerShell _revoke_ lifecycle action                                   |
-| target/permissions.ps1        | PowerShell _permissions_ lifecycle action                              |
-| target/resources.ps1          | PowerShell _resources_ lifecycle action                                |
-| target/configuration.json     | Default _configuration.json_                                           |
-| target/README.md              | A prefilled _readme.md_                                                |
-| target/CHANGELOG.md           | CHANGELOG.md to track changes made to the connector                    |
+| FileName                    | Description                                                            |
+| --------------------------- | ---------------------------------------------------------------------- |
+| target/assets/.gitignore    | `gitignore` excluding the `test` folder when pushing commits to GitHub |
+| target/test.config.json     | Prefilled _config.json_ file for easy debugging                        |
+| target/test/demoPerson.json | Prefilled _demoPerson.json_ for easy debugging                         |
+| target/test/debugStart.ps1  | Default _debugStart.ps1_ for easy debugging                            |
+| target/resources            | Contains additional scripts.                                           |
+| target/create.ps1           | PowerShell _create_ lifecycle action                                   |
+| target/delete.ps1           | PowerShell _delete_ lifecycle action                                   |
+| target/disable.ps1          | PowerShell _disable_ lifecycle action                                  |
+| target/enable.ps1           | PowerShell _enable_ lifecycle action                                   |
+| target/update.ps1           | PowerShell _update_ lifecycle action                                   |
+| target/grantPermission.ps1  | PowerShell _grant_ lifecycle action                                    |
+| target/revokePermission.ps1 | PowerShell _revoke_ lifecycle action                                   |
+| target/permissions.ps1      | PowerShell _permissions_ lifecycle action                              |
+| target/resources.ps1        | PowerShell _resources_ lifecycle action                                |
+| target/configuration.json   | Default _configuration.json_                                           |
+| target/README.md            | A prefilled _readme.md_                                                |
+| target/CHANGELOG.md         | CHANGELOG.md to track changes made to the connector                    |
 
 ## How to use this repository
 
@@ -82,7 +82,7 @@ We can't wait to see the amazing PowerShell connectors you'll build with these t
 
 #### Install the extension
 
-1. Download the extension from: https://github.com/JeroenBL/ConnectorGenerator/latest
+1. Download the extension from: https://github.com/JeroenBL/ConnectorGenerator/releases/latest
 2. Make sure to download the __ConnectorGenerator-[version].VSIX__ file.
 3. Go to VSCode.
 4. Click on the extensions icon or press `ctrl+shift+x` (`cmd+shift+x` on mac).
@@ -150,11 +150,11 @@ In other words, when running in __test__ mode, you will see what would happen wi
 
 With provisioning connectors, we typically differentiate between __verbose__ logging, which contains the full error returned by the API, and __audit__ logging, which contains a more user-friendly response.
 
-| Cmdlet / HelloID variable | Description
-| - | - |
-| `Write-Warning` | - Use in case of an error.<br> - Include the script line number and code where the error has occurred. <br> - Must contain the complete error record |
-| `Write-Verbose` | - Debug logging only. |
-| `$outputContext.AuditLogs` | - Must contain a more __user-friendly__ error message |
+| Cmdlet / HelloID variable  | Description                                                                                                                                          |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Write-Warning`            | - Use in case of an error.<br> - Include the script line number and code where the error has occurred. <br> - Must contain the complete error record |
+| `Write-Verbose`            | - Debug logging only.                                                                                                                                |
+| `$outputContext.AuditLogs` | - Must contain a more __user-friendly__ error message                                                                                                |
 
 >[!TIP]
 Don’t use the auditlogging for verbose or debugging logging. Only write an auditlog if the lifecycle action itself has failed.
@@ -227,14 +227,14 @@ On certain occasions, the managed account may inadvertently be removed from the 
 
 The table below provides an overview of the results when the target account may inadvertently be removed from the target system.
 
-| Lifecycle action | Result | Description |
-| - | - | - |
-| Delete | Success | The target account may inadvertently be removed, however, this is considered a successful outcome by HelloID. |
-| Disable | Success | The target account may have been inadvertently removed; consequently, it is no longer active. HelloID considers this to be an acceptable outcome. |
-| Enable | Fail | The target account has been deleted; however, this was not the anticipated outcome for HelloID. |
-| Update | Fail | The target account has been deleted; however, this was not the anticipated outcome for HelloID. |
-| Grant | Fail | The target account has been deleted; however, this was not the anticipated outcome for HelloID. |
-| Revoke | Success | Due to the account not existing anymore, the right is no longer granted. This is in accordance with the request by HelloID, and therefore it is recorded as a success |
+| Lifecycle action | Result  | Description                                                                                                                                                           |
+| ---------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Delete           | Success | The target account may inadvertently be removed, however, this is considered a successful outcome by HelloID.                                                         |
+| Disable          | Success | The target account may have been inadvertently removed; consequently, it is no longer active. HelloID considers this to be an acceptable outcome.                     |
+| Enable           | Fail    | The target account has been deleted; however, this was not the anticipated outcome for HelloID.                                                                       |
+| Update           | Fail    | The target account has been deleted; however, this was not the anticipated outcome for HelloID.                                                                       |
+| Grant            | Fail    | The target account has been deleted; however, this was not the anticipated outcome for HelloID.                                                                       |
+| Revoke           | Success | Due to the account not existing anymore, the right is no longer granted. This is in accordance with the request by HelloID, and therefore it is recorded as a success |
 
 ### Updating accounts
 
