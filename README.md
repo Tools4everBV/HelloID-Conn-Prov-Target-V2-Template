@@ -1,8 +1,8 @@
-# TargetTemplates
+# HelloID-Conn-Prov-Target-V2Template
 
 ## Table of contents
 
-- [TargetTemplates](#targettemplates)
+- [HelloID-Conn-Prov-Target-V2Template](#helloid-conn-prov-target-v2template)
   - [Table of contents](#table-of-contents)
   - [Introduction](#introduction)
   - [What's in this repository](#whats-in-this-repository)
