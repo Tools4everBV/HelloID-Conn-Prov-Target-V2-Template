@@ -7,8 +7,10 @@
   - [Introduction](#introduction)
   - [What's in this repository](#whats-in-this-repository)
   - [How to use this repository](#how-to-use-this-repository)
-    - [_ConnectorGenerator_ VSCode extension](#connectorgenerator-vscode-extension)
+    - [Using the _ConnectorGenerator_ VSCode extension](#using-the-connectorgenerator-vscode-extension)
       - [Install the extension](#install-the-extension)
+        - [Create a new _GitHub_ token](#create-a-new-github-token)
+        - [Set the token](#set-the-token)
       - [Create a new connector](#create-a-new-connector)
         - [From the command palette](#from-the-command-palette)
         - [From the context menu](#from-the-context-menu)
@@ -77,7 +79,12 @@ We can't wait to see the amazing PowerShell connectors you'll build with these t
 >
 > - Make sure the `{currentDate}` matches with the date of today. Or, the date on which your connector will be published to the _Tools4ever_ GitHub repository.
 
-### _ConnectorGenerator_ VSCode extension
+### Using the _ConnectorGenerator_ VSCode extension
+
+Since this repository is _private_, the _ConnectorGenerator_ VScode extension can only be used with a GitHub token.
+
+>[!NOTE]
+> Your _GitHub_ token will be stored securely using VSCode _SecretStorage_ API. https://code.visualstudio.com/api/references/vscode-api#SecretStorage
 
 #### Install the extension
 
@@ -87,6 +94,23 @@ We can't wait to see the amazing PowerShell connectors you'll build with these t
 4. Click on the extensions icon or press `ctrl+shift+x` (`cmd+shift+x` on mac).
 5. Click on the three dots ... and select `Install from VSIX`.
 6. Browse to the folder where the __ConnectorGenerator-[version].VSIX__ file is downloaded.
+
+##### Create a new _GitHub_ token
+
+1. Go to [`Developer settings`.](https://github.com/settings/tokens)
+2. Click on `Generate new token`.
+3. Select `Generate new token (classic)`.
+4. Give your token a clear `Note`.
+5. Set the expiration to `60` days.
+6. __Only__ check the `repo (Full control of private repositories)` scope.
+7. Click `Generate token`.
+8. Make sure to __securely__ save your token.
+
+##### Set the token
+
+1. Open the command palette by clicking on `View -> Command palette` or press `ctrl+shift+p` (`cmd+shift+p` on mac).
+2. Browse to `Set ConnectorGenerator GitHub accessToken`.
+3. Specify your _GitHub_ token and press `enter`.
 
 #### Create a new connector
 
