@@ -49,7 +49,7 @@ We can't wait to see the amazing PowerShell connectors you'll build with these t
 
 | FileName                    | Description                                                            |
 | --------------------------- | ---------------------------------------------------------------------- |
-| target/.gitignore    | `gitignore` excluding the `test` folder when pushing commits to GitHub |
+| target/.gitignore           | `gitignore` excluding the `test` folder when pushing commits to GitHub |
 | target/test.config.json     | Prefilled _config.json_ file for easy debugging                        |
 | target/test/demoPerson.json | Prefilled _demoPerson.json_ for easy debugging                         |
 | target/test/debugStart.ps1  | Default _debugStart.ps1_ for easy debugging                            |
@@ -63,6 +63,7 @@ We can't wait to see the amazing PowerShell connectors you'll build with these t
 | target/permissions.ps1      | PowerShell _permissions_ lifecycle action                              |
 | target/resources.ps1        | PowerShell _resources_ lifecycle action                                |
 | target/configuration.json   | Default _configuration.json_                                           |
+| target/fieldMapping.json    | Default _fieldMapping.json_                                            |
 | target/README.md            | A prefilled _readme.md_                                                |
 | target/CHANGELOG.md         | CHANGELOG.md to track changes made to the connector                    |
 

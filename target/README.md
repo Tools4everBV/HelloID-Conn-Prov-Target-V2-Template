@@ -10,7 +10,7 @@
 
 ## Table of contents
 
-- [HelloID-Conn-Prov-Target-{connectorName}](#helloid-conn-prov-target-{connectorname})
+- [HelloID-Conn-Prov-Target-{connectorName}](#helloid-conn-prov-target-{connectorName})
   - [Table of contents](#table-of-contents)
   - [Introduction](#introduction)
   - [Getting started](#getting-started)
@@ -42,11 +42,12 @@ The following lifecycle actions are available:
 | disable.ps1            | PowerShell _disable_ lifecycle action            |
 | enable.ps1             | PowerShell _enable_ lifecycle action             |
 | update.ps1             | PowerShell _update_ lifecycle action             |
-| grant.ps1              | PowerShell _grant_ lifecycle action              |
-| revoke.ps1             | PowerShell _revoke_ lifecycle action             |
+| grantPermission.ps1    | PowerShell _grant_ lifecycle action              |
+| revokePermission.ps1   | PowerShell _revoke_ lifecycle action             |
 | permissions.ps1        | PowerShell _permissions_ lifecycle action        |
 | resources.ps1          | PowerShell _resources_ lifecycle action          |
 | configuration.json     | Default _configuration.json_                     |
+| fieldMapping.json      | Default _fieldMapping.json_                      |
 
 ## Getting started
 
@@ -73,13 +74,7 @@ To properly setup the correlation:
 
 #### Field mapping
 
-|              |                   | Create | Update | Enable | Disable | Delete |         |                                                                       |               |
-| ------------ | ----------------- | ------ | ------ | ------ | ------- | ------ | ------- | --------------------------------------------------------------------- | ------------- |
-| _Field_      | _Mapped to value_ |        |        |        |         |        | _Type_  | _Options:_                                                            | _Description_ |
-| _email_      | `Person.''`       | x      | x      |        |         |        | `Field` | - Use in notifications: `false` <br> - Store in account data: `false` |
-| _externalId_ | `Person.''`       | x      | x      |        |         |        | `Field` | - Use in notifications: `false` <br> - Store in account data: `false` |
-| _firstName_  | `Person.''`       | x      | x      |        |         |        | `Field` | - Use in notifications: `false` <br> - Store in account data: `false` |
-| _lastName_   | `Person.''`       | x      | x      |        |         |        | `Field` | - Use in notifications: `false` <br> - Store in account data: `false` |
+The field mapping can be imported by using the _fieldMapping.json_ file.
 
 ### Connection settings
 

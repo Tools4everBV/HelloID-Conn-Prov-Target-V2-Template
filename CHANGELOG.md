@@ -7,19 +7,20 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
 
 - Added: _resource_ script.
-- Added default value for _accountReference_ to `create` lifecycle action.
-- Added 'ToDo' in all lifecycle actions indicating that each 'POST, PUT or PATCH' call must be tested using diacritical characters.
-  
+- Added: default value for _accountReference_ to `create` lifecycle action.
+- Added: 'ToDo' in all lifecycle actions indicating that each 'POST, PUT or PATCH' call must be tested using diacritical characters.
+- Added: _fieldMapping.json_.
+
 ### Changed
 
 - In case of an error, changed `Write-Verbose` to `Write-Warning`.
 - Updated correlation configuration so that the account will always be created if the correlation configuration is not enabled.
 - Improved error handling function.
-  
+
 ### Removed
 
-- Removed `IsDebug` switch from configuration.
-- Removed `auditlog.Action` in situations where its does not reflect the value from the enum.
+- Removed: `IsDebug` switch from configuration.
+- Removed: `auditlog.Action` in situations where its does not reflect the value from the enum.
 
 ## [0.0.2] - 13-01-2024
 

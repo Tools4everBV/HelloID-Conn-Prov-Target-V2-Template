@@ -1,5 +1,5 @@
 #####################################################
-# DebugStart
+# debugStart
 # PowerShell V2
 #####################################################
 
@@ -15,10 +15,16 @@ $actionContext = @{
     DryRun        = $false
     Operation     = 'undefined'
     Data = @{
-        externalId = $($personContext.Person.ExternalId)
-        firstName  = $($personContext.Person.Name.GivenName)
-        lastName   = $($personContext.Person.Name.FamilyName)
-        email      = $($personContext.Person.Contact.Business.Email)
+        Department  = $($personContext.person.PrimaryContract.Department.DisplayName)
+        DisplayName = $($personContext.Person.Name.GivenName)
+        EndDate     = $($personContext.person.PrimaryContract.EndDate)
+        ExternalId  = $($personContext.Person.Contact.Business.Email)
+        FamilyName  = $($personContext.Person.Name.FamilyName)
+        Manager     = $($personContext.person.PrimaryManager.DisplayName)
+        NickName    = $($personContext.Person.Name.NickName)
+        StartDate   = $($personContext.person.PrimaryContract.StartDate)
+        Title       = $($personContext.person.PrimaryContract.Title.Name)
+        UserName    = 'casey.bos1'
     }
     CorrelationConfiguration = @{
         Enabled           = $true

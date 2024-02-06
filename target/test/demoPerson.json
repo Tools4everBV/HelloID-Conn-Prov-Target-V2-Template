@@ -1,5 +1,5 @@
 {
-    "ExternalId": "STUNTMAN14",
+    "ExternalId": "123456789",
     "DisplayName": "Cásey Bos",
     "Name": {
         "NickName": "Cásey",
@@ -39,5 +39,7 @@
         "StartDate": "2021-01-01T23:09:08.2863496",
         "EndDate": "2025-10-22T10:28:05.2085206"
     },
-    "PrimaryManager": "STUNTMAN1"
+    "PrimaryManager": {
+        "DisplayName": "Carl Dijk"
+    }
 }
