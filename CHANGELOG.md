@@ -8,9 +8,10 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Changed
 - Commented out the PreviousData assignment, which causes an error in HelloId Preview
+- Changed Outdated `$p.` reference to `$personContext`
 
 ### Removed
- - Removed incorrect compare condtion.
+ - Removed incorrect compare condition.
 
 ## [1.0.0] - 05-02-2024
 

@@ -94,7 +94,7 @@ try {
         throw 'The account reference could not be found'
     }
 
-    Write-Verbose "Verifying if a {connectorName} account for [$($p.DisplayName)] exists"
+    Write-Verbose "Verifying if a {connectorName} account for [$($personContext.Person.DisplayName)] exists"
     $correlatedAccount = 'userInfo'
     # $outputContext.PreviousData = $correlatedAccount
 
