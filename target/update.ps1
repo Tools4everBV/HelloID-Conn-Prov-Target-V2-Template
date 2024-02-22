@@ -96,10 +96,10 @@ try {
 
     Write-Verbose "Verifying if a {connectorName} account for [$($p.DisplayName)] exists"
     $correlatedAccount = 'userInfo'
-    $outputContext.PreviousData = $correlatedAccount
+    # $outputContext.PreviousData = $correlatedAccount
 
     # Always compare the account against the current account in target system
-    if (($actionContext.AccountCorrelated -eq $true) -and ($null -ne $correlatedAccount)) {
+    if ($null -ne $correlatedAccount) {
         $splatCompareProperties = @{
             ReferenceObject  = $correlatedAccount.PSObject.Properties
             DifferenceObject = $actionContext.Data.PSObject.Properties

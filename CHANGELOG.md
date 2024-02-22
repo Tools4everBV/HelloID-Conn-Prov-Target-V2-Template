@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [1.0.1] - 22-02-2024
+
+### Added
+
+### Changed
+- Commented out the PreviousData assignment, which causes an error in HelloId Preview
+
+### Removed
+ - Removed incorrect compare condtion.
+
 ## [1.0.0] - 05-02-2024
 
 ### Added
