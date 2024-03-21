@@ -46,8 +46,8 @@ The following lifecycle actions are available:
 | revokePermission.ps1   | PowerShell _revoke_ lifecycle action             |
 | permissions.ps1        | PowerShell _permissions_ lifecycle action        |
 | resources.ps1          | PowerShell _resources_ lifecycle action          |
-| configuration.json     | Default _configuration.json_                     |
-| fieldMapping.json      | Default _fieldMapping.json_                      |
+| configuration.json     | Default _[Configuration.json](https://github.com/Tools4everBV/HelloID-Conn-Prov-Target-V2-Template/blob/main/target/configuration.json)_ |
+| fieldMapping.json      | Default _[FieldMapping.json](https://github.com/Tools4everBV/HelloID-Conn-Prov-Target-V2-Template/blob/main/target/fieldMapping.json)_   |
 
 ## Getting started
 
