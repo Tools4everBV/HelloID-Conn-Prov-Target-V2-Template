@@ -113,7 +113,6 @@ try {
         $action = 'CreateAccount'
     } else {
         $action = 'CorrelateAccount'
-        $outputContext.AccountReference = $correlatedAccount.id
     }
 
     # Add a message and the result of each of the validations showing what will happen during enforcement
@@ -129,8 +128,6 @@ try {
 
                 # Make sure to test with special characters and if needed; add utf8 encoding.
 
-                # Only required when you do need values from the target system, for example Account Reference.
-                # Otherwise $outputContext.Data is automatically filled the with account Data
                 $outputContext.Data = $createdAccount
                 $outputContext.AccountReference = ''
                 $auditLogMessage = "Create account was successful. AccountReference is: [$($outputContext.AccountReference)"

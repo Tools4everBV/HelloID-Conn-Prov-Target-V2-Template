@@ -96,7 +96,7 @@ try {
 
     Write-Verbose "Verifying if a {connectorName} account for [$($personContext.Person.DisplayName)] exists"
     $correlatedAccount = 'userInfo'
-    # $outputContext.PreviousData = $correlatedAccount
+    $outputContext.PreviousData = $correlatedAccount
 
     # Always compare the account against the current account in target system
     if ($null -ne $correlatedAccount) {
@@ -153,7 +153,7 @@ try {
             'NotFound' {
                 $outputContext.Success  = $false
                 $outputContext.AuditLogs.Add([PSCustomObject]@{
-                    Message = "{connectorName} account for: [$($personContext.Person.DisplayName)] could not be found, possibly indicating that it could be deleted, or the account is not correlated"
+                    Message = "{connectorName} account with accountReference [$($actionContext.References.Account)] could not be found, possibly indicating that it could be deleted, or the account is not correlated"
                     IsError = $true
                 })
                 break
