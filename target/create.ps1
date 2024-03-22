@@ -89,8 +89,9 @@ function Resolve-{connectorName}Error {
 #endregion
 
 try {
-    # AccountReference must have a value
+    # Initial Assignments
     $outputContext.AccountReference = 'Currently not available'
+    $action = 'CreateAccount'
 
     # Validate correlation configuration
     if ($actionContext.CorrelationConfiguration.Enabled) {
@@ -108,10 +109,7 @@ try {
         $correlatedAccount = 'userInfo'
     }
 
-
-    if ($null -eq $correlatedAccount) {
-        $action = 'CreateAccount'
-    } else {
+    if ($null -ne $correlatedAccount) {
         $action = 'CorrelateAccount'
     }
 
