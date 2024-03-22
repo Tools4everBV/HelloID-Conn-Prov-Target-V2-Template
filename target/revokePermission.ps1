@@ -109,7 +109,7 @@ try {
 
         $outputContext.Success = $true
         $outputContext.AuditLogs.Add([PSCustomObject]@{
-            Message = 'Revoke permission was successful'
+            Message = "Revoke permission was successful [$($actionContext.References.Permission.DisplayName)]"
             IsError = $false
         })
     }

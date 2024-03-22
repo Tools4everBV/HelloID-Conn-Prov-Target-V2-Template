@@ -107,7 +107,8 @@ try {
             @{
                 DisplayName    = $permission.name
                 Identification = @{
-                    Reference = $permission.id
+                    Reference   = $permission.id
+                    DisplayName = $permission.name
                 }
             }
         )
