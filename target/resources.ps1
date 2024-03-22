@@ -41,7 +41,7 @@ function Invoke-{connectorName}RestMethod {
             }
 
             if ($Body){
-                Write-Verbose 'Adding body to request'
+                Write-Information 'Adding body to request'
                 $splatParams['Body'] = $Body
             }
             Invoke-RestMethod @splatParams -Verbose:$false
@@ -89,7 +89,7 @@ function Resolve-{connectorName}Error {
 #endregion
 
 try {
-    Write-Verbose "Creating [$($resourceContext.SourceData.Count)] resources"
+    Write-Information "Creating [$($resourceContext.SourceData.Count)] resources"
     $outputContext.Success = $true
     foreach ($resource in $resourceContext.SourceData) {
         try {
@@ -106,7 +106,7 @@ try {
                         IsError = $false
                     })
                 } else {
-                    Write-Verbose "[DryRun] Create [$($resource)] {connectorName} resource, will be executed during enforcement" -Verbose
+                    Write-Information "[DryRun] Create [$($resource)] {connectorName} resource, will be executed during enforcement"
                 }
             }
         } catch {
@@ -116,10 +116,10 @@ try {
                 $($ex.Exception.GetType().FullName -eq 'System.Net.WebException')) {
                 $errorObj = Resolve-{connectorName}Error -ErrorObject $ex
                 $auditMessage = "Could not create {connectorName} resource. Error: $($errorObj.FriendlyMessage)"
-                Write-Verbose "Error at Line '$($errorObj.ScriptLineNumber)': $($errorObj.Line). Error: $($errorObj.ErrorDetails)"
+                Write-Warning "Error at Line '$($errorObj.ScriptLineNumber)': $($errorObj.Line). Error: $($errorObj.ErrorDetails)"
             } else {
                 $auditMessage = "Could not create {connectorName} resource. Error: $($ex.Exception.Message)"
-                Write-Verbose "Error at Line '$($ex.InvocationInfo.ScriptLineNumber)': $($ex.InvocationInfo.Line). Error: $($ex.Exception.Message)"
+                Write-Warning "Error at Line '$($ex.InvocationInfo.ScriptLineNumber)': $($ex.InvocationInfo.Line). Error: $($ex.Exception.Message)"
             }
             $outputContext.AuditLogs.Add([PSCustomObject]@{
                 Message = $auditMessage
@@ -134,10 +134,10 @@ try {
         $($ex.Exception.GetType().FullName -eq 'System.Net.WebException')) {
         $errorObj = Resolve-{connectorName}Error -ErrorObject $ex
         $auditMessage = "Could not create {connectorName} resource. Error: $($errorObj.FriendlyMessage)"
-        Write-Verbose "Error at Line '$($errorObj.ScriptLineNumber)': $($errorObj.Line). Error: $($errorObj.ErrorDetails)"
+        Write-Warning "Error at Line '$($errorObj.ScriptLineNumber)': $($errorObj.Line). Error: $($errorObj.ErrorDetails)"
     } else {
         $auditMessage = "Could not create {connectorName} resource. Error: $($ex.Exception.Message)"
-        Write-Verbose "Error at Line '$($ex.InvocationInfo.ScriptLineNumber)': $($ex.InvocationInfo.Line). Error: $($ex.Exception.Message)"
+        Write-Warning "Error at Line '$($ex.InvocationInfo.ScriptLineNumber)': $($ex.InvocationInfo.Line). Error: $($ex.Exception.Message)"
     }
     $outputContext.AuditLogs.Add([PSCustomObject]@{
         Message = $auditMessage

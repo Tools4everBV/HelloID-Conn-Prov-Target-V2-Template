@@ -41,7 +41,7 @@ function Invoke-{connectorName}RestMethod {
             }
 
             if ($Body){
-                Write-Verbose 'Adding body to request'
+                Write-Information 'Adding body to request'
                 $splatParams['Body'] = $Body
             }
             Invoke-RestMethod @splatParams -Verbose:$false
@@ -94,7 +94,7 @@ try {
         throw 'The account reference could not be found'
     }
 
-    Write-Verbose "Verifying if a {connectorName} account for [$($personContext.Person.DisplayName)] exists"
+    Write-Information "Verifying if a {connectorName} account for [$($personContext.Person.DisplayName)] exists"
     $correlatedAccount = 'userInfo'
     $outputContext.PreviousData = $correlatedAccount
 
@@ -120,14 +120,14 @@ try {
 
     # Add a message and the result of each of the validations showing what will happen during enforcement
     if ($actionContext.DryRun -eq $true) {
-        Write-Verbose "[DryRun] $dryRunMessage" -Verbose
+        Write-Information "[DryRun] $dryRunMessage"
     }
 
     # Process
     if (-not($actionContext.DryRun -eq $true)) {
         switch ($action) {
             'UpdateAccount' {
-                Write-Verbose "Updating {connectorName} account with accountReference: [$($actionContext.References.Account)]"
+                Write-Information "Updating {connectorName} account with accountReference: [$($actionContext.References.Account)]"
 
                 # Make sure to test with special characters and if needed; add utf8 encoding.
 
@@ -140,7 +140,7 @@ try {
             }
 
             'NoChanges' {
-                Write-Verbose "No changes to {connectorName} account with accountReference: [$($actionContext.References.Account)]"
+                Write-Information "No changes to {connectorName} account with accountReference: [$($actionContext.References.Account)]"
 
                 $outputContext.Success = $true
                 $outputContext.AuditLogs.Add([PSCustomObject]@{

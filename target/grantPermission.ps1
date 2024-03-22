@@ -41,7 +41,7 @@ function Invoke-{connectorName}RestMethod {
             }
 
             if ($Body){
-                Write-Verbose 'Adding body to request'
+                Write-Information 'Adding body to request'
                 $splatParams['Body'] = $Body
             }
             Invoke-RestMethod @splatParams -Verbose:$false
@@ -95,17 +95,17 @@ try {
         throw 'The account reference could not be found'
     }
 
-    Write-Verbose "Verifying if a {connectorName} account for [$($personContext.Person.DisplayName)] exists"
+    Write-Information "Verifying if a {connectorName} account for [$($personContext.Person.DisplayName)] exists"
     $correlatedAccount = 'userInfo'
 
     # Add a message and the result of each of the validations showing what will happen during enforcement
     if ($actionContext.DryRun -eq $true) {
-        Write-Verbose "[DryRun] Grant {connectorName} entitlement: [$($actionContext.References.Permission.Reference)], will be executed during enforcement" -Verbose
+        Write-Information "[DryRun] Grant {connectorName} entitlement: [$($actionContext.References.Permission.Reference)], will be executed during enforcement"
     }
 
     # Process
     if (-not($actionContext.DryRun -eq $true)) {
-        Write-Verbose "Granting {connectorName} entitlement: [$($actionContext.References.Permission.Reference)]"
+        Write-Information "Granting {connectorName} entitlement: [$($actionContext.References.Permission.Reference)]"
 
         # Make sure to test with special characters and if needed; add utf8 encoding.
 

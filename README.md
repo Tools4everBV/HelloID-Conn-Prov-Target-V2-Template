@@ -177,7 +177,7 @@ With provisioning connectors, we typically differentiate between __verbose__ log
 | Cmdlet / HelloID variable  | Description                                                                                                                                          |
 | -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `Write-Warning`            | - Use in case of an error.<br> - Include the script line number and code where the error has occurred. <br> - Must contain the complete error record |
-| `Write-Verbose`            | - Debug logging only.                                                                                                                                |
+| `Write-Information`        | - Debug logging only.                                                                                                                                |
 | `$outputContext.AuditLogs` | - Must contain a more __user-friendly__ error message                                                                                                |
 
 >[!TIP]
@@ -210,14 +210,14 @@ if ($null -eq $correlatedAccount){
 
 # Add a message and the result of each of the validations showing what will happen during enforcement
 if ($actionContext.DryRun -eq $true) {
-    Write-Verbose -Verbose "[DryRun] $action {connectorName} account for: [$($personContext.Person.DisplayName)], will be executed during enforcement"
+    Write-Information "[DryRun] $action {connectorName} account for: [$($personContext.Person.DisplayName)], will be executed during enforcement"
 }
 
 # Process
 if (-not($actionContext.DryRun -eq $true)) {
     switch ($action) {
         'CreateAccount' {
-            Write-Verbose 'Creating and correlating {connectorName} account'
+            Write-Information 'Creating and correlating {connectorName} account'
 
             # Make sure to test with special characters and if needed; add utf8 encoding.
 
@@ -228,7 +228,7 @@ if (-not($actionContext.DryRun -eq $true)) {
         }
 
         'CorrelateAccount' {
-            Write-Verbose 'Correlating {connectorName} account'
+            Write-Information 'Correlating {connectorName} account'
             $outputContext.AccountReference = ''
             $outputContext.AccountCorrelated = $true
             $auditLogMessage = "Correlated account: [$($correlatedAccount.ExternalId)] on field: [$($correlationField)] with value: [$($correlationValue)]"

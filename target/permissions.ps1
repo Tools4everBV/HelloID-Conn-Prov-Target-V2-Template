@@ -41,7 +41,7 @@ function Invoke-{connectorName}RestMethod {
             }
 
             if ($Body){
-                Write-Verbose 'Adding body to request'
+                Write-Information 'Adding body to request'
                 $splatParams['Body'] = $Body
             }
             Invoke-RestMethod @splatParams -Verbose:$false
@@ -89,7 +89,7 @@ function Resolve-{connectorName}Error {
 #endregion
 
 try {
-    Write-Verbose 'Retrieving permissions'
+    Write-Information 'Retrieving permissions'
     $retrievedPermissions = @(
         @{
             Name = 'Permission-1'

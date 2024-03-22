@@ -41,7 +41,7 @@ function Invoke-{connectorName}RestMethod {
             }
 
             if ($Body) {
-                Write-Verbose 'Adding body to request'
+                Write-Information 'Adding body to request'
                 $splatParams['Body'] = $Body
             }
             Invoke-RestMethod @splatParams -Verbose:$false
@@ -115,14 +115,14 @@ try {
 
     # Add a message and the result of each of the validations showing what will happen during enforcement
     if ($actionContext.DryRun -eq $true) {
-        Write-Verbose "[DryRun] $action {connectorName} account for: [$($personContext.Person.DisplayName)], will be executed during enforcement" -Verbose
+        Write-Information "[DryRun] $action {connectorName} account for: [$($personContext.Person.DisplayName)], will be executed during enforcement"
     }
 
     # Process
     if (-not($actionContext.DryRun -eq $true)) {
         switch ($action) {
             'CreateAccount' {
-                Write-Verbose 'Creating and correlating {connectorName} account'
+                Write-Information 'Creating and correlating {connectorName} account'
 
                 # Make sure to test with special characters and if needed; add utf8 encoding.
 
@@ -133,7 +133,7 @@ try {
             }
 
             'CorrelateAccount' {
-                Write-Verbose 'Correlating {connectorName} account'
+                Write-Information 'Correlating {connectorName} account'
 
                 $outputContext.Data = $correlatedAccount
                 $outputContext.AccountReference = ''
