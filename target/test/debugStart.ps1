@@ -7,8 +7,8 @@
 $warningPreference = 'Continue'
 $VerbosePreference = 'Continue'
 $InformationPreference = 'Continue'
-$config = (Get-content '{folderPath}\config.json'| ConvertFrom-Json)
-$personContext = @{Person = (Get-content '{folderPath}\demoPerson.json'| ConvertFrom-Json)}
+$config = (Get-Content '{folderPath}\config.json'| ConvertFrom-Json)
+$personContext = @{Person = (Get-Content '{folderPath}\demoPerson.json'| ConvertFrom-Json)}
 
 $actionContext = @{
     Configuration = $config
@@ -40,12 +40,35 @@ $actionContext = @{
     }
 }
 
+
+# The 'CustomList' is a wrapper class around '[System.Collections.Generic.List].
+# Its being used in the 'outputContext.AuditLogs'.
+# When a new auditLog is added, the message will be automatically displayed within the VSCode UI.
+class CustomList {
+    $list = [System.Collections.Generic.List[object]]::new()
+    [void] Add([object] $obj) {
+        $this.list.Add($obj)
+        $scriptBlock = {
+            if ($obj.IsError){
+                $psEditor.Window.ShowErrorMessage("Message: [$($obj.Message)]. Action: [$($obj.Action)]")
+            } else {
+                $psEditor.Window.ShowInformationMessage("Message: [$($obj.Message)]. Action: [$($obj.Action)]")
+            }
+        }
+        $method = [ScriptBlock]::Create($scriptBlock)
+        $method.Invoke()
+    }
+}
+
 $outputContext = @{
     Data              = $null
     PreviousData      = $null
-    AuditLogs         = [System.Collections.Generic.List[object]]::new()
+    AuditLogs         = [CustomList]::new()
     AccountReference  = $null
     Success           = $null
     Permissions       = [System.Collections.Generic.List[object]]::new()
     AccountCorrelated = $false
 }
+
+
+
