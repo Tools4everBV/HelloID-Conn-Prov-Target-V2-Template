@@ -108,16 +108,15 @@
     },
     {
       "Name": "StartDate",
-      "Description": "",
+      "Description": "Set the start date to \"now\" in HelloID to manage it in the target system. Using the contract start date can cause login issues, even without an end date.",
       "Type": "Text",
       "MappingActions": [
         {
           "MapForActions": [
-            "Create",
-            "Update"
+            "Create"
           ],
-          "MappingMode": "Field",
-          "Value": "\"Person.PrimaryContract.StartDate\"",
+          "MappingMode": "Complex",
+          "Value": "\"function getValue() {\\n    let date = new Date();\\n    return  date.toISOString().split('T')[0]\\n}\\n\\n\\n\\n\\n\\n\\ngetValue();\"",
           "UsedInNotifications": false,
           "StoreInAccountData": false
         }
@@ -125,16 +124,25 @@
     },
     {
       "Name": "EndDate",
-      "Description": "",
+      "Description": "The end date is mostly essential for disabling an account. During creation, the account is set to disabled by adding an end date of yesterday. To enable the account, simply remove the end date.",
       "Type": "Text",
       "MappingActions": [
         {
           "MapForActions": [
             "Create",
-            "Update"
+            "Disable"
           ],
-          "MappingMode": "Field",
-          "Value": "\"Person.PrimaryContract.EndDate\"",
+          "MappingMode": "Complex",
+          "Value": "\"function getValue() {\\r\\n    let date = new Date();\\r\\n    date.setDate(date.getDate() - 1);\\r\\n    return date.toISOString().split('T')[0]\\r\\n}\\r\\ngetValue();\"",
+          "UsedInNotifications": false,
+          "StoreInAccountData": false
+        },
+        {
+          "MapForActions": [
+            "Enable"
+          ],
+          "MappingMode": "None",
+          "Value": "\"\"",
           "UsedInNotifications": false,
           "StoreInAccountData": false
         }
@@ -164,22 +172,12 @@
       "MappingActions": [
         {
           "MapForActions": [
-            "Create"
+            "Create",
+            "Update"
           ],
-          "MappingMode": "Complex",
-          "Value": "\"function getExternalId() {\\r\\n    return Math.floor(Math.random() * Math.pow(2, 52));\\r\\n}\\r\\n\\r\\ngetExternalId();\"",
+          "MappingMode": "Field",
+          "Value": "\"Person.ExternalId\"",
           "UsedInNotifications": false,
-          "StoreInAccountData": false
-        },
-        {
-          "MapForActions": [
-            "Delete",
-            "Enable",
-            "Disable"
-          ],
-          "MappingMode": "None",
-          "Value": "\"\"",
-          "UsedInNotifications": true,
           "StoreInAccountData": false
         }
       ]
