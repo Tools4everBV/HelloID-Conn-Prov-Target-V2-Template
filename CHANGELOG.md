@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [1.1.0] 22-03-2024
+
+### Added
+- Added start and end date in the field mapping as complex mapping
+- Added vscode AuditLogs integration in DebugStart
+- Added Quick start
+
+### Changed
+- Replaced Write-Verbose with Write-Information
+- Fixed Empty $action variable in the create script
+- Added Links to configuration and field mapping in the README
+- Other small textual changes
+
+
 ## [1.0.1] - 22-02-2024
 
 ### Added

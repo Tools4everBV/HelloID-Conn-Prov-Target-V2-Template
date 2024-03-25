@@ -41,7 +41,7 @@ function Invoke-{connectorName}RestMethod {
             }
 
             if ($Body){
-                Write-Verbose 'Adding body to request'
+                Write-Information 'Adding body to request'
                 $splatParams['Body'] = $Body
             }
             Invoke-RestMethod @splatParams -Verbose:$false
@@ -95,21 +95,21 @@ try {
         throw 'The account reference could not be found'
     }
 
-    Write-Verbose "Verifying if a {connectorName} account for [$($personContext.Person.DisplayName)] exists"
+    Write-Information "Verifying if a {connectorName} account for [$($personContext.Person.DisplayName)] exists"
     $correlatedAccount = 'userInfo'
 
     # Add a message and the result of each of the validations showing what will happen during enforcement
     if ($actionContext.DryRun -eq $true) {
-        Write-Verbose "[DryRun] Revoke {connectorName} entitlement: [$($actionContext.References.Permission.Reference)], will be executed during enforcement" -Verbose
+        Write-Information "[DryRun] Revoke {connectorName} entitlement: [$($actionContext.References.Permission.Reference)], will be executed during enforcement"
     }
 
     # Process
     if (-not($actionContext.DryRun -eq $true)) {
-        Write-Verbose "Revoking {connectorName} permission: [$($actionContext.References.Permission.Reference)]"
+        Write-Information "Revoking {connectorName} permission: [$($actionContext.References.Permission.Reference)]"
 
         $outputContext.Success = $true
         $outputContext.AuditLogs.Add([PSCustomObject]@{
-            Message = 'Revoke permission was successful'
+            Message = "Revoke permission [$($actionContext.References.Permission.DisplayName)] was successful"
             IsError = $false
         })
     }

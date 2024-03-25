@@ -41,7 +41,7 @@ function Invoke-{connectorName}RestMethod {
             }
 
             if ($Body) {
-                Write-Verbose 'Adding body to request'
+                Write-Information 'Adding body to request'
                 $splatParams['Body'] = $Body
             }
             Invoke-RestMethod @splatParams -Verbose:$false
@@ -89,7 +89,7 @@ function Resolve-{connectorName}Error {
 #endregion
 
 try {
-    # AccountReference must have a value
+    # Initial Assignments
     $outputContext.AccountReference = 'Currently not available'
 
     # Validate correlation configuration
@@ -108,29 +108,25 @@ try {
         $correlatedAccount = 'userInfo'
     }
 
-
-    if ($null -eq $correlatedAccount) {
-        $action = 'CreateAccount'
-    } else {
+    if ($null -ne $correlatedAccount) {
         $action = 'CorrelateAccount'
-        $outputContext.AccountReference = $correlatedAccount.id
+    } else {
+        $action = 'CreateAccount'
     }
 
     # Add a message and the result of each of the validations showing what will happen during enforcement
     if ($actionContext.DryRun -eq $true) {
-        Write-Verbose "[DryRun] $action {connectorName} account for: [$($personContext.Person.DisplayName)], will be executed during enforcement" -Verbose
+        Write-Information "[DryRun] $action {connectorName} account for: [$($personContext.Person.DisplayName)], will be executed during enforcement"
     }
 
     # Process
     if (-not($actionContext.DryRun -eq $true)) {
         switch ($action) {
             'CreateAccount' {
-                Write-Verbose 'Creating and correlating {connectorName} account'
+                Write-Information 'Creating and correlating {connectorName} account'
 
                 # Make sure to test with special characters and if needed; add utf8 encoding.
 
-                # Only required when you do need values from the target system, for example Account Reference.
-                # Otherwise $outputContext.Data is automatically filled the with account Data
                 $outputContext.Data = $createdAccount
                 $outputContext.AccountReference = ''
                 $auditLogMessage = "Create account was successful. AccountReference is: [$($outputContext.AccountReference)"
@@ -138,7 +134,7 @@ try {
             }
 
             'CorrelateAccount' {
-                Write-Verbose 'Correlating {connectorName} account'
+                Write-Information 'Correlating {connectorName} account'
 
                 $outputContext.Data = $correlatedAccount
                 $outputContext.AccountReference = ''
@@ -161,10 +157,10 @@ try {
     if ($($ex.Exception.GetType().FullName -eq 'Microsoft.PowerShell.Commands.HttpResponseException') -or
         $($ex.Exception.GetType().FullName -eq 'System.Net.WebException')) {
         $errorObj = Resolve-{connectorName}Error -ErrorObject $ex
-        $auditMessage = "Could not $action {connectorName} account. Error: $($errorObj.FriendlyMessage)"
+        $auditMessage = "Could not create or correlate {connectorName} account. Error: $($errorObj.FriendlyMessage)"
         Write-Warning "Error at Line '$($errorObj.ScriptLineNumber)': $($errorObj.Line). Error: $($errorObj.ErrorDetails)"
     } else {
-        $auditMessage = "Could not $action {connectorName} account. Error: $($ex.Exception.Message)"
+        $auditMessage = "Could not create or correlate {connectorName} account. Error: $($ex.Exception.Message)"
         Write-Warning "Error at Line '$($ex.InvocationInfo.ScriptLineNumber)': $($ex.InvocationInfo.Line). Error: $($ex.Exception.Message)"
     }
     $outputContext.AuditLogs.Add([PSCustomObject]@{
