@@ -7,8 +7,8 @@
 $warningPreference = 'Continue'
 $VerbosePreference = 'Continue'
 $InformationPreference = 'Continue'
-$config = (Get-Content '{folderPath}\config.json'| ConvertFrom-Json)
-$personContext = @{Person = (Get-Content '{folderPath}\demoPerson.json'| ConvertFrom-Json)}
+$config = (Get-Content '{folderPath}/config.json'| ConvertFrom-Json)
+$personContext = @{Person = (Get-Content '{folderPath}/demoPerson.json'| ConvertFrom-Json)}
 
 $actionContext = @{
     Configuration = $config

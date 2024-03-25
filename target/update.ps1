@@ -153,7 +153,7 @@ try {
             'NotFound' {
                 $outputContext.Success  = $false
                 $outputContext.AuditLogs.Add([PSCustomObject]@{
-                    Message = "{connectorName} account with accountReference [$($actionContext.References.Account)] could not be found, possibly indicating that it could be deleted, or the account is not correlated"
+                    Message = "{connectorName} account with accountReference: [$($actionContext.References.Account)] could not be found, possibly indicating that it could be deleted, or the account is not correlated"
                     IsError = $true
                 })
                 break

@@ -111,7 +111,7 @@ try {
 
         $outputContext.Success = $true
         $outputContext.AuditLogs.Add([PSCustomObject]@{
-            Message = "Grant permission was successful [$($actionContext.References.Permission.DisplayName)]"
+            Message = "Grant permission [$($actionContext.References.Permission.DisplayName)] was successful"
             IsError = $false
         })
     }

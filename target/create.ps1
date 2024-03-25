@@ -91,7 +91,6 @@ function Resolve-{connectorName}Error {
 try {
     # Initial Assignments
     $outputContext.AccountReference = 'Currently not available'
-    $action = 'CreateAccount'
 
     # Validate correlation configuration
     if ($actionContext.CorrelationConfiguration.Enabled) {
@@ -111,6 +110,8 @@ try {
 
     if ($null -ne $correlatedAccount) {
         $action = 'CorrelateAccount'
+    } else {
+        $action = 'CreateAccount'
     }
 
     # Add a message and the result of each of the validations showing what will happen during enforcement
@@ -156,10 +157,10 @@ try {
     if ($($ex.Exception.GetType().FullName -eq 'Microsoft.PowerShell.Commands.HttpResponseException') -or
         $($ex.Exception.GetType().FullName -eq 'System.Net.WebException')) {
         $errorObj = Resolve-{connectorName}Error -ErrorObject $ex
-        $auditMessage = "Could not $action {connectorName} account. Error: $($errorObj.FriendlyMessage)"
+        $auditMessage = "Could not create or correlate {connectorName} account. Error: $($errorObj.FriendlyMessage)"
         Write-Warning "Error at Line '$($errorObj.ScriptLineNumber)': $($errorObj.Line). Error: $($errorObj.ErrorDetails)"
     } else {
-        $auditMessage = "Could not $action {connectorName} account. Error: $($ex.Exception.Message)"
+        $auditMessage = "Could not create or correlate {connectorName} account. Error: $($ex.Exception.Message)"
         Write-Warning "Error at Line '$($ex.InvocationInfo.ScriptLineNumber)': $($ex.InvocationInfo.Line). Error: $($ex.Exception.Message)"
     }
     $outputContext.AuditLogs.Add([PSCustomObject]@{
