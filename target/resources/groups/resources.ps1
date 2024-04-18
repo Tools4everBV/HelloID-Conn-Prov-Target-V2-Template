@@ -1,7 +1,7 @@
-####################################################
-# HelloID-Conn-Prov-Target-{connectorName}-Resources
+##########################################################
+# HelloID-Conn-Prov-Target-{connectorName}-Resources-Group
 # PowerShell V2
-####################################################
+##########################################################
 
 # Enable TLS1.2
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor [System.Net.SecurityProtocolType]::Tls12
