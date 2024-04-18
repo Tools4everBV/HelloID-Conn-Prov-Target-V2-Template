@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [1.2.0] 18-04-2024
 
-## Added
+### Added
 
 - Created new subfolders:
   - permissions/groups

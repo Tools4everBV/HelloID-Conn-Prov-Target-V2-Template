@@ -99,7 +99,7 @@ try {
 
     if ($null -ne $correlatedAccount) {
         $action = 'GrantPermission'
-        $dryRunMessage = "[DryRun] Grant {connectorName} permission: [$($actionContext.References.Permission.DisplayName)] will be executed during enforcement"
+        $dryRunMessage = "Grant {connectorName} permission: [$($actionContext.References.Permission.DisplayName)] will be executed during enforcement"
     } else {
         $action = 'NotFound'
         $dryRunMessage = "{connectorName} account: [$($actionContext.References.Account)] for person: [$($personContext.Person.DisplayName)] could not be found, possibly indicating that it could be deleted, or the account is not correlated"

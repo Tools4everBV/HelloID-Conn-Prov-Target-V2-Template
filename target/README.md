@@ -10,7 +10,7 @@
 
 ## Table of contents
 
-- [HelloID-Conn-Prov-Target-{connectorName}](#helloid-conn-prov-target-{connectorname})
+- [HelloID-Conn-Prov-Target-{connectorName}](#helloid-conn-prov-target-{connectorName})
   - [Table of contents](#table-of-contents)
   - [Introduction](#introduction)
   - [Getting started](#getting-started)
