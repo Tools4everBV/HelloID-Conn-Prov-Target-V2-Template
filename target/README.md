@@ -10,7 +10,7 @@
 
 ## Table of contents
 
-- [HelloID-Conn-Prov-Target-{connectorName}](#helloid-conn-prov-target-{connectorName})
+- [HelloID-Conn-Prov-Target-{connectorName}](#helloid-conn-prov-target-{connectorname})
   - [Table of contents](#table-of-contents)
   - [Introduction](#introduction)
   - [Getting started](#getting-started)
@@ -46,8 +46,8 @@ The following lifecycle actions are available:
 | revokePermission.ps1   | PowerShell _revoke_ lifecycle action             |
 | permissions.ps1        | PowerShell _permissions_ lifecycle action        |
 | resources.ps1          | PowerShell _resources_ lifecycle action          |
-| configuration.json     | Default _[Configuration.json](https://github.com/Tools4everBV/HelloID-Conn-Prov-Target-V2-Template/blob/main/target/configuration.json)_ |
-| fieldMapping.json      | Default _[FieldMapping.json](https://github.com/Tools4everBV/HelloID-Conn-Prov-Target-V2-Template/blob/main/target/fieldMapping.json)_   |
+| configuration.json     | Default _configuration.json_ |
+| fieldMapping.json      | Default _fieldMapping.json_   |
 
 ## Getting started
 

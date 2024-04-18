@@ -41,7 +41,6 @@ function Invoke-{connectorName}RestMethod {
             }
 
             if ($Body){
-                Write-Information 'Adding body to request'
                 $splatParams['Body'] = $Body
             }
             Invoke-RestMethod @splatParams -Verbose:$false
@@ -100,10 +99,11 @@ try {
 
     # Always compare the account against the current account in target system
     if ($null -ne $correlatedAccount) {
+        $desiredAccount = [PSCustomObject]$actionContext.Data
         $splatCompareProperties = @{
-            ReferenceObject  = $correlatedAccount.PSObject.Properties
-            DifferenceObject = $actionContext.Data.PSObject.Properties
-        }
+            ReferenceObject  = @($correlatedAccount.PSObject.Properties)
+            DifferenceObject = @($desiredAccount.PSObject.Properties)
+        }  
         $propertiesChanged = Compare-Object @splatCompareProperties -PassThru | Where-Object { $_.SideIndicator -eq '=>' }
         if ($propertiesChanged) {
             $action = 'UpdateAccount'
@@ -116,7 +116,6 @@ try {
         $action = 'NotFound'
         $dryRunMessage = "{connectorName} account for: [$($personContext.Person.DisplayName)] not found. Possibly deleted."
     }
-
 
     # Add a message and the result of each of the validations showing what will happen during enforcement
     if ($actionContext.DryRun -eq $true) {

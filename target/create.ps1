@@ -41,7 +41,6 @@ function Invoke-{connectorName}RestMethod {
             }
 
             if ($Body) {
-                Write-Information 'Adding body to request'
                 $splatParams['Body'] = $Body
             }
             Invoke-RestMethod @splatParams -Verbose:$false

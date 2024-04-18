@@ -1,7 +1,7 @@
-#################################################
-# HelloID-Conn-Prov-Target-{connectorName}-Revoke
+######################################################
+# HelloID-Conn-Prov-Target-{connectorName}-Permissions
 # PowerShell V2
-#################################################
+######################################################
 
 # Enable TLS1.2
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor [System.Net.SecurityProtocolType]::Tls12
@@ -41,7 +41,6 @@ function Invoke-{connectorName}RestMethod {
             }
 
             if ($Body){
-                Write-Information 'Adding body to request'
                 $splatParams['Body'] = $Body
             }
             Invoke-RestMethod @splatParams -Verbose:$false
@@ -88,45 +87,38 @@ function Resolve-{connectorName}Error {
 }
 #endregion
 
-# Begin
 try {
-    # Verify if [aRef] has a value
-    if ([string]::IsNullOrEmpty($($actionContext.References.Account))) {
-        throw 'The account reference could not be found'
-    }
+    Write-Information 'Retrieving permissions'
+    $retrievedPermissions = @(
+        @{
+            Name = 'Permission-1'
+            id   = (New-Guid)
+        },
+        @{
+            Name = 'Permission-2'
+            id   = (New-Guid)
+        }
+    )
 
-    Write-Information "Verifying if a {connectorName} account for [$($personContext.Person.DisplayName)] exists"
-    $correlatedAccount = 'userInfo'
-
-    # Add a message and the result of each of the validations showing what will happen during enforcement
-    if ($actionContext.DryRun -eq $true) {
-        Write-Information "[DryRun] Revoke {connectorName} entitlement: [$($actionContext.References.Permission.Reference)], will be executed during enforcement"
-    }
-
-    # Process
-    if (-not($actionContext.DryRun -eq $true)) {
-        Write-Information "Revoking {connectorName} permission: [$($actionContext.References.Permission.Reference)]"
-
-        $outputContext.Success = $true
-        $outputContext.AuditLogs.Add([PSCustomObject]@{
-            Message = "Revoke permission [$($actionContext.References.Permission.DisplayName)] was successful"
-            IsError = $false
-        })
+    # Make sure to test with special characters and if needed; add utf8 encoding.
+    foreach ($permission in $retrievedPermissions) {
+        $outputContext.Permissions.Add(
+            @{
+                DisplayName    = $permission.name
+                Identification = @{
+                    Reference   = $permission.id
+                    DisplayName = $permission.name
+                }
+            }
+        )
     }
 } catch {
-    $outputContext.success = $false
     $ex = $PSItem
     if ($($ex.Exception.GetType().FullName -eq 'Microsoft.PowerShell.Commands.HttpResponseException') -or
         $($ex.Exception.GetType().FullName -eq 'System.Net.WebException')) {
         $errorObj = Resolve-{connectorName}Error -ErrorObject $ex
-        $auditMessage = "Could not revoke {connectorName} permission. Error: $($errorObj.FriendlyMessage)"
         Write-Warning "Error at Line '$($errorObj.ScriptLineNumber)': $($errorObj.Line). Error: $($errorObj.ErrorDetails)"
     } else {
-        $auditMessage = "Could not revoke {connectorName} permission. Error: $($_.Exception.Message)"
         Write-Warning "Error at Line '$($ex.InvocationInfo.ScriptLineNumber)': $($ex.InvocationInfo.Line). Error: $($ex.Exception.Message)"
     }
-    $outputContext.AuditLogs.Add([PSCustomObject]@{
-        Message = $auditMessage
-        IsError = $true
-    })
 }
