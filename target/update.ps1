@@ -99,10 +99,9 @@ try {
 
     # Always compare the account against the current account in target system
     if ($null -ne $correlatedAccount) {
-        $desiredAccount = [PSCustomObject]$actionContext.Data
         $splatCompareProperties = @{
             ReferenceObject  = @($correlatedAccount.PSObject.Properties)
-            DifferenceObject = @($desiredAccount.PSObject.Properties)
+            DifferenceObject = @($actionContext.Data.PSObject.Properties)
         }  
         $propertiesChanged = Compare-Object @splatCompareProperties -PassThru | Where-Object { $_.SideIndicator -eq '=>' }
         if ($propertiesChanged) {

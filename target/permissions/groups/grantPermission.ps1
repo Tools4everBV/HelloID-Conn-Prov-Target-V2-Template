@@ -126,10 +126,10 @@ try {
             }
 
             'NotFound' {
-                $outputContext.Success  = $true
+                $outputContext.Success  = $false
                 $outputContext.AuditLogs.Add([PSCustomObject]@{
                     Message = "{connectorName} account: [$($actionContext.References.Account)] for person: [$($personContext.Person.DisplayName)] could not be found, possibly indicating that it could be deleted, or the account is not correlated"
-                    IsError = $false
+                    IsError = $true
                 })
                 break
             }
