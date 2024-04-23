@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com), and this project adheres to [Semantic Versioning](https://semver.org).
 
-## [1.2.0] 18-04-2024
+## [1.2.0] - 18-04-2024
 
 ### Added
 
@@ -39,7 +39,7 @@ All notable changes to this project will be documented in this file. The format 
 
 - Removed line `Write-Information 'Adding body to request'` from the `Invoke-{connectorName}RestMethod` function in each of the __*ps1*__ files.
 
-## [1.1.0] 22-03-2024
+## [1.1.0] - 22-03-2024
 
 ### Added
 - Added start and end date in the field mapping as complex mapping
