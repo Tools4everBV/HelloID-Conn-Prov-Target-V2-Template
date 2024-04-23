@@ -1,7 +1,7 @@
-####################################################
-# HelloID-Conn-Prov-Target-{connectorName}-Resources
+##########################################################
+# HelloID-Conn-Prov-Target-{connectorName}-Resources-Group
 # PowerShell V2
-####################################################
+##########################################################
 
 # Enable TLS1.2
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor [System.Net.SecurityProtocolType]::Tls12
@@ -41,7 +41,6 @@ function Invoke-{connectorName}RestMethod {
             }
 
             if ($Body){
-                Write-Information 'Adding body to request'
                 $splatParams['Body'] = $Body
             }
             Invoke-RestMethod @splatParams -Verbose:$false

@@ -2,6 +2,43 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [1.2.0] 18-04-2024
+
+### Added
+
+- Created new subfolders:
+  - permissions/groups
+  - resources/groups
+
+### Changed
+
+- Renamed the header in file `grantPermission.ps1` from 'Grant' to  'GrantPermission-Group' to match the file name and folder change.
+- Renamed the header in file `revokePermission.ps1` from 'Revoke' to  'RevokePermission-Group' to match the file name and folder change.
+- Renamed the header in file `permissions.ps1` from 'Permissions' to  'Permissions-Group' to match the file name and folder change.
+- Renamed the header in file `resources.ps1` from 'Resources' to  'Resources-Group' to match the file name and folder change.
+- 
+- Moved the following files to the _permissions/groups_ folder:
+  - grantPermission.ps1
+  - revokePermission.ps1
+  - permissions.ps1
+
+- Moved the following file to the _resources/groups_ folder:
+  - resources.ps1
+
+- Converted the properties of both `$correlatedAccount` and `$desiredAccount` in the `update.ps1` lifecycle action to arrays _@()_ for consistent handling.
+
+- Changed logic and flow in both `grantPermission.ps1` and `revokePermission.ps1` lifecycle actions.
+  - Modified the condition to check if `$correlatedAccount` is not null before determining the action _GrantPermission_ or _NotFound_ and constructing the corresponding message.
+  - Added `switch` statement to handle the different actions.
+  - Adjusted the log message inside the `$actionContext.DryRun -eq $true` block to use the constructed `$dryRunMessage`.
+  - Adjusted the dryRun information message to display `$actionContext.References.Permission.DisplayName` instead of `$actionContext.References.Permission.Reference`.
+  - Adjusted the information message inside the `if (-not($actionContext.DryRun -eq $true))` block to display both the `$actionContext.References.Permission.DisplayName` and `$actionContext.References.Permission.Reference`.
+  - Renamed 'entitlement' to 'permission' to be consistent in all informational and audit messages.
+  
+### Removed
+
+- Removed line `Write-Information 'Adding body to request'` from the `Invoke-{connectorName}RestMethod` function in each of the __*ps1*__ files.
+
 ## [1.1.0] 22-03-2024
 
 ### Added
@@ -14,7 +51,6 @@ All notable changes to this project will be documented in this file. The format 
 - Fixed Empty $action variable in the create script
 - Added Links to configuration and field mapping in the README
 - Other small textual changes
-
 
 ## [1.0.1] - 22-02-2024
 

@@ -336,6 +336,3 @@ This extension checks the spelling of words in your code and comments, ensuring 
 
 - __GitHub Markdown Preview__<br>https://marketplace.visualstudio.com/items?itemName=bierner.github-markdown-preview<br>
 With GitHub Markdown Preview, you can see exactly how your documentation will look when published to GitHub, ensuring that it is clear, concise, and easy to read. This can be particularly useful when documenting your PowerShell connector code, as it allows you to create professional-looking documentation that is easy to understand and follow.
-
-- __ByeByeSecret__<br>https://github.com/JeroenBL/ByeByeSecret<br>
-ByeByeSecret is a VSCode extension that actively scans your PowerShell code for potential secrets by identifying variables that may hold confidential information. It then notifies you with a visual alert.

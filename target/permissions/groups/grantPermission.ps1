@@ -1,7 +1,7 @@
-################################################
-# HelloID-Conn-Prov-Target-{connectorName}-Grant
+################################################################
+# HelloID-Conn-Prov-Target-{connectorName}-GrantPermission-Group
 # PowerShell V2
-################################################
+################################################################
 
 # Enable TLS1.2
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor [System.Net.SecurityProtocolType]::Tls12
@@ -41,7 +41,6 @@ function Invoke-{connectorName}RestMethod {
             }
 
             if ($Body){
-                Write-Information 'Adding body to request'
                 $splatParams['Body'] = $Body
             }
             Invoke-RestMethod @splatParams -Verbose:$false
@@ -98,22 +97,43 @@ try {
     Write-Information "Verifying if a {connectorName} account for [$($personContext.Person.DisplayName)] exists"
     $correlatedAccount = 'userInfo'
 
+    if ($null -ne $correlatedAccount) {
+        $action = 'GrantPermission'
+        $dryRunMessage = "Grant {connectorName} permission: [$($actionContext.References.Permission.DisplayName)] will be executed during enforcement"
+    } else {
+        $action = 'NotFound'
+        $dryRunMessage = "{connectorName} account: [$($actionContext.References.Account)] for person: [$($personContext.Person.DisplayName)] could not be found, possibly indicating that it could be deleted, or the account is not correlated"
+    }
+
     # Add a message and the result of each of the validations showing what will happen during enforcement
     if ($actionContext.DryRun -eq $true) {
-        Write-Information "[DryRun] Grant {connectorName} entitlement: [$($actionContext.References.Permission.Reference)], will be executed during enforcement"
+        Write-Information "[DryRun] $dryRunMessage"
     }
 
     # Process
     if (-not($actionContext.DryRun -eq $true)) {
-        Write-Information "Granting {connectorName} entitlement: [$($actionContext.References.Permission.Reference)]"
+        switch ($action) {
+            'GrantPermission' {
+                Write-Information "Granting {connectorName} permission: [$($actionContext.References.Permission.DisplayName)] - [$($actionContext.References.Permission.Reference)]"
 
-        # Make sure to test with special characters and if needed; add utf8 encoding.
+                # Make sure to test with special characters and if needed; add utf8 encoding.
+        
+                $outputContext.Success = $true
+                $outputContext.AuditLogs.Add([PSCustomObject]@{
+                    Message = "Grant permission [$($actionContext.References.Permission.DisplayName)] was successful"
+                    IsError = $false
+                })
+            }
 
-        $outputContext.Success = $true
-        $outputContext.AuditLogs.Add([PSCustomObject]@{
-            Message = "Grant permission [$($actionContext.References.Permission.DisplayName)] was successful"
-            IsError = $false
-        })
+            'NotFound' {
+                $outputContext.Success  = $false
+                $outputContext.AuditLogs.Add([PSCustomObject]@{
+                    Message = "{connectorName} account: [$($actionContext.References.Account)] for person: [$($personContext.Person.DisplayName)] could not be found, possibly indicating that it could be deleted, or the account is not correlated"
+                    IsError = $true
+                })
+                break
+            }
+        }
     }
 } catch {
     $outputContext.success = $false

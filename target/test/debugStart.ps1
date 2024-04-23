@@ -40,7 +40,6 @@ $actionContext = @{
     }
 }
 
-
 # The 'CustomList' is a wrapper class around '[System.Collections.Generic.List].
 # Its being used in the 'outputContext.AuditLogs'.
 # When a new auditLog is added, the message will be automatically displayed within the VSCode UI.
@@ -69,6 +68,3 @@ $outputContext = @{
     Permissions       = [System.Collections.Generic.List[object]]::new()
     AccountCorrelated = $false
 }
-
-
-
