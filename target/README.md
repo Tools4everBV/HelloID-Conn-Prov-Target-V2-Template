@@ -42,10 +42,10 @@ The following lifecycle actions are available:
 | disable.ps1            | PowerShell _disable_ lifecycle action            |
 | enable.ps1             | PowerShell _enable_ lifecycle action             |
 | update.ps1             | PowerShell _update_ lifecycle action             |
-| grantPermission.ps1    | PowerShell _grant_ lifecycle action              |
-| revokePermission.ps1   | PowerShell _revoke_ lifecycle action             |
-| permissions.ps1        | PowerShell _permissions_ lifecycle action        |
-| resources.ps1          | PowerShell _resources_ lifecycle action          |
+| permissions/groups/grantPermission.ps1    | PowerShell _grant_ lifecycle action              |
+| permissions/groups/revokePermission.ps1   | PowerShell _revoke_ lifecycle action             |
+| permissions/groups/permissions.ps1        | PowerShell _permissions_ lifecycle action        |
+| resources/groups/resources.ps1          | PowerShell _resources_ lifecycle action          |
 | configuration.json     | Default _configuration.json_ |
 | fieldMapping.json      | Default _fieldMapping.json_   |
 
