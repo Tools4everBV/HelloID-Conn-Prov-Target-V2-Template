@@ -58,10 +58,10 @@ We can't wait to see the amazing PowerShell connectors you'll build with these t
 | target/disable.ps1          | PowerShell _disable_ lifecycle action                                  |
 | target/enable.ps1           | PowerShell _enable_ lifecycle action                                   |
 | target/update.ps1           | PowerShell _update_ lifecycle action                                   |
-| target/grantPermission.ps1  | PowerShell _grant_ lifecycle action                                    |
-| target/revokePermission.ps1 | PowerShell _revoke_ lifecycle action                                   |
-| target/permissions.ps1      | PowerShell _permissions_ lifecycle action                              |
-| target/resources.ps1        | PowerShell _resources_ lifecycle action                                |
+| target/permissions/groups/grantPermission.ps1  | PowerShell _grant_ lifecycle action                 |
+| target/permissions/groups/revokePermission.ps1 | PowerShell _revoke_ lifecycle action                |
+| target/permissions/groups/permissions.ps1      | PowerShell _permissions_ lifecycle action           |
+| target/resources/groups/resources.ps1        | PowerShell _resources_ lifecycle action               |
 | target/configuration.json   | Default _configuration.json_                                           |
 | target/fieldMapping.json    | Default _fieldMapping.json_                                            |
 | target/README.md            | A prefilled _readme.md_                                                |
