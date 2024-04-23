@@ -25,9 +25,7 @@ All notable changes to this project will be documented in this file. The format 
 - Moved the following file to the _resources/groups_ folder:
   - resources.ps1
 
-- Updated the comparison properties initialization in the `update` lifecycle action.
-  - Introduced a new variable `$desiredAccount` to store a casted [PSCustomObject] version of `$actionContext.Data`.
-  - Converted the properties of both `$correlatedAccount` and `$desiredAccount` to arrays _@()_ for consistent handling.
+- Converted the properties of both `$correlatedAccount` and `$desiredAccount` in the `update.ps1` lifecycle action to arrays _@()_ for consistent handling.
 
 - Changed logic and flow in both `grantPermission.ps1` and `revokePermission.ps1` lifecycle actions.
   - Modified the condition to check if `$correlatedAccount` is not null before determining the action _GrantPermission_ or _NotFound_ and constructing the corresponding message.
