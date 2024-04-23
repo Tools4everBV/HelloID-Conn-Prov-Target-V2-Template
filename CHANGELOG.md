@@ -16,7 +16,7 @@ All notable changes to this project will be documented in this file. The format 
 - Renamed the header in file `revokePermission.ps1` from 'Revoke' to  'RevokePermission-Group' to match the file name and folder change.
 - Renamed the header in file `permissions.ps1` from 'Permissions' to  'Permissions-Group' to match the file name and folder change.
 - Renamed the header in file `resources.ps1` from 'Resources' to  'Resources-Group' to match the file name and folder change.
-- 
+  
 - Moved the following files to the _permissions/groups_ folder:
   - grantPermission.ps1
   - revokePermission.ps1
