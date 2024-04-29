@@ -29,6 +29,7 @@
       - [SpeedScope](#speedscope)
   - [Security and compliance](#security-and-compliance)
   - [Other useful VSCode extensions](#other-useful-vscode-extensions)
+  - [Contributing](#contributing)
 
 ## Introduction
 
@@ -317,3 +318,7 @@ This extension checks the spelling of words in your code and comments, ensuring 
 
 - __GitHub Markdown Preview__<br>https://marketplace.visualstudio.com/items?itemName=bierner.github-markdown-preview<br>
 With GitHub Markdown Preview, you can see exactly how your documentation will look when published to GitHub, ensuring that it is clear, concise, and easy to read. This can be particularly useful when documenting your PowerShell connector code, as it allows you to create professional-looking documentation that is easy to understand and follow.
+
+## Contributing
+
+Please consult our [contributing guidelines](https://github.com/Tools4everBV/HelloID-Conn-Prov-Target-V2-Template/blob/main/CONTRIBUTING.md) for more information.
