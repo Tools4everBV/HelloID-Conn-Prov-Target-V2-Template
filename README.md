@@ -9,8 +9,6 @@
   - [How to use this repository](#how-to-use-this-repository)
     - [Using the _ConnectorGenerator_ VSCode extension](#using-the-connectorgenerator-vscode-extension)
       - [Install the extension](#install-the-extension)
-        - [Create a new _GitHub_ token](#create-a-new-github-token)
-        - [Set the token](#set-the-token)
       - [Create a new connector](#create-a-new-connector)
         - [From the command palette](#from-the-command-palette)
         - [From the context menu](#from-the-context-menu)
@@ -47,30 +45,30 @@ We can't wait to see the amazing PowerShell connectors you'll build with these t
 
 ## What's in this repository
 
-| FileName                    | Description                                                            |
-| --------------------------- | ---------------------------------------------------------------------- |
-| target/.gitignore           | `gitignore` excluding the `test` folder when pushing commits to GitHub |
-| target/test.config.json     | Prefilled _config.json_ file for easy debugging                        |
-| target/test/demoPerson.json | Prefilled _demoPerson.json_ for easy debugging                         |
-| target/test/debugStart.ps1  | Default _debugStart.ps1_ for easy debugging                            |
-| target/create.ps1           | PowerShell _create_ lifecycle action                                   |
-| target/delete.ps1           | PowerShell _delete_ lifecycle action                                   |
-| target/disable.ps1          | PowerShell _disable_ lifecycle action                                  |
-| target/enable.ps1           | PowerShell _enable_ lifecycle action                                   |
-| target/update.ps1           | PowerShell _update_ lifecycle action                                   |
-| target/permissions/groups/grantPermission.ps1  | PowerShell _grant_ lifecycle action                 |
-| target/permissions/groups/revokePermission.ps1 | PowerShell _revoke_ lifecycle action                |
-| target/permissions/groups/permissions.ps1      | PowerShell _permissions_ lifecycle action           |
-| target/resources/groups/resources.ps1        | PowerShell _resources_ lifecycle action               |
-| target/configuration.json   | Default _configuration.json_                                           |
-| target/fieldMapping.json    | Default _fieldMapping.json_                                            |
-| target/README.md            | A prefilled _readme.md_                                                |
-| target/CHANGELOG.md         | CHANGELOG.md to track changes made to the connector                    |
+| FileName                                  | Description                                                            |
+| ----------------------------------------- | ---------------------------------------------------------------------- |
+| ./permissions/groups/grantPermission.ps1  | PowerShell _grant_ lifecycle action                                    |
+| ./permissions/groups/revokePermission.ps1 | PowerShell _revoke_ lifecycle action                                   |
+| ./permissions/groups/permissions.ps1      | PowerShell _permissions_ lifecycle action                              |
+| ./resources/groups/resources.ps1          | PowerShell _resources_ lifecycle action                                |
+| ./test.config.json                        | Prefilled _config.json_ file for easy debugging                        |
+| ./test/demoPerson.json                    | Prefilled _demoPerson.json_ for easy debugging                         |
+| ./test/debugStart.ps1                     | Default _debugStart.ps1_ for easy debugging                            |
+| .gitignore                                | `gitignore` excluding the `test` folder when pushing commits to GitHub |
+| create.ps1                                | PowerShell _create_ lifecycle action                                   |
+| delete.ps1                                | PowerShell _delete_ lifecycle action                                   |
+| disable.ps1                               | PowerShell _disable_ lifecycle action                                  |
+| enable.ps1                                | PowerShell _enable_ lifecycle action                                   |
+| update.ps1                                | PowerShell _update_ lifecycle action                                   |
+| configuration.json                        | Default _configuration.json_                                           |
+| fieldMapping.json                         | Default _fieldMapping.json_                                            |
+| README.md                                 | A prefilled _readme.md_                                                |
+| CHANGELOG.md                              | CHANGELOG.md to track changes made to the connector                    |
 
 ## How to use this repository
 
 -  Download _or clone_ the content of this repo.
--  Use the [ConnectorGenerator VSCode extension](#connectorgenerator-vscode-extension).
+-  Use the [ConnectorGenerator VSCode extension](#using-the-connectorgenerator-vscode-extension).
 
 > [!NOTE]
 > Downloading _or cloning_ the contents of this repo does require some manuel changes to be made __after__ you've downloaded the contents to your computer.
@@ -95,23 +93,6 @@ Since this repository is _private_, the _ConnectorGenerator_ VScode extension ca
 4. Click on the extensions icon or press `ctrl+shift+x` (`cmd+shift+x` on mac).
 5. Click on the three dots ... and select `Install from VSIX`.
 6. Browse to the folder where the __ConnectorGenerator-[version].VSIX__ file is downloaded.
-
-##### Create a new _GitHub_ token
-
-1. Go to [`Developer settings`.](https://github.com/settings/tokens)
-2. Click on `Generate new token`.
-3. Select `Generate new token (classic)`.
-4. Give your token a clear `Note`.
-5. Set the expiration to `60` days.
-6. __Only__ check the `repo (Full control of private repositories)` scope.
-7. Click `Generate token`.
-8. Make sure to __securely__ save your token.
-
-##### Set the token
-
-1. Open the command palette by clicking on `View -> Command palette` or press `ctrl+shift+p` (`cmd+shift+p` on mac).
-2. Browse to `Set ConnectorGenerator GitHub accessToken`.
-3. Specify your _GitHub_ token and press `enter`.
 
 #### Create a new connector
 
@@ -181,7 +162,7 @@ With provisioning connectors, we typically differentiate between __verbose__ log
 | `$outputContext.AuditLogs` | - Must contain a more __user-friendly__ error message                                                                                                |
 
 >[!TIP]
-Don’t use the auditlogging for verbose or debugging logging. Only write an auditlog if the lifecycle action itself has failed.
+Don’t use the audit logging for verbose or debugging logging. Only write an audit log if the lifecycle action itself has failed.
 
 ### Do not retrieve all users within a lifecycle action
 
