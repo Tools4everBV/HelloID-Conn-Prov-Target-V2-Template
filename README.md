@@ -81,11 +81,6 @@ We can't wait to see the amazing PowerShell connectors you'll build with these t
 
 ### Using the _ConnectorGenerator_ VSCode extension
 
-Since this repository is _private_, the _ConnectorGenerator_ VScode extension can only be used with a GitHub token.
-
->[!NOTE]
-> Your _GitHub_ token will be stored securely using VSCode _SecretStorage_ API. https://code.visualstudio.com/api/references/vscode-api#SecretStorage
-
 #### Install the extension
 
 1. Download the extension from: https://github.com/JeroenBL/ConnectorGenerator/releases/latest
