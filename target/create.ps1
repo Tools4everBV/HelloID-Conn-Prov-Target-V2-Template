@@ -61,7 +61,9 @@ try {
         }
 
         # Verify if a user must be either [created ] or just [correlated]
-        $correlatedAccount = 'userInfo'
+        $correlatedAccount = 'userInfo' # Placeholder
+        # Example implementation (replace this with actual code):
+        # $correlatedAccount = Invoke-RestMethod @splatGetUser
     }
 
     if ($null -ne $correlatedAccount) {
@@ -74,11 +76,16 @@ try {
     switch ($action) {
         'CreateAccount' {
             Write-Information "Creating and correlating {connectorName} account for: [$($personContext.Person.DisplayName)]"
+            $splatParamsCreate = @{
+                Uri    = $actionContext.Configuration.BaseUrl
+                Method = 'POST'
+                Body   = $actionContext.Data | ConvertTo-Json
+            }
 
             # Make sure to test with special characters and if needed; add utf8 encoding.
             if (-not($actionContext.DryRun -eq $true)) {
                 # Write Create logic here
-                # $createdAccount = Invoke-RestMethod @splatParams
+                $createdAccount = Invoke-RestMethod @splatParamsCreate
                 $outputContext.Data = $createdAccount
                 $outputContext.AccountReference = ''
             }
@@ -90,7 +97,7 @@ try {
             Write-Information 'Correlating {connectorName} account'
 
             $outputContext.Data = $correlatedAccount
-            $outputContext.AccountReference = ''
+            $outputContext.AccountReference = $correlatedAccount
             $outputContext.AccountCorrelated = $true
             $auditLogMessage = "Correlated account: [$($outputContext.AccountReference)] on field: [$($correlationField)] with value: [$($correlationValue)]"
             break

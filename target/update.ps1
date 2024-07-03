@@ -51,7 +51,7 @@ try {
     }
 
     Write-Information "Verifying if a {connectorName} account for [$($personContext.Person.DisplayName)] exists"
-    $correlatedAccount = 'userInfo'
+    $correlatedAccount = 'userInfo' # Placeholder
     $outputContext.PreviousData = $correlatedAccount
 
     # Always compare the account against the current account in target system
