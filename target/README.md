@@ -10,7 +10,7 @@
 
 ## Table of contents
 
-- [HelloID-Conn-Prov-Target-{connectorName}](#helloid-conn-prov-target-{connectorName})
+- [HelloID-Conn-Prov-Target-{connectorName}](#helloid-conn-prov-target-connectorname)
   - [Table of contents](#table-of-contents)
   - [Introduction](#introduction)
   - [Getting started](#getting-started)
@@ -67,7 +67,7 @@ To properly setup the correlation:
     | ------------------------- | --------------------------------- |
     | Enable correlation        | `True`                            |
     | Person correlation field  | `PersonContext.Person.ExternalId` |
-    | Account correlation field | ``                                |
+    | Account correlation field | `Employeenumber`                  |
 
 > [!TIP]
 > _For more information on correlation, please refer to our correlation [documentation](https://docs.helloid.com/en/provisioning/target-systems/powershell-v2-target-systems/correlation.html) pages_.

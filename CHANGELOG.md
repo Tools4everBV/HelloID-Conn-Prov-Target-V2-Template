@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [1.3.0] - 03-07-2024
+
+### Added
+
+ -
+
+### Changed
+ - Moved the processing DryRun block one level deeper to only skip the actual web call to the target system in preview mode.
+
+### Removed
+- Removed explicit DryRun messages for preview mode
+- Removed the Invoke-<connectorName>RestMethod from the template
+
 ## [1.2.0] - 18-04-2024
 
 ### Added
@@ -16,7 +29,7 @@ All notable changes to this project will be documented in this file. The format 
 - Renamed the header in file `revokePermission.ps1` from 'Revoke' to  'RevokePermission-Group' to match the file name and folder change.
 - Renamed the header in file `permissions.ps1` from 'Permissions' to  'Permissions-Group' to match the file name and folder change.
 - Renamed the header in file `resources.ps1` from 'Resources' to  'Resources-Group' to match the file name and folder change.
-  
+
 - Moved the following files to the _permissions/groups_ folder:
   - grantPermission.ps1
   - revokePermission.ps1
@@ -34,7 +47,7 @@ All notable changes to this project will be documented in this file. The format 
   - Adjusted the dryRun information message to display `$actionContext.References.Permission.DisplayName` instead of `$actionContext.References.Permission.Reference`.
   - Adjusted the information message inside the `if (-not($actionContext.DryRun -eq $true))` block to display both the `$actionContext.References.Permission.DisplayName` and `$actionContext.References.Permission.Reference`.
   - Renamed 'entitlement' to 'permission' to be consistent in all informational and audit messages.
-  
+
 ### Removed
 
 - Removed line `Write-Information 'Adding body to request'` from the `Invoke-{connectorName}RestMethod` function in each of the __*ps1*__ files.

@@ -7,49 +7,6 @@
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor [System.Net.SecurityProtocolType]::Tls12
 
 #region functions
-function Invoke-{connectorName}RestMethod {
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory)]
-        [ValidateNotNullOrEmpty()]
-        [string]
-        $Method,
-
-        [Parameter(Mandatory)]
-        [ValidateNotNullOrEmpty()]
-        [string]
-        $Uri,
-
-        [object]
-        $Body,
-
-        [string]
-        $ContentType = 'application/json',
-
-        [Parameter(Mandatory)]
-        [System.Collections.IDictionary]
-        $Headers
-    )
-
-    process {
-        try {
-            $splatParams = @{
-                Uri         = $Uri
-                Headers     = $Headers
-                Method      = $Method
-                ContentType = $ContentType
-            }
-
-            if ($Body){
-                $splatParams['Body'] = $Body
-            }
-            Invoke-RestMethod @splatParams -Verbose:$false
-        } catch {
-            $PSCmdlet.ThrowTerminatingError($_)
-        }
-    }
-}
-
 function Resolve-{connectorName}Error {
     [CmdletBinding()]
     param (
@@ -91,12 +48,12 @@ try {
     Write-Information 'Retrieving permissions'
     $retrievedPermissions = @(
         @{
-            Name = 'Permission-1'
-            id   = (New-Guid)
+            name = 'Permission-1'
+            id   = "$(New-Guid)"
         },
         @{
-            Name = 'Permission-2'
-            id   = (New-Guid)
+            name = 'Permission-2'
+            id   = "$(New-Guid)"
         }
     )
 

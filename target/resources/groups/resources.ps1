@@ -7,49 +7,6 @@
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor [System.Net.SecurityProtocolType]::Tls12
 
 #region functions
-function Invoke-{connectorName}RestMethod {
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory)]
-        [ValidateNotNullOrEmpty()]
-        [string]
-        $Method,
-
-        [Parameter(Mandatory)]
-        [ValidateNotNullOrEmpty()]
-        [string]
-        $Uri,
-
-        [object]
-        $Body,
-
-        [string]
-        $ContentType = 'application/json',
-
-        [Parameter(Mandatory)]
-        [System.Collections.IDictionary]
-        $Headers
-    )
-
-    process {
-        try {
-            $splatParams = @{
-                Uri         = $Uri
-                Headers     = $Headers
-                Method      = $Method
-                ContentType = $ContentType
-            }
-
-            if ($Body){
-                $splatParams['Body'] = $Body
-            }
-            Invoke-RestMethod @splatParams -Verbose:$false
-        } catch {
-            $PSCmdlet.ThrowTerminatingError($_)
-        }
-    }
-}
-
 function Resolve-{connectorName}Error {
     [CmdletBinding()]
     param (
@@ -96,17 +53,16 @@ try {
 
             # If resource does not exist
             if ($True) {
+                Write-Information "Create [$($resource)] {connectorName} resource"
+
+                # Make sure to test with special characters and if needed; add utf8 encoding.
                 if (-not ($actionContext.DryRun -eq $True)) {
                     # Write resource creation logic here
-                    # Make sure to test with special characters and if needed; add utf8 encoding.
-
-                    $outputContext.AuditLogs.Add([PSCustomObject]@{
+                }
+                $outputContext.AuditLogs.Add([PSCustomObject]@{
                         Message =  "Created resource: [$($resource)]"
                         IsError = $false
                     })
-                } else {
-                    Write-Information "[DryRun] Create [$($resource)] {connectorName} resource, will be executed during enforcement"
-                }
             }
         } catch {
             $outputContext.Success =$false

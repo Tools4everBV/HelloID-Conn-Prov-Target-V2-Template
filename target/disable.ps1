@@ -7,49 +7,6 @@
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor [System.Net.SecurityProtocolType]::Tls12
 
 #region functions
-function Invoke-{connectorName}RestMethod {
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory)]
-        [ValidateNotNullOrEmpty()]
-        [string]
-        $Method,
-
-        [Parameter(Mandatory)]
-        [ValidateNotNullOrEmpty()]
-        [string]
-        $Uri,
-
-        [object]
-        $Body,
-
-        [string]
-        $ContentType = 'application/json',
-
-        [Parameter(Mandatory)]
-        [System.Collections.IDictionary]
-        $Headers
-    )
-
-    process {
-        try {
-            $splatParams = @{
-                Uri         = $Uri
-                Headers     = $Headers
-                Method      = $Method
-                ContentType = $ContentType
-            }
-
-            if ($Body){
-                $splatParams['Body'] = $Body
-            }
-            Invoke-RestMethod @splatParams -Verbose:$false
-        } catch {
-            $PSCmdlet.ThrowTerminatingError($_)
-        }
-    }
-}
-
 function Resolve-{connectorName}Error {
     [CmdletBinding()]
     param (
@@ -98,39 +55,35 @@ try {
 
     if ($null -ne $correlatedAccount) {
         $action = 'DisableAccount'
-        $dryRunMessage = "Disable {connectorName} account: [$($actionContext.References.Account)] for person: [$($personContext.Person.DisplayName)] will be executed during enforcement"
     } else {
         $action = 'NotFound'
-        $dryRunMessage = "{connectorName} account: [$($actionContext.References.Account)] for person: [$($personContext.Person.DisplayName)] could not be found, possibly indicating that it could be deleted, or the account is not correlated"
-    }
-
-    # Add a message and the result of each of the validations showing what will happen during enforcement
-    if ($actionContext.DryRun -eq $true) {
-        Write-Information "[DryRun] $dryRunMessage"
     }
 
     # Process
-    if (-not($actionContext.DryRun -eq $true)) {
-        switch ($action) {
-            'DisableAccount' {
-                Write-Information "Disabling {connectorName} account with accountReference: [$($actionContext.References.Account)]"
+    switch ($action) {
+        'DisableAccount' {
+            Write-Information "Disabling {connectorName} account with accountReference: [$($actionContext.References.Account)]"
 
-                $outputContext.Success = $true
-                $outputContext.AuditLogs.Add([PSCustomObject]@{
+            if (-not($actionContext.DryRun -eq $true)) {
+                # Write Disable logic here
+            }
+
+            $outputContext.Success = $true
+            $outputContext.AuditLogs.Add([PSCustomObject]@{
                     Message = 'Disable account was successful'
                     IsError = $false
                 })
-                break
-            }
+            break
+        }
 
-            'NotFound' {
-                $outputContext.Success  = $true
-                $outputContext.AuditLogs.Add([PSCustomObject]@{
-                    Message = "{connectorName} account: [$($actionContext.References.Account)] for person: [$($personContext.Person.DisplayName)] could not be found, possibly indicating that it could be deleted, or the account is not correlated"
+        'NotFound' {
+            Write-Information "{connectorName} account: [$($actionContext.References.Account)] for person: [$($personContext.Person.DisplayName)] could not be found, possibly indicating that it could be deleted"
+            $outputContext.Success = $true
+            $outputContext.AuditLogs.Add([PSCustomObject]@{
+                    Message = "{connectorName} account: [$($actionContext.References.Account)] for person: [$($personContext.Person.DisplayName)] could not be found, possibly indicating that it could be deleted"
                     IsError = $false
                 })
-                break
-            }
+            break
         }
     }
 } catch {

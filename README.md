@@ -185,41 +185,40 @@ if ($null -eq $correlatedAccount){
     $outputContext.AccountReference = $correlatedAccount.id
 }
 
-# Add a message and the result of each of the validations showing what will happen during enforcement
-if ($actionContext.DryRun -eq $true) {
-    Write-Information "[DryRun] $action {connectorName} account for: [$($personContext.Person.DisplayName)], will be executed during enforcement"
-}
-
 # Process
-if (-not($actionContext.DryRun -eq $true)) {
-    switch ($action) {
-        'CreateAccount' {
-            Write-Information 'Creating and correlating {connectorName} account'
+  switch ($action) {
+      'CreateAccount' {
+          Write-Information 'Creating and correlating {connectorName} account'
 
-            # Make sure to test with special characters and if needed; add utf8 encoding.
+          # Make sure to test with special characters and if needed; add utf8 encoding.
+          if (-not($actionContext.DryRun -eq $true)) {
+              # Write Create logic here
+              # $createdAccount = Invoke-RestMethod @splatParams
+              $outputContext.Data = $createdAccount
+              $outputContext.AccountReference = ''
+          }
 
-            $outputContext.AccountReference = ''
-            $outputContext.AccountCorrelated = $true
-            $auditLogMessage = "Create account was successful. AccountReference is: [$($outputContext.AccountReference)"
-            break
-        }
+          $outputContext.AccountReference = ''
+          $outputContext.AccountCorrelated = $true
+          $auditLogMessage = "Create account was successful. AccountReference is: [$($outputContext.AccountReference)"
+          break
+      }
 
-        'CorrelateAccount' {
-            Write-Information 'Correlating {connectorName} account'
-            $outputContext.AccountReference = ''
-            $outputContext.AccountCorrelated = $true
-            $auditLogMessage = "Correlated account: [$($correlatedAccount.ExternalId)] on field: [$($correlationField)] with value: [$($correlationValue)]"
-            break
-        }
-    }
+      'CorrelateAccount' {
+          Write-Information 'Correlating {connectorName} account'
+          $outputContext.AccountReference = ''
+          $outputContext.AccountCorrelated = $true
+          $auditLogMessage = "Correlated account: [$($correlatedAccount.ExternalId)] on field: [$($correlationField)] with value: [$($correlationValue)]"
+          break
+      }
+  }
 
-    $outputContext.success = $true
-    $outputContext.AuditLogs.Add([PSCustomObject]@{
-        Action  = $action
-        Message = $auditLogMessage
-        IsError = $false
-    })
-}
+  $outputContext.success = $true
+  $outputContext.AuditLogs.Add([PSCustomObject]@{
+      Action  = $action
+      Message = $auditLogMessage
+      IsError = $false
+  })
 ```
 
 #### If the managed account does not exist
