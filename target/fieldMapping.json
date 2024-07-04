@@ -107,48 +107,6 @@
       ]
     },
     {
-      "Name": "StartDate",
-      "Description": "Set the start date to \"now\" in HelloID to manage it in the target system. Using the contract start date can cause login issues, even without an end date.",
-      "Type": "Text",
-      "MappingActions": [
-        {
-          "MapForActions": [
-            "Create"
-          ],
-          "MappingMode": "Complex",
-          "Value": "\"function getValue() {\\n    let date = new Date();\\n    return  date.toISOString().split('T')[0]\\n}\\n\\n\\n\\n\\n\\n\\ngetValue();\"",
-          "UsedInNotifications": false,
-          "StoreInAccountData": false
-        }
-      ]
-    },
-    {
-      "Name": "EndDate",
-      "Description": "The end date is mostly essential for disabling an account. During creation, the account is set to disabled by adding an end date of yesterday. To enable the account, simply remove the end date.",
-      "Type": "Text",
-      "MappingActions": [
-        {
-          "MapForActions": [
-            "Create",
-            "Disable"
-          ],
-          "MappingMode": "Complex",
-          "Value": "\"function getValue() {\\r\\n    let date = new Date();\\r\\n    date.setDate(date.getDate() - 1);\\r\\n    return date.toISOString().split('T')[0]\\r\\n}\\r\\ngetValue();\"",
-          "UsedInNotifications": false,
-          "StoreInAccountData": false
-        },
-        {
-          "MapForActions": [
-            "Enable"
-          ],
-          "MappingMode": "None",
-          "Value": "\"\"",
-          "UsedInNotifications": false,
-          "StoreInAccountData": false
-        }
-      ]
-    },
-    {
       "Name": "Manager",
       "Description": "",
       "Type": "Text",
