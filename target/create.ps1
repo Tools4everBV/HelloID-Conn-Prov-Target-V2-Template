@@ -61,6 +61,7 @@ try {
         }
 
         # Verify if a user must be either [created ] or just [correlated]
+
         $correlatedAccount = 'userInfo' # Placeholder
         # Example implementation (replace this with actual code):
         # $correlatedAccount = Invoke-RestMethod @splatGetUser
