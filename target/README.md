@@ -1,4 +1,3 @@
-
 # HelloID-Conn-Prov-Target-{connectorName}
 
 > [!IMPORTANT]
@@ -35,19 +34,19 @@ _HelloID-Conn-Prov-Target-{connectorName}_ is a _target_ connector. _{connectorN
 
 The following lifecycle actions are available:
 
-| Action                 | Description                                      |
-| ---------------------- | ------------------------------------------------ |
-| create.ps1             | PowerShell _create_ lifecycle action             |
-| delete.ps1             | PowerShell _delete_ lifecycle action             |
-| disable.ps1            | PowerShell _disable_ lifecycle action            |
-| enable.ps1             | PowerShell _enable_ lifecycle action             |
-| update.ps1             | PowerShell _update_ lifecycle action             |
-| permissions/groups/grantPermission.ps1    | PowerShell _grant_ lifecycle action              |
-| permissions/groups/revokePermission.ps1   | PowerShell _revoke_ lifecycle action             |
-| permissions/groups/permissions.ps1        | PowerShell _permissions_ lifecycle action        |
-| resources/groups/resources.ps1          | PowerShell _resources_ lifecycle action          |
-| configuration.json     | Default _configuration.json_ |
-| fieldMapping.json      | Default _fieldMapping.json_   |
+| Action                                  | Description                               |
+| --------------------------------------- | ----------------------------------------- |
+| create.ps1                              | PowerShell _create_ lifecycle action      |
+| delete.ps1                              | PowerShell _delete_ lifecycle action      |
+| disable.ps1                             | PowerShell _disable_ lifecycle action     |
+| enable.ps1                              | PowerShell _enable_ lifecycle action      |
+| update.ps1                              | PowerShell _update_ lifecycle action      |
+| permissions/groups/grantPermission.ps1  | PowerShell _grant_ lifecycle action       |
+| permissions/groups/revokePermission.ps1 | PowerShell _revoke_ lifecycle action      |
+| permissions/groups/permissions.ps1      | PowerShell _permissions_ lifecycle action |
+| resources/groups/resources.ps1          | PowerShell _resources_ lifecycle action   |
+| configuration.json                      | Default _configuration.json_              |
+| fieldMapping.json                       | Default _fieldMapping.json_               |
 
 ## Getting started
 
@@ -67,7 +66,7 @@ To properly setup the correlation:
     | ------------------------- | --------------------------------- |
     | Enable correlation        | `True`                            |
     | Person correlation field  | `PersonContext.Person.ExternalId` |
-    | Account correlation field | `Employeenumber`                  |
+    | Account correlation field | `EmployeeNumber`                  |
 
 > [!TIP]
 > _For more information on correlation, please refer to our correlation [documentation](https://docs.helloid.com/en/provisioning/target-systems/powershell-v2-target-systems/correlation.html) pages_.

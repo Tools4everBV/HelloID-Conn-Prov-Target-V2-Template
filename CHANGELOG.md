@@ -5,15 +5,18 @@ All notable changes to this project will be documented in this file. The format 
 ## [1.3.0] - 03-07-2024
 
 ### Added
-
- -
+ - Added default ActionContext for easier debugging
 
 ### Changed
- - Moved the processing DryRun block one level deeper to only skip the actual web call to the target system in preview mode.
+ - Moved the processing DryRun block one level closer to the actual web call. To skip only the web call in the target system in preview mode. To remove the difference between a preview run and actual enforcement. And test more connector code in Preview mode.
+ - Changed the debugStart to use ActionContext.json instead of Powershell Object
+ - Some textual improvements
 
 ### Removed
 - Removed explicit DryRun messages for preview mode
 - Removed the Invoke-<connectorName>RestMethod from the template
+- Removed Person.DisplayName from logging
+- Removed Start EndDate from FieldMapping.
 
 ## [1.2.0] - 18-04-2024
 

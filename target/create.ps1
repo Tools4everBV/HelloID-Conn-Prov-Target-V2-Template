@@ -7,7 +7,7 @@
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor [System.Net.SecurityProtocolType]::Tls12
 
 #region functions
-function Resolve- { connectorName }Error {
+function Resolve-{connectorName}Error {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory)]
@@ -90,7 +90,7 @@ try {
                 # Write Create logic here
                 $createdAccount = Invoke-RestMethod @splatParamsCreate
                 $outputContext.Data = $createdAccount
-                $outputContext.AccountReference = ''
+                $outputContext.AccountReference = $createdAccount.Id
             }
             $auditLogMessage = "Create account was successful. AccountReference is: [$($outputContext.AccountReference)]"
             break
@@ -100,7 +100,7 @@ try {
             Write-Information 'Correlating {connectorName} account'
 
             $outputContext.Data = $correlatedAccount
-            $outputContext.AccountReference = $correlatedAccount
+            $outputContext.AccountReference = $correlatedAccount.Id
             $outputContext.AccountCorrelated = $true
             $auditLogMessage = "Correlated account: [$($outputContext.AccountReference)] on field: [$($correlationField)] with value: [$($correlationValue)]"
             break
@@ -118,7 +118,7 @@ try {
     $ex = $PSItem
     if ($($ex.Exception.GetType().FullName -eq 'Microsoft.PowerShell.Commands.HttpResponseException') -or
         $($ex.Exception.GetType().FullName -eq 'System.Net.WebException')) {
-        $errorObj = Resolve- { connectorName }Error -ErrorObject $ex
+        $errorObj = Resolve-{connectorName}Error -ErrorObject $ex
         $auditMessage = "Could not create or correlate {connectorName} account. Error: $($errorObj.FriendlyMessage)"
         Write-Warning "Error at Line '$($errorObj.ScriptLineNumber)': $($errorObj.Line). Error: $($errorObj.ErrorDetails)"
     } else {
