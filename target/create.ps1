@@ -7,7 +7,7 @@
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor [System.Net.SecurityProtocolType]::Tls12
 
 #region functions
-function Resolve-{connectorName}Error {
+function Resolve- { connectorName }Error {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory)]
@@ -60,10 +60,12 @@ try {
             throw 'Correlation is enabled but [accountFieldValue] is empty. Please make sure it is correctly mapped'
         }
 
-        # Verify if a user must be either [created ] or just [correlated]
-
-        $correlatedAccount = 'userInfo' # Placeholder
-        # Example implementation (replace this with actual code):
+        # Determine if a user needs to be [created] or [correlated]
+        $correlatedAccount = @{                         # Placeholder
+            Id          = (New-Guid).Guid
+            DisplayName = $actionContext.Data.DisplayName
+        }
+        # Example (Replace placeholder with actual code):
         # $correlatedAccount = Invoke-RestMethod @splatGetUser
     }
 
@@ -76,7 +78,7 @@ try {
     # Process
     switch ($action) {
         'CreateAccount' {
-            Write-Information "Creating and correlating {connectorName} account for: [$($personContext.Person.DisplayName)]"
+            Write-Information 'Creating and correlating {connectorName} account'
             $splatParamsCreate = @{
                 Uri    = $actionContext.Configuration.BaseUrl
                 Method = 'POST'
@@ -116,7 +118,7 @@ try {
     $ex = $PSItem
     if ($($ex.Exception.GetType().FullName -eq 'Microsoft.PowerShell.Commands.HttpResponseException') -or
         $($ex.Exception.GetType().FullName -eq 'System.Net.WebException')) {
-        $errorObj = Resolve-{connectorName}Error -ErrorObject $ex
+        $errorObj = Resolve- { connectorName }Error -ErrorObject $ex
         $auditMessage = "Could not create or correlate {connectorName} account. Error: $($errorObj.FriendlyMessage)"
         Write-Warning "Error at Line '$($errorObj.ScriptLineNumber)': $($errorObj.Line). Error: $($errorObj.ErrorDetails)"
     } else {

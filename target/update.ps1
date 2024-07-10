@@ -50,7 +50,7 @@ try {
         throw 'The account reference could not be found'
     }
 
-    Write-Information "Verifying if a {connectorName} account for [$($personContext.Person.DisplayName)] exists"
+    Write-Information 'Verifying if a {connectorName} account exists'
     $correlatedAccount = 'userInfo' # Placeholder
     $outputContext.PreviousData = $correlatedAccount
 
@@ -101,7 +101,7 @@ try {
         }
 
         'NotFound' {
-            Write-Information "{connectorName} account: [$($actionContext.References.Account)] for person: [$($personContext.Person.DisplayName)] could not be found, possibly indicating that it could be deleted"
+            Write-Information "{connectorName} account: [$($actionContext.References.Account)] could not be found, possibly indicating that it could be deleted"
             $outputContext.Success = $false
             $outputContext.AuditLogs.Add([PSCustomObject]@{
                     Message = "{connectorName} account with accountReference: [$($actionContext.References.Account)] could not be found, possibly indicating that it could be deleted"
