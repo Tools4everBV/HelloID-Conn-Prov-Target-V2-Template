@@ -9,7 +9,7 @@ $VerbosePreference = 'SilentlyContinue'
 $InformationPreference = 'Continue'
 
 $personContext = @{Person = (Get-Content '{folderPath}/demoPerson.json' -Encoding 'UTF8' | ConvertFrom-Json) }
-$actionContext = Get-Content '{folderPath}/actionContext.json'  -Encoding 'UTF8' | ConvertFrom-Json
+$actionContext = Get-Content '{folderPath}/actionContext.json' -Encoding 'UTF8' | ConvertFrom-Json
 
 # The 'CustomList' is a wrapper class around '[System.Collections.Generic.List].
 # Its being used in the 'outputContext.AuditLogs'.

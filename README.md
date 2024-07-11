@@ -259,7 +259,7 @@ This comparison between `$outputContext.Data` vs `$outputContext.PreviousData` i
 
 Debugging is _arguably_ one of the most complex topics in any programming / scripting language.
 
-The templates also comes with a __debugStart.ps1__, __config.json__, __actionContext.json__ and __demoPerson.json__ in the _test_ folder. They allows you to easily debug your scripts. You can _mock_ variables such as the `$personContext`, `$actionContext` and all built-in variables in HelloID you need. By mocking these variables, you can easily test your scripts under a variety of conditions, without having to worry about external dependencies or data sources.
+The templates also comes with a __debugStart.ps1__, __actionContext.json__ and __demoPerson.json__ in the _test_ folder. They allow you to easily debug your scripts. You can _mock_ variables such as the `$personContext`, `$actionContext` and all built-in variables in HelloID you need. By mocking these variables, you can easily test your scripts under a variety of conditions, without having to worry about external dependencies or data sources.
 
 To mock a variable in `debugStart.ps1`, simply specify the value you want to use for that variable in the mock object at the top of the script.
 

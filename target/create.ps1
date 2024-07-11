@@ -61,12 +61,13 @@ try {
         }
 
         # Determine if a user needs to be [created] or [correlated]
-        $correlatedAccount = @{                         # Placeholder
+        $correlatedAccount = @{
             Id          = (New-Guid).Guid
             DisplayName = $actionContext.Data.DisplayName
         }
-        # Example (Replace placeholder with actual code):
-        # $correlatedAccount = Invoke-RestMethod @splatGetUser
+        # Example of replacing the placeholder with actual code:
+        # Retrieve user details using an API call and store the result in $correlatedAccount
+        # $correlatedAccount = Invoke-RestMethod @splatGetUserParams
     }
 
     if ($null -ne $correlatedAccount) {
@@ -79,7 +80,7 @@ try {
     switch ($action) {
         'CreateAccount' {
             Write-Information 'Creating and correlating {connectorName} account'
-            $splatParamsCreate = @{
+            $splatCreateParams = @{
                 Uri    = $actionContext.Configuration.BaseUrl
                 Method = 'POST'
                 Body   = $actionContext.Data | ConvertTo-Json
@@ -88,7 +89,7 @@ try {
             # Make sure to test with special characters and if needed; add utf8 encoding.
             if (-not($actionContext.DryRun -eq $true)) {
                 # Write Create logic here
-                $createdAccount = Invoke-RestMethod @splatParamsCreate
+                $createdAccount = Invoke-RestMethod @splatCreateParams
                 $outputContext.Data = $createdAccount
                 $outputContext.AccountReference = $createdAccount.Id
             }

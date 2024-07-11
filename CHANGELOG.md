@@ -2,20 +2,20 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com), and this project adheres to [Semantic Versioning](https://semver.org).
 
-## [1.3.0] - 03-07-2024
+## [2.0.0] - 11-07-2024
 
 ### Added
- - Added default ActionContext for easier debugging
+ - Added a default ActionContext.json to use in the DebugStart script. This provides test data for local debugging and can be directly extracted from HelloID, ensuring consistent object handling locally and in HelloID
 
 ### Changed
  - Moved the processing DryRun block one level closer to the actual web call. To skip only the web call in the target system in preview mode. To remove the difference between a preview run and actual enforcement. And test more connector code in Preview mode.
- - Changed the debugStart to use ActionContext.json instead of Powershell Object
- - Some textual improvements
+ - Changed the debugStart to use ActionContext.json instead of Powershell Object.
+ - Some textual improvements.
 
 ### Removed
-- Removed explicit DryRun messages for preview mode
-- Removed the Invoke-<connectorName>RestMethod from the template
-- Removed Person.DisplayName from logging
+- Removed explicit DryRun messages for preview mode.
+- Removed the Invoke-<connectorName>RestMethod from the template.
+- Removed Person.DisplayName from logging.
 - Removed Start EndDate from FieldMapping.
 
 ## [1.2.0] - 18-04-2024

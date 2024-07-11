@@ -51,7 +51,7 @@ try {
     }
 
     Write-Information 'Verifying if a {connectorName} account exists'
-    $correlatedAccount = 'userInfo' # Placeholder
+    $correlatedAccount = 'userInfo'
 
     if ($null -ne $correlatedAccount) {
         $action = 'DeleteAccount'
