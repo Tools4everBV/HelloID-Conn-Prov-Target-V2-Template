@@ -93,14 +93,24 @@ try {
 
     # Validate correlation configuration
     if ($actionContext.CorrelationConfiguration.Enabled) {
-        $correlationField = $actionContext.CorrelationConfiguration.accountField
-        $correlationValue = $actionContext.CorrelationConfiguration.accountFieldValue
-
-        if ([string]::IsNullOrEmpty($($correlationField))) {
-            throw 'Correlation is enabled but not configured correctly'
+        #Check for correct correlation configuration
+        if ($Null -eq $ActionContext.CorrelationConfiguration.accountField) {
+            throw 'Correlation is enabled but not configured correctly because the accountField is empty'
         }
-        if ([string]::IsNullOrEmpty($($correlationValue))) {
-            throw 'Correlation is enabled but [accountFieldValue] is empty. Please make sure it is correctly mapped'
+
+        $correlationField = $actionContext.CorrelationConfiguration.accountField
+
+        #If no PersonField is configured in the target system, then use the Account field value to fill the correlationValue variable
+        if ($Null -ne $actionContext.CorrelationConfiguration.PersonField) {
+            $correlationValue = $actionContext.CorrelationConfiguration.PersonFieldValue
+        }
+        else {
+            $correlationValue = $actionContext.CorrelationConfiguration.AccountFieldValue
+        }
+
+        #If the correlationValue is empty throw an error
+        if ([string]::IsNullOrEmpty($CorrelationValue)) {
+            throw 'Correlation is enabled but the correlation value is empty'
         }
 
         # Verify if a user must be either [created ] or just [correlated]
