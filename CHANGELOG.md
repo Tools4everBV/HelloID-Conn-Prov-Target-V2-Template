@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com), and this project adheres to [Semantic Versioning](https://semver.org).
 
-## [2.0.0] - 11-07-2024
+## [2.0.0] - 25-07-2024
 
 ### Added
  - Added a default ActionContext.json to use in the DebugStart script. This provides test data for local debugging and can be directly extracted from HelloID, ensuring consistent object handling locally and in HelloID
