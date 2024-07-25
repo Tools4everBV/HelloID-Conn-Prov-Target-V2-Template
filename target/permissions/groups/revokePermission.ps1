@@ -63,11 +63,14 @@ try {
     # Process
     switch ($action) {
         'RevokePermission' {
-            Write-Information "Revoking {connectorName} permission: [$($actionContext.References.Permission.DisplayName)] - [$($actionContext.References.Permission.Reference)]"
 
             # Make sure to test with special characters and if needed; add utf8 encoding.
             if (-not($actionContext.DryRun -eq $true)) {
-                # Write Revoke Permission logic here
+                Write-Information "Revoking {connectorName} permission: [$($actionContext.References.Permission.DisplayName)] - [$($actionContext.References.Permission.Reference)]"
+                # < Write Revoke Permission logic here >
+
+            } else {
+                Write-Information "[DryRun] Revoke {connectorName} permission: [$($actionContext.References.Permission.DisplayName)] - [$($actionContext.References.Permission.Reference)], will be executed during enforcement"
             }
 
             $outputContext.Success = $true

@@ -63,11 +63,14 @@ try {
     # Process
     switch ($action) {
         'GrantPermission' {
-            Write-Information "Granting {connectorName} permission: [$($actionContext.References.Permission.DisplayName)] - [$($actionContext.References.Permission.Reference)]"
 
             # Make sure to test with special characters and if needed; add utf8 encoding.
             if (-not($actionContext.DryRun -eq $true)) {
-                # Write Grant Permission logic here
+                Write-Information "Granting {connectorName} permission: [$($actionContext.References.Permission.DisplayName)] - [$($actionContext.References.Permission.Reference)]"
+                # < Write Grant Permission logic here >
+
+            } else {
+                Write-Information "[DryRun] Grant {connectorName} permission: [$($actionContext.References.Permission.DisplayName)] - [$($actionContext.References.Permission.Reference)], will be executed during enforcement"
             }
 
             $outputContext.Success = $true

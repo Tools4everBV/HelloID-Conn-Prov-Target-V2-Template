@@ -73,12 +73,15 @@ try {
     # Process
     switch ($action) {
         'UpdateAccount' {
-            Write-Information "Updating {connectorName} account with accountReference: [$($actionContext.References.Account)]"
             Write-Information "Account property(s) required to update: $($propertiesChanged.Name -join ', ')"
 
             # Make sure to test with special characters and if needed; add utf8 encoding.
             if (-not($actionContext.DryRun -eq $true)) {
-                # Write Update logic here
+                Write-Information "Updating {connectorName} account with accountReference: [$($actionContext.References.Account)]"
+                # < Write Update logic here >
+
+            } else {
+                Write-Information "[DryRun] Update {connectorName} account with accountReference: [$($actionContext.References.Account)], will be executed during enforcement"
             }
 
             $outputContext.Success = $true

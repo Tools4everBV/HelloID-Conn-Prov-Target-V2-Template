@@ -11,9 +11,9 @@ All notable changes to this project will be documented in this file. The format 
  - Moved the processing DryRun block one level closer to the actual web call. To skip only the web call in the target system in preview mode. To remove the difference between a preview run and actual enforcement. And test more connector code in Preview mode.
  - Changed the debugStart to use ActionContext.json instead of Powershell Object.
  - Some textual improvements.
+ - Moved explicit DryRun messages for preview mode, to the `else` condition after the (-not dryrun block).
 
 ### Removed
-- Removed explicit DryRun messages for preview mode.
 - Removed the Invoke-<connectorName>RestMethod from the template.
 - Removed Person.DisplayName from logging.
 - Removed Start EndDate from FieldMapping.

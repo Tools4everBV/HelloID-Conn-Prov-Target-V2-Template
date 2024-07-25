@@ -53,12 +53,15 @@ try {
 
             # If resource does not exist
             if ($True) {
-                Write-Information "Create [$($resource)] {connectorName} resource"
-
                 # Make sure to test with special characters and if needed; add utf8 encoding.
                 if (-not ($actionContext.DryRun -eq $True)) {
-                    # Write resource creation logic here
+                    Write-Information "Create [$($resource)] {connectorName} resource"
+                    # < Write resource creation logic here >
+
+                } else {
+                    Write-Information "[DryRun] Create {connectorName} [$($resource)] resource, will be executed during enforcement"
                 }
+
                 $outputContext.AuditLogs.Add([PSCustomObject]@{
                         Message =  "Created resource: [$($resource)]"
                         IsError = $false

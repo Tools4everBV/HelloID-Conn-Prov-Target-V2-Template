@@ -62,10 +62,12 @@ try {
     # Process
     switch ($action) {
         'DeleteAccount' {
-            Write-Information "Deleting {connectorName} account with accountReference: [$($actionContext.References.Account)]"
-
             if (-not($actionContext.DryRun -eq $true)) {
-                # Write Delete logic here
+                Write-Information "Deleting {connectorName} account with accountReference: [$($actionContext.References.Account)]"
+                # < Write Delete logic here >
+
+            } else {
+                Write-Information "[DryRun] Delete {connectorName} account with accountReference: [$($actionContext.References.Account)], will be executed during enforcement"
             }
 
             $outputContext.Success = $true

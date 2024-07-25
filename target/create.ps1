@@ -79,7 +79,6 @@ try {
     # Process
     switch ($action) {
         'CreateAccount' {
-            Write-Information 'Creating and correlating {connectorName} account'
             $splatCreateParams = @{
                 Uri    = $actionContext.Configuration.BaseUrl
                 Method = 'POST'
@@ -88,10 +87,14 @@ try {
 
             # Make sure to test with special characters and if needed; add utf8 encoding.
             if (-not($actionContext.DryRun -eq $true)) {
-                # Write Create logic here
+                Write-Information 'Creating and correlating {connectorName} account'
+                # < Write Create logic here >
+
                 $createdAccount = Invoke-RestMethod @splatCreateParams
                 $outputContext.Data = $createdAccount
                 $outputContext.AccountReference = $createdAccount.Id
+            } else {
+                Write-Information '[DryRun] Create and correlate {connectorName} account, will be executed during enforcement'
             }
             $auditLogMessage = "Create account was successful. AccountReference is: [$($outputContext.AccountReference)]"
             break

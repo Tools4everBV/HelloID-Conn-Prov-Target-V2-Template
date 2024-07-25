@@ -62,10 +62,12 @@ try {
     # Process
     switch ($action) {
         'EnableAccount' {
-            Write-Information "Enabling {connectorName} account with accountReference: [$($actionContext.References.Account)]"
-
             if (-not($actionContext.DryRun -eq $true)) {
-                # Write Enable logic here
+                Write-Information "Enabling {connectorName} account with accountReference: [$($actionContext.References.Account)]"
+                # < Write Enable logic here >
+
+            } else {
+                Write-Information "[DryRun] Enable {connectorName} account with accountReference: [$($actionContext.References.Account)], will be executed during enforcement"
             }
 
             $outputContext.Success = $true
