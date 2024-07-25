@@ -52,7 +52,8 @@ We can't wait to see the amazing PowerShell connectors you'll build with these t
 | ./permissions/groups/revokePermission.ps1 | PowerShell _revoke_ lifecycle action                                   |
 | ./permissions/groups/permissions.ps1      | PowerShell _permissions_ lifecycle action                              |
 | ./resources/groups/resources.ps1          | PowerShell _resources_ lifecycle action                                |
-| ./test.config.json                        | Prefilled _config.json_ file for easy debugging                        |
+| ./test/config.json                        | Prefilled _config.json_ file for easy debugging                        |
+| ./test/actionContext.json                 | Prefilled _actionContext.json_ file for easy debugging                        |
 | ./test/demoPerson.json                    | Prefilled _demoPerson.json_ for easy debugging                         |
 | ./test/debugStart.ps1                     | Default _debugStart.ps1_ for easy debugging                            |
 | .gitignore                                | `gitignore` excluding the `test` folder when pushing commits to GitHub |
@@ -185,41 +186,40 @@ if ($null -eq $correlatedAccount){
     $outputContext.AccountReference = $correlatedAccount.id
 }
 
-# Add a message and the result of each of the validations showing what will happen during enforcement
-if ($actionContext.DryRun -eq $true) {
-    Write-Information "[DryRun] $action {connectorName} account for: [$($personContext.Person.DisplayName)], will be executed during enforcement"
-}
-
 # Process
-if (-not($actionContext.DryRun -eq $true)) {
-    switch ($action) {
-        'CreateAccount' {
-            Write-Information 'Creating and correlating {connectorName} account'
+  switch ($action) {
+      'CreateAccount' {
+          Write-Information 'Creating and correlating {connectorName} account'
 
-            # Make sure to test with special characters and if needed; add utf8 encoding.
+          # Make sure to test with special characters and if needed; add utf8 encoding.
+          if (-not($actionContext.DryRun -eq $true)) {
+              # Write Create logic here
+              # $createdAccount = Invoke-RestMethod @splatParams
+              $outputContext.Data = $createdAccount
+              $outputContext.AccountReference = ''
+          }
 
-            $outputContext.AccountReference = ''
-            $outputContext.AccountCorrelated = $true
-            $auditLogMessage = "Create account was successful. AccountReference is: [$($outputContext.AccountReference)"
-            break
-        }
+          $outputContext.AccountReference = ''
+          $outputContext.AccountCorrelated = $true
+          $auditLogMessage = "Create account was successful. AccountReference is: [$($outputContext.AccountReference)"
+          break
+      }
 
-        'CorrelateAccount' {
-            Write-Information 'Correlating {connectorName} account'
-            $outputContext.AccountReference = ''
-            $outputContext.AccountCorrelated = $true
-            $auditLogMessage = "Correlated account: [$($correlatedAccount.ExternalId)] on field: [$($correlationField)] with value: [$($correlationValue)]"
-            break
-        }
-    }
+      'CorrelateAccount' {
+          Write-Information 'Correlating {connectorName} account'
+          $outputContext.AccountReference = ''
+          $outputContext.AccountCorrelated = $true
+          $auditLogMessage = "Correlated account: [$($correlatedAccount.ExternalId)] on field: [$($correlationField)] with value: [$($correlationValue)]"
+          break
+      }
+  }
 
-    $outputContext.success = $true
-    $outputContext.AuditLogs.Add([PSCustomObject]@{
-        Action  = $action
-        Message = $auditLogMessage
-        IsError = $false
-    })
-}
+  $outputContext.success = $true
+  $outputContext.AuditLogs.Add([PSCustomObject]@{
+      Action  = $action
+      Message = $auditLogMessage
+      IsError = $false
+  })
 ```
 
 #### If the managed account does not exist
@@ -259,7 +259,7 @@ This comparison between `$outputContext.Data` vs `$outputContext.PreviousData` i
 
 Debugging is _arguably_ one of the most complex topics in any programming / scripting language.
 
-The templates also comes with a __debugStart.ps1__, __config.json__ and __demoPerson.json__ in the _test_ folder. They allows you to easily debug your scripts. You can _mock_ variables such as the `$personContext`, `$actionContext` and all built-in variables in HelloID you need. By mocking these variables, you can easily test your scripts under a variety of conditions, without having to worry about external dependencies or data sources.
+The templates also comes with a __debugStart.ps1__, __actionContext.json__ and __demoPerson.json__ in the _test_ folder. They allow you to easily debug your scripts. You can _mock_ variables such as the `$personContext`, `$actionContext` and all built-in variables in HelloID you need. By mocking these variables, you can easily test your scripts under a variety of conditions, without having to worry about external dependencies or data sources.
 
 To mock a variable in `debugStart.ps1`, simply specify the value you want to use for that variable in the mock object at the top of the script.
 

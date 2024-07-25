@@ -7,49 +7,6 @@
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor [System.Net.SecurityProtocolType]::Tls12
 
 #region functions
-function Invoke-{connectorName}RestMethod {
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory)]
-        [ValidateNotNullOrEmpty()]
-        [string]
-        $Method,
-
-        [Parameter(Mandatory)]
-        [ValidateNotNullOrEmpty()]
-        [string]
-        $Uri,
-
-        [object]
-        $Body,
-
-        [string]
-        $ContentType = 'application/json',
-
-        [Parameter(Mandatory)]
-        [System.Collections.IDictionary]
-        $Headers
-    )
-
-    process {
-        try {
-            $splatParams = @{
-                Uri         = $Uri
-                Headers     = $Headers
-                Method      = $Method
-                ContentType = $ContentType
-            }
-
-            if ($Body){
-                $splatParams['Body'] = $Body
-            }
-            Invoke-RestMethod @splatParams -Verbose:$false
-        } catch {
-            $PSCmdlet.ThrowTerminatingError($_)
-        }
-    }
-}
-
 function Resolve-{connectorName}Error {
     [CmdletBinding()]
     param (
@@ -94,43 +51,43 @@ try {
         throw 'The account reference could not be found'
     }
 
-    Write-Information "Verifying if a {connectorName} account for [$($personContext.Person.DisplayName)] exists"
+    Write-Information 'Verifying if a {connectorName} account exists'
     $correlatedAccount = 'userInfo'
 
     if ($null -ne $correlatedAccount) {
         $action = 'RevokePermission'
-        $dryRunMessage = "Revoke {connectorName} permission: [$($actionContext.References.Permission.DisplayName)] will be executed during enforcement"
     } else {
         $action = 'NotFound'
-        $dryRunMessage = "{connectorName} account: [$($actionContext.References.Account)] for person: [$($personContext.Person.DisplayName)] could not be found, possibly indicating that it could be deleted, or the account is not correlated"
-    }
-
-    # Add a message and the result of each of the validations showing what will happen during enforcement
-    if ($actionContext.DryRun -eq $true) {
-        Write-Information "[DryRun] $dryRunMessage"
     }
 
     # Process
-    if (-not($actionContext.DryRun -eq $true)) {
-        switch ($action) {
-            'RevokePermission' {
-                Write-Information "Revoking {connectorName} permission: [$($actionContext.References.Permission.DisplayName)] - [$($actionContext.References.Permission.Reference)]"
+    switch ($action) {
+        'RevokePermission' {
 
-                $outputContext.Success = $true
-                $outputContext.AuditLogs.Add([PSCustomObject]@{
+            # Make sure to test with special characters and if needed; add utf8 encoding.
+            if (-not($actionContext.DryRun -eq $true)) {
+                Write-Information "Revoking {connectorName} permission: [$($actionContext.References.Permission.DisplayName)] - [$($actionContext.References.Permission.Reference)]"
+                # < Write Revoke Permission logic here >
+
+            } else {
+                Write-Information "[DryRun] Revoke {connectorName} permission: [$($actionContext.References.Permission.DisplayName)] - [$($actionContext.References.Permission.Reference)], will be executed during enforcement"
+            }
+
+            $outputContext.Success = $true
+            $outputContext.AuditLogs.Add([PSCustomObject]@{
                     Message = "Revoke permission [$($actionContext.References.Permission.DisplayName)] was successful"
                     IsError = $false
                 })
-            }
+        }
 
-            'NotFound' {
-                $outputContext.Success  = $true
-                $outputContext.AuditLogs.Add([PSCustomObject]@{
-                    Message = "{connectorName} account: [$($actionContext.References.Account)] for person: [$($personContext.Person.DisplayName)] could not be found, possibly indicating that it could be deleted, or the account is not correlated"
+        'NotFound' {
+            Write-Information "{connectorName} account: [$($actionContext.References.Account)] could not be found, possibly indicating that it could be deleted"
+            $outputContext.Success = $true
+            $outputContext.AuditLogs.Add([PSCustomObject]@{
+                    Message = "{connectorName} account: [$($actionContext.References.Account)] could not be found, possibly indicating that it could be deleted"
                     IsError = $false
                 })
-                break
-            }
+            break
         }
     }
 } catch {

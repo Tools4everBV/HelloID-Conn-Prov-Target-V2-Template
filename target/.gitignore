@@ -2,6 +2,7 @@
 
 # Exclude test folder
 test/
+test/actionContext.json
 
 # VSCode files (for those working on multiple projects)
 .vscode/*
