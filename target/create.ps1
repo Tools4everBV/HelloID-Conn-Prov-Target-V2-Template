@@ -93,20 +93,19 @@ try {
 
     # Validate correlation configuration
     if ($actionContext.CorrelationConfiguration.Enabled) {
-        #Check for correct correlation configuration
-        if ($Null -eq $ActionContext.CorrelationConfiguration.accountField) {
-            throw 'Correlation is enabled but not configured correctly because the accountField is empty'
+        #Check for correct correlation configuration (account field should be configured)
+        if ($Null -eq $ActionContext.CorrelationConfiguration.AccountField) {
+            throw 'Correlation is enabled but not configured correctly because the Account Correlation Field is empty'
         }
 
-        $correlationField = $actionContext.CorrelationConfiguration.accountField
+        $correlationField = $actionContext.CorrelationConfiguration.AccountField
 
-        #If no PersonField is configured in the target system, then use the Account field value to fill the correlationValue variable
-        if ($Null -ne $actionContext.CorrelationConfiguration.PersonField) {
-            $correlationValue = $actionContext.CorrelationConfiguration.PersonFieldValue
+        #Check for correct correlation configuration (person field should be configured)
+        if ($Null -eq $ActionContext.CorrelationConfiguration.PersonField) {
+            throw 'Correlation is enabled but not configured correctly because the Person Correlation Field is empty'
         }
-        else {
-            $correlationValue = $actionContext.CorrelationConfiguration.AccountFieldValue
-        }
+
+        $correlationValue = $actionContext.CorrelationConfiguration.PersonFieldValue
 
         #If the correlationValue is empty throw an error
         if ([string]::IsNullOrEmpty($CorrelationValue)) {
