@@ -13,67 +13,38 @@
   - [Table of contents](#table-of-contents)
   - [Introduction](#introduction)
   - [Getting started](#getting-started)
-    - [Provisioning PowerShell V2 connector](#provisioning-powershell-v2-connector)
-      - [Correlation configuration](#correlation-configuration)
-      - [Field mapping](#field-mapping)
-    - [Connection settings](#connection-settings)
     - [Prerequisites](#prerequisites)
-    - [Remarks](#remarks)
-  - [Setup the connector](#setup-the-connector)
+    - [Connection settings](#connection-settings)
+    - [Correlation configuration](#correlation-configuration)
+    - [Available lifecycle actions](#available-lifecycle-actions)
+    - [Field mapping](#field-mapping)
+  - [Remarks](#remarks)
+  - [Development resources](#development-resources)
+    - [API endpoints](#api-endpoints)
+    - [API documentation](#api-documentation)
   - [Getting help](#getting-help)
   - [HelloID docs](#helloid-docs)
 
 ## Introduction
 
-_HelloID-Conn-Prov-Target-{connectorName}_ is a _target_ connector. _{connectorName}_ provides a set of REST API's that allow you to programmatically interact with its data. The HelloID connector uses the API endpoints listed in the table below.
-
-| Endpoint | Description |
-| -------- | ----------- |
-| /        |             |
-| /        |             |
-
-The following lifecycle actions are available:
-
-| Action                                  | Description                               |
-| --------------------------------------- | ----------------------------------------- |
-| create.ps1                              | PowerShell _create_ lifecycle action      |
-| delete.ps1                              | PowerShell _delete_ lifecycle action      |
-| disable.ps1                             | PowerShell _disable_ lifecycle action     |
-| enable.ps1                              | PowerShell _enable_ lifecycle action      |
-| update.ps1                              | PowerShell _update_ lifecycle action      |
-| permissions/groups/grantPermission.ps1  | PowerShell _grant_ lifecycle action       |
-| permissions/groups/revokePermission.ps1 | PowerShell _revoke_ lifecycle action      |
-| permissions/groups/permissions.ps1      | PowerShell _permissions_ lifecycle action |
-| resources/groups/resources.ps1          | PowerShell _resources_ lifecycle action   |
-| configuration.json                      | Default _configuration.json_              |
-| fieldMapping.json                       | Default _fieldMapping.json_               |
+_HelloID-Conn-Prov-Target-{connectorName}_ is a _target_ connector. _{connectorName}_ provides a set of REST API's that allow you to programmatically interact with its data.
 
 ## Getting started
 
-### Provisioning PowerShell V2 connector
+### Prerequisites
 
-#### Correlation configuration
+<!--
+Describe the specific requirements that must be met before using this connector, such as the need for an agent, a certificate or IP whitelisting.
 
-The correlation configuration is used to specify which properties will be used to match an existing account within _{connectorName}_ to a person in _HelloID_.
+**Please ensure to list the requirements using bullet points for clarity.**
 
-To properly setup the correlation:
+Example:
 
-1. Open the `Correlation` tab.
-
-2. Specify the following configuration:
-
-    | Setting                   | Value                             |
-    | ------------------------- | --------------------------------- |
-    | Enable correlation        | `True`                            |
-    | Person correlation field  | `PersonContext.Person.ExternalId` |
-    | Account correlation field | `EmployeeNumber`                  |
-
-> [!TIP]
-> _For more information on correlation, please refer to our correlation [documentation](https://docs.helloid.com/en/provisioning/target-systems/powershell-v2-target-systems/correlation.html) pages_.
-
-#### Field mapping
-
-The field mapping can be imported by using the _fieldMapping.json_ file.
+- **SSL Certificate**:<br>
+  A valid SSL certificate must be installed on the server to ensure secure communication. The certificate should be trusted by a recognized Certificate Authority (CA) and must not be self-signed.
+- **IP Whitelisting**:<br>
+  The IP addresses used by the connector must be whitelisted on the target system's firewall to allow access. Ensure that the firewall rules are configured to permit incoming and outgoing connections from these IPs.
+-->
 
 ### Connection settings
 
@@ -85,13 +56,72 @@ The following settings are required to connect to the API.
 | Password | The Password to connect to the API | Yes       |
 | BaseUrl  | The URL to the API                 | Yes       |
 
-### Prerequisites
+### Correlation configuration
 
-### Remarks
+The correlation configuration is used to specify which properties will be used to match an existing account within _{connectorName}_ to a person in _HelloID_.
 
-## Setup the connector
+| Setting                   | Value                             |
+| ------------------------- | --------------------------------- |
+| Enable correlation        | `True`                            |
+| Person correlation field  | `PersonContext.Person.ExternalId` |
+| Account correlation field | `EmployeeNumber`                  |
 
-> _How to setup the connector in HelloID._ Are special settings required. Like the _primary manager_ settings for a source connector.
+> [!TIP]
+> _For more information on correlation, please refer to our correlation [documentation](https://docs.helloid.com/en/provisioning/target-systems/powershell-v2-target-systems/correlation.html) pages_.
+
+### Available lifecycle actions
+
+The following lifecycle actions are available:
+
+| Action                                  | Description                                                                                 |
+| --------------------------------------- | ------------------------------------------------------------------------------------------- |
+| create.ps1                              | Creates a new account.                                                                      |
+| delete.ps1                              | Removes an existing account or entity.                                                     |
+| disable.ps1                             | Disables an account, preventing access without permanent removal.                           |
+| enable.ps1                              | Enables an account, granting access.                                                       |
+| update.ps1                              | Updates the attributes of an account.                                                      |
+| permissions/groups/grantPermission.ps1  | Grants specific permissions to an account.                                            |
+| permissions/groups/revokePermission.ps1 | Revokes specific permissions from an account.                                         |
+| permissions/groups/permissions.ps1      | Retrieves all available permissions.                                                       |
+| resources/groups/resources.ps1          | Manages resources, such as creating groups.                                                |
+| configuration.json                      | Contains the connection settings and general configuration for the connector.              |
+| fieldMapping.json                       | Defines mappings between person fields and target system person account fields.              |
+
+### Field mapping
+
+The field mapping can be imported by using the _fieldMapping.json_ file.
+
+## Remarks
+
+<!--
+Provide remarks on special aspects of the code or the internal workings of the connector.
+
+**Please ensure to use `###` tags for H3 headings for each remark.**
+
+Example:
+
+### GET Account API Limitation
+- **No GET Endpoint**: The API does not support a GET request to retrieve account details. You may need to use alternative methods or endpoints to access account information, such as using a POST request with appropriate parameters.
+
+### Correlation Based on Email Address
+- **Email Address Correlation**: The connector relies on email addresses to correlate and match records between systems. Ensure that email addresses are accurately maintained and consistent across systems to avoid issues with data synchronization and matching.
+-->
+
+## Development resources
+
+### API endpoints
+
+The following endpoints are used by the connector
+
+| Endpoint | Description               |
+| -------- | ------------------------- |
+| /Users   | Retrieve user information |
+
+### API documentation
+
+<!--
+If publicly available, provide the link to the API documentation
+-->
 
 ## Getting help
 
@@ -104,4 +134,3 @@ The following settings are required to connect to the API.
 ## HelloID docs
 
 The official HelloID documentation can be found at: https://docs.helloid.com/
-
