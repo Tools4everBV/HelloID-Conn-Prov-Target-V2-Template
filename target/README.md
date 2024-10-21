@@ -80,12 +80,12 @@ The following lifecycle actions are available:
 | disable.ps1                             | Disables an account, preventing access without permanent removal.                           |
 | enable.ps1                              | Enables an account, granting access.                                                       |
 | update.ps1                              | Updates the attributes of an account.                                                      |
-| permissions/groups/grantPermission.ps1  | Grants specific permissions to a user or group.                                            |
-| permissions/groups/revokePermission.ps1 | Revokes specific permissions from a user or group.                                         |
+| permissions/groups/grantPermission.ps1  | Grants specific permissions to an account.                                            |
+| permissions/groups/revokePermission.ps1 | Revokes specific permissions from an account.                                         |
 | permissions/groups/permissions.ps1      | Retrieves all available permissions.                                                       |
 | resources/groups/resources.ps1          | Manages resources, such as creating groups.                                                |
 | configuration.json                      | Contains the connection settings and general configuration for the connector.              |
-| fieldMapping.json                       | Defines mappings between person fields and target system user account fields.              |
+| fieldMapping.json                       | Defines mappings between person fields and target system person account fields.              |
 
 ### Field mapping
 
@@ -119,7 +119,9 @@ The following endpoints are used by the connector
 
 ### API documentation
 
-<!-- If publicly available, provide the link to the API documentation  -->
+<!--
+If publicly available, provide the link to the API documentation
+-->
 
 ## Getting help
 
