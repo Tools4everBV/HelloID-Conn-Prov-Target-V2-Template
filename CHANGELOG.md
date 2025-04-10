@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [3.0.0] - 10-04-2024
+
+### Added
+ - Release workflows and issue templates to the target folder.
+ - AddRange method added to the customList class in the debugStart.ps1.
+ - Email property to the fieldMapping.json file.
+ - AccountReference example to the Readme.MD.
+ - Multiple found check for $correlatedAccount in the scripts.
+
+### Changed
+ - changed the text message when account can't be found.
+ - Changed the features table in the readme to give a more clear view of the feature of the connector.
+
+### Removed
+- Removed displayName from the permission identification.
+
 ## [2.0.1] - 27-10-2024
 
 ### Changed
