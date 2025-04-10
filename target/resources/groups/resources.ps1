@@ -37,7 +37,11 @@ function Resolve-{connectorName}Error {
             # $httpErrorObj.FriendlyMessage = $errorDetailsObject.message
             $httpErrorObj.FriendlyMessage = $httpErrorObj.ErrorDetails # Temporarily assignment
         } catch {
-            $httpErrorObj.FriendlyMessage = $httpErrorObj.ErrorDetails
+            if ($_.Exception.Message) {
+                $httpErrorObj.FriendlyMessage = "Error: [$($httpErrorObj.ErrorDetails)] [$($_.Exception.Message)]"
+            } else {
+                $httpErrorObj.FriendlyMessage = $httpErrorObj.ErrorDetails
+            }
         }
         Write-Output $httpErrorObj
     }

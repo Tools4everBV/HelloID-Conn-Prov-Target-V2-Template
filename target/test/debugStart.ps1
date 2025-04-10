@@ -16,8 +16,20 @@ $actionContext = Get-Content '{folderPath}/actionContext.json' -Encoding 'UTF8' 
 # When a new auditLog is added, the message will be automatically displayed within the VSCode UI.
 class CustomList {
     $list = [System.Collections.Generic.List[object]]::new()
+
     [void] Add([object] $obj) {
         $this.list.Add($obj)
+        $this.ShowMessage($obj)
+    }
+
+    [void] AddRange([object[]] $objs) {
+        $this.list.AddRange($objs)
+        foreach ($obj in $objs) {
+            $this.ShowMessage($obj)
+        }
+    }
+
+    hidden [void] ShowMessage([object] $obj) {
         $scriptBlock = {
             if ($obj.IsError) {
                 $psEditor.Window.ShowErrorMessage("Message: [$($obj.Message)]. Action: [$($obj.Action)]")

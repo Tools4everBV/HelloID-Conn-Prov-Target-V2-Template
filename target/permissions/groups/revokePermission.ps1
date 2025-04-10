@@ -37,7 +37,11 @@ function Resolve-{connectorName}Error {
             # $httpErrorObj.FriendlyMessage = $errorDetailsObject.message
             $httpErrorObj.FriendlyMessage = $httpErrorObj.ErrorDetails # Temporarily assignment
         } catch {
-            $httpErrorObj.FriendlyMessage = $httpErrorObj.ErrorDetails
+            if ($_.Exception.Message) {
+                $httpErrorObj.FriendlyMessage = "Error: [$($httpErrorObj.ErrorDetails)] [$($_.Exception.Message)]"
+            } else {
+                $httpErrorObj.FriendlyMessage = $httpErrorObj.ErrorDetails
+            }
         }
         Write-Output $httpErrorObj
     }
@@ -53,11 +57,14 @@ try {
 
     Write-Information 'Verifying if a {connectorName} account exists'
     $correlatedAccount = 'userInfo'
+    # $correlatedAccount = (Invoke-RestMethod @splatGetUserParams) | Select-Object -First 1
 
-    if ($null -ne $correlatedAccount) {
-        $action = 'RevokePermission'
-    } else {
+    if ($correlatedAccount.Count -eq 0) {
         $action = 'NotFound'
+    } elseif ($correlatedAccount.Count -eq 1) {
+        $action = 'RevokePermission'
+    } elseif ($correlatedAccount.Count -gt 1) {
+        throw "Multiple accounts found for person where $correlationField is: [$correlationValue]"
     }
 
     # Process
@@ -66,25 +73,25 @@ try {
 
             # Make sure to test with special characters and if needed; add utf8 encoding.
             if (-not($actionContext.DryRun -eq $true)) {
-                Write-Information "Revoking {connectorName} permission: [$($actionContext.References.Permission.DisplayName)] - [$($actionContext.References.Permission.Reference)]"
+                Write-Information "Revoking {connectorName} permission: [$($actionContext.PermissionDisplayName)] - [$($actionContext.References.Permission.Reference)]"
                 # < Write Revoke Permission logic here >
 
             } else {
-                Write-Information "[DryRun] Revoke {connectorName} permission: [$($actionContext.References.Permission.DisplayName)] - [$($actionContext.References.Permission.Reference)], will be executed during enforcement"
+                Write-Information "[DryRun] Revoke {connectorName} permission: [$($actionContext.PermissionDisplayName)] - [$($actionContext.References.Permission.Reference)], will be executed during enforcement"
             }
 
             $outputContext.Success = $true
             $outputContext.AuditLogs.Add([PSCustomObject]@{
-                    Message = "Revoke permission [$($actionContext.References.Permission.DisplayName)] was successful"
+                    Message = "Revoke permission [$($actionContext.PermissionDisplayName)] was successful"
                     IsError = $false
                 })
         }
 
         'NotFound' {
-            Write-Information "{connectorName} account: [$($actionContext.References.Account)] could not be found, possibly indicating that it could be deleted"
+            Write-Information "{connectorName} account: [$($actionContext.References.Account)] could not be found, indicating that it may have been deleted"
             $outputContext.Success = $true
             $outputContext.AuditLogs.Add([PSCustomObject]@{
-                    Message = "{connectorName} account: [$($actionContext.References.Account)] could not be found, possibly indicating that it could be deleted"
+                    Message = "{connectorName} account: [$($actionContext.References.Account)] could not be found, indicating that it may have been deleted"
                     IsError = $false
                 })
             break
