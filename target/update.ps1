@@ -37,7 +37,7 @@ function Resolve-{connectorName}Error {
             # $httpErrorObj.FriendlyMessage = $errorDetailsObject.message
             $httpErrorObj.FriendlyMessage = $httpErrorObj.ErrorDetails # Temporarily assignment
         } catch {
-            $httpErrorObj.FriendlyMessage = $httpErrorObj.ErrorDetails
+            $httpErrorObj.FriendlyMessage = "Error: [$($httpErrorObj.ErrorDetails)] [$($_.Exception.Message)]"
         }
         Write-Output $httpErrorObj
     }
@@ -52,10 +52,13 @@ try {
 
     Write-Information 'Verifying if a {connectorName} account exists'
     $correlatedAccount = 'userInfo'
+    # $correlatedAccount = (Invoke-RestMethod @splatGetUserParams)
+
+    # Make sure to filter out arrays from $outputContext.Data (If this is not mapped to type Array in the fieldmapping). This is not supported by HelloID.
     $outputContext.PreviousData = $correlatedAccount
 
-    # Always compare the account against the current account in target system
     if ($null -ne $correlatedAccount) {
+        # Always compare the account against the current account in target system
         $splatCompareProperties = @{
             ReferenceObject  = @($correlatedAccount.PSObject.Properties)
             DifferenceObject = @($actionContext.Data.PSObject.Properties)
@@ -84,6 +87,7 @@ try {
                 Write-Information "[DryRun] Update {connectorName} account with accountReference: [$($actionContext.References.Account)], will be executed during enforcement"
             }
 
+            # Make sure to filter out arrays from $outputContext.Data (If this is not mapped to type Array in the fieldmapping). This is not supported by HelloID.
             $outputContext.Success = $true
             $outputContext.AuditLogs.Add([PSCustomObject]@{
                     Message = "Update account was successful, Account property(s) updated: [$($propertiesChanged.name -join ',')]"
@@ -104,10 +108,10 @@ try {
         }
 
         'NotFound' {
-            Write-Information "{connectorName} account: [$($actionContext.References.Account)] could not be found, possibly indicating that it could be deleted"
+            Write-Information "{connectorName} account: [$($actionContext.References.Account)] could not be found, indicating that it may have been deleted"
             $outputContext.Success = $false
             $outputContext.AuditLogs.Add([PSCustomObject]@{
-                    Message = "{connectorName} account with accountReference: [$($actionContext.References.Account)] could not be found, possibly indicating that it could be deleted"
+                    Message = "{connectorName} account: [$($actionContext.References.Account)] could not be found, indicating that it may have been deleted"
                     IsError = $true
                 })
             break
