@@ -16,13 +16,13 @@
 - [HelloID-Conn-Prov-Target-{connectorName}](#helloid-conn-prov-target-{connectorName})
   - [Table of contents](#table-of-contents)
   - [Introduction](#introduction)
+  - [Supported  features](#supported--features)
   - [Getting started](#getting-started)
     - [Prerequisites](#prerequisites)
     - [Connection settings](#connection-settings)
     - [Correlation configuration](#correlation-configuration)
-    - [Available lifecycle actions](#available-lifecycle-actions)
     - [Field mapping](#field-mapping)
-    - [Account reference](#account-reference)
+    - [Account Reference](#account-reference)
   - [Remarks](#remarks)
   - [Development resources](#development-resources)
     - [API endpoints](#api-endpoints)
@@ -33,6 +33,19 @@
 ## Introduction
 
 _HelloID-Conn-Prov-Target-{connectorName}_ is a _target_ connector. _{connectorName}_ provides a set of REST API's that allow you to programmatically interact with its data.
+
+## Supported  features
+
+The following features are available:
+
+| Feature                                   | Supported | Actions                                 | Remarks           |
+| ----------------------------------------- | --------- | --------------------------------------- | ----------------- |
+| **Account Lifecycle**                     | ✅        | Create, Update, Enable, Disable, Delete |                   |
+| **Permissions**                           | ✅        | Retrieve, Grant, Revoke                 | Static or Dynamic |
+| **Resources**                             | ❌        | -                                       |                   |
+| **Entitlement Import: Accounts**          | ✅        | -                                       |                   |
+| **Entitlement Import: Permissions**       | ❌        | -                                       |                   |
+| **Governance Reconciliation Resolutions** | ✅        | -                                       |                   |
 
 ## Getting started
 
@@ -74,33 +87,13 @@ The correlation configuration is used to specify which properties will be used t
 > [!TIP]
 > _For more information on correlation, please refer to our correlation [documentation](https://docs.helloid.com/en/provisioning/target-systems/powershell-v2-target-systems/correlation.html) pages_.
 
-### Available features
-
-The following features are available:
-
-| Feature                                   | Supported | Actions                                 | Remarks           |
-| ----------------------------------------- | --------- | --------------------------------------- | ----------------- |
-| **Account Lifecycle**                     | ✅        | Create, Update, Enable, Disable, Delete |                   |
-| **Permissions**                           | ✅        | Retrieve, Grant, Revoke                 | Static or Dynamic |
-| **Resources**                             | ❌        | -                                       |                   |
-| **Entitlement Import: Accounts**          | ✅        | -                                       |                   |
-| **Entitlement Import: Permissions**       | ❌        | -                                       |                   |
-| **Governance Reconciliation Resolutions** | ✅        | -                                       |                   |
-
-
 ### Field mapping
 
 The field mapping can be imported by using the _fieldMapping.json_ file.
 
 ### Account Reference
 
-The account reference is structured as follows:
-```
-"References": {
-    "Account": "12345",
-    "ManagerAccount": null
-}
-```
+The account reference is populated with the property `id` property from _{connectorName}_
 
 ## Remarks
 

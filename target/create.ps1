@@ -37,11 +37,7 @@ function Resolve-{connectorName}Error {
             # $httpErrorObj.FriendlyMessage = $errorDetailsObject.message
             $httpErrorObj.FriendlyMessage = $httpErrorObj.ErrorDetails # Temporarily assignment
         } catch {
-            if ($_.Exception.Message) {
-                $httpErrorObj.FriendlyMessage = "Error: [$($httpErrorObj.ErrorDetails)] [$($_.Exception.Message)]"
-            } else {
-                $httpErrorObj.FriendlyMessage = $httpErrorObj.ErrorDetails
-            }
+            $httpErrorObj.FriendlyMessage = "Error: [$($httpErrorObj.ErrorDetails)] [$($_.Exception.Message)]"
         }
         Write-Output $httpErrorObj
     }
@@ -71,13 +67,14 @@ try {
         }
         # Example of replacing the placeholder with actual code:
         # Retrieve user details using an API call and store the result in $correlatedAccount
-        # $correlatedAccount = (Invoke-RestMethod @splatGetUserParams) | Select-Object -First 1
+        # $correlatedAccount = (Invoke-RestMethod @splatGetUserParams)
     }
 
     if ($correlatedAccount.Count -eq 0) {
         $action = 'CreateAccount'
     } elseif ($correlatedAccount.Count -eq 1) {
         $action = 'CorrelateAccount'
+        # $correlatedAccount = $correlatedAccount | Select-Object -First 1
     } elseif ($correlatedAccount.Count -gt 1) {
         throw "Multiple accounts found for person where $correlationField is: [$correlationValue]"
     }
@@ -98,7 +95,7 @@ try {
 
                 $createdAccount = Invoke-RestMethod @splatCreateParams
 
-                # Make sure to filter out arrays from $outputContext.Data. This is not supported by HelloID.
+                # Make sure to filter out arrays from $outputContext.Data (If this is not mapped to type Array in the fieldmapping). This is not supported by HelloID.
                 $outputContext.Data = $createdAccount
                 $outputContext.AccountReference = $createdAccount.Id
             } else {
@@ -111,7 +108,7 @@ try {
         'CorrelateAccount' {
             Write-Information 'Correlating {connectorName} account'
 
-            # Make sure to filter out arrays from $outputContext.Data. This is not supported by HelloID.
+            # Make sure to filter out arrays from $outputContext.Data (If this is not mapped to type Array in the fieldmapping). This is not supported by HelloID.
             $outputContext.Data = $correlatedAccount
             $outputContext.AccountReference = $correlatedAccount.Id
             $outputContext.AccountCorrelated = $true

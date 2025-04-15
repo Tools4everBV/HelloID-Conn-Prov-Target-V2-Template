@@ -7,16 +7,17 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
  - Release workflows and issue templates to the target folder.
  - AddRange method added to the customList class in the debugStart.ps1.
- - Email property to the fieldMapping.json file.
+ - Email property added to the fieldMapping.json file. By default this value is mapped to `MicrosoftActiveDirectory.mail`
  - AccountReference example to the Readme.MD.
  - Multiple found check for $correlatedAccount in the scripts.
 
 ### Changed
- - changed the text message when account can't be found.
+ - Changed the text message when account can't be found.
  - Changed the features table in the readme to give a more clear view of the feature of the connector.
+ - Changed default value of `retrievedPermission` in the permission script to be more inline with HelloID.
 
 ### Removed
-- Removed displayName from the permission identification.
+- Removed displayName from the permission reference.
 
 ## [2.0.1] - 27-10-2024
 

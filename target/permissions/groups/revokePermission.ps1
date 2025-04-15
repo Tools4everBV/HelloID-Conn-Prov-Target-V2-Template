@@ -37,11 +37,7 @@ function Resolve-{connectorName}Error {
             # $httpErrorObj.FriendlyMessage = $errorDetailsObject.message
             $httpErrorObj.FriendlyMessage = $httpErrorObj.ErrorDetails # Temporarily assignment
         } catch {
-            if ($_.Exception.Message) {
-                $httpErrorObj.FriendlyMessage = "Error: [$($httpErrorObj.ErrorDetails)] [$($_.Exception.Message)]"
-            } else {
-                $httpErrorObj.FriendlyMessage = $httpErrorObj.ErrorDetails
-            }
+            $httpErrorObj.FriendlyMessage = "Error: [$($httpErrorObj.ErrorDetails)] [$($_.Exception.Message)]"
         }
         Write-Output $httpErrorObj
     }
@@ -57,14 +53,12 @@ try {
 
     Write-Information 'Verifying if a {connectorName} account exists'
     $correlatedAccount = 'userInfo'
-    # $correlatedAccount = (Invoke-RestMethod @splatGetUserParams) | Select-Object -First 1
+    # $correlatedAccount = (Invoke-RestMethod @splatGetUserParams)
 
-    if ($correlatedAccount.Count -eq 0) {
-        $action = 'NotFound'
-    } elseif ($correlatedAccount.Count -eq 1) {
+    if ($null -ne $correlatedAccount) {
         $action = 'RevokePermission'
-    } elseif ($correlatedAccount.Count -gt 1) {
-        throw "Multiple accounts found for person where $correlationField is: [$correlationValue]"
+    } else {
+        $action = 'NotFound'
     }
 
     # Process
