@@ -45,30 +45,30 @@ We can't wait to see the amazing PowerShell connectors you'll build with these t
 
 ## What's in this repository
 
-| FileName                                       | Description                                                            |
-| ---------------------------------------------- | ---------------------------------------------------------------------- |
-| ./.github/ISSUE_TEMPLATE/bugReport.yaml      | YAML template for submitting bug reports                               |
-| ./.github/ISSUE_TEMPLATE/featureRequest.yaml | YAML template for feature request submissions                          |
-| ./.github/workflows/createRelease.yaml       | GitHub Action to automate release creation                             |
-| ./.github/workflows/verifyChangelog.yaml     | GitHub Action to verify the changelog structure                        |
-| ./permissions/groups/grantPermission.ps1       | PowerShell _grant_ lifecycle action                                    |
-| ./permissions/groups/revokePermission.ps1      | PowerShell _revoke_ lifecycle action                                   |
-| ./permissions/groups/permissions.ps1           | PowerShell _permissions_ lifecycle action                              |
-| ./resources/groups/resources.ps1               | PowerShell _resources_ lifecycle action                                |
-| ./test/config.json                             | Prefilled _config.json_ file for easy debugging                        |
-| ./test/actionContext.json                      | Prefilled _actionContext.json_ file for easy debugging                 |
-| ./test/demoPerson.json                         | Prefilled _demoPerson.json_ for easy debugging                         |
-| ./test/debugStart.ps1                          | Default _debugStart.ps1_ for easy debugging                            |
-| .gitignore                                     | `gitignore` excluding the `test` folder when pushing commits to GitHub |
-| create.ps1                                     | PowerShell _create_ lifecycle action                                   |
-| delete.ps1                                     | PowerShell _delete_ lifecycle action                                   |
-| disable.ps1                                    | PowerShell _disable_ lifecycle action                                  |
-| enable.ps1                                     | PowerShell _enable_ lifecycle action                                   |
-| update.ps1                                     | PowerShell _update_ lifecycle action                                   |
-| configuration.json                             | Default _configuration.json_                                           |
-| fieldMapping.json                              | Default _fieldMapping.json_                                            |
-| README.md                                      | A prefilled _readme.md_                                                |
-| CHANGELOG.md                                   | CHANGELOG.md to track changes made to the connector                    |
+| FileName                                     | Description                                                                                |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| ./.github/ISSUE_TEMPLATE/bugReport.yaml      | YAML template for submitting bug reports                                                   |
+| ./.github/ISSUE_TEMPLATE/featureRequest.yaml | YAML template for feature request submissions                                              |
+| ./.github/workflows/createRelease.yaml       | GitHub Action to automate release creation                                                 |
+| ./.github/workflows/verifyChangelog.yaml     | GitHub Action to verify the changelog structure and if the changelog is included in the PR |
+| ./permissions/groups/grantPermission.ps1     | PowerShell _grant_ lifecycle action                                                        |
+| ./permissions/groups/revokePermission.ps1    | PowerShell _revoke_ lifecycle action                                                       |
+| ./permissions/groups/permissions.ps1         | PowerShell _permissions_ lifecycle action                                                  |
+| ./resources/groups/resources.ps1             | PowerShell _resources_ lifecycle action                                                    |
+| ./test/config.json                           | Prefilled _config.json_ file for easy debugging                                            |
+| ./test/actionContext.json                    | Prefilled _actionContext.json_ file for easy debugging                                     |
+| ./test/demoPerson.json                       | Prefilled _demoPerson.json_ for easy debugging                                             |
+| ./test/debugStart.ps1                        | Default _debugStart.ps1_ for easy debugging                                                |
+| .gitignore                                   | `gitignore` excluding the `test` folder when pushing commits to GitHub                     |
+| create.ps1                                   | PowerShell _create_ lifecycle action                                                       |
+| delete.ps1                                   | PowerShell _delete_ lifecycle action                                                       |
+| disable.ps1                                  | PowerShell _disable_ lifecycle action                                                      |
+| enable.ps1                                   | PowerShell _enable_ lifecycle action                                                       |
+| update.ps1                                   | PowerShell _update_ lifecycle action                                                       |
+| configuration.json                           | Default _configuration.json_                                                               |
+| fieldMapping.json                            | Default _fieldMapping.json_                                                                |
+| README.md                                    | A prefilled _readme.md_                                                                    |
+| CHANGELOG.md                                 | CHANGELOG.md to track changes made to the connector                                        |
 
 ## How to use this repository
 
