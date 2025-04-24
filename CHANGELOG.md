@@ -2,22 +2,23 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com), and this project adheres to [Semantic Versioning](https://semver.org).
 
-## [3.0.0] - 10-04-2024
+## [3.0.0] - 24-04-2024
 
 ### Added
- - Release workflows and issue templates to the target folder.
- - AddRange method added to the customList class in the debugStart.ps1.
- - Email property added to the fieldMapping.json file. By default this value is mapped to `MicrosoftActiveDirectory.mail`
- - AccountReference example to the Readme.MD.
- - Multiple found check for $correlatedAccount in the scripts.
+- Introduced release workflows and issue templates in the `.github` directory. Publishing this folder triggers **two** GitHub Actions that will _automatically_ create a new release upon PR completion.
+- Added an `AddRange` method to the `customList` class in `debugStart.ps1`, enabling the addition of multiple `auditLogs` to `$outputContext` during debugging sessions.
+- Introduced an `email` property to `fieldMapping.json`, which defaults to `MicrosoftActiveDirectory.mail`.
+- Included an example for `AccountReference` in the README.
+- Implemented a **MultipleFound** validation for `$correlatedAccount` in `create.ps1`.
 
 ### Changed
- - Changed the text message when account can't be found.
- - Changed the features table in the readme to give a more clear view of the feature of the connector.
- - Changed default value of `retrievedPermission` in the permission script to be more inline with HelloID.
+- Updated the message shown when an account cannot be located.
+- Revised the features table in the README for improved clarity on the connector's capabilities.
+- Adjusted the default value of `retrievedPermission` in the permission script to better align with HelloID behavior.
+- Updated auditLogs in the grant and revoke scripts to use `$actionContext.PermissionDisplayName`.
 
 ### Removed
-- Removed displayName from the permission reference.
+- Removed the `displayName` field from the permission reference in the permission script.
 
 ## [2.0.1] - 27-10-2024
 

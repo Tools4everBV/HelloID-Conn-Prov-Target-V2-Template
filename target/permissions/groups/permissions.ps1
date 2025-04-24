@@ -65,9 +65,9 @@ try {
     foreach ($permission in $retrievedPermissions) {
         $outputContext.Permissions.Add(
             @{
-                DisplayName    = $permission.name
+                DisplayName    = $permission.DisplayName
                 Identification = @{
-                    Reference = $permission.id
+                    Reference = $permission.Identification.Reference
                 }
             }
         )

@@ -74,7 +74,6 @@ try {
         $action = 'CreateAccount'
     } elseif ($correlatedAccount.Count -eq 1) {
         $action = 'CorrelateAccount'
-        # $correlatedAccount = $correlatedAccount | Select-Object -First 1
     } elseif ($correlatedAccount.Count -gt 1) {
         throw "Multiple accounts found for person where $correlationField is: [$correlationValue]"
     }
