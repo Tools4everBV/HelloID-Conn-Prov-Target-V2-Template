@@ -37,7 +37,7 @@ function Resolve-{connectorName}Error {
             # $httpErrorObj.FriendlyMessage = $errorDetailsObject.message
             $httpErrorObj.FriendlyMessage = $httpErrorObj.ErrorDetails # Temporarily assignment
         } catch {
-            $httpErrorObj.FriendlyMessage = $httpErrorObj.ErrorDetails
+            $httpErrorObj.FriendlyMessage = "Error: [$($httpErrorObj.ErrorDetails)] [$($_.Exception.Message)]"
         }
         Write-Output $httpErrorObj
     }
@@ -48,12 +48,16 @@ try {
     Write-Information 'Retrieving permissions'
     $retrievedPermissions = @(
         @{
-            name = 'Permission-1'
-            id   = "$(New-Guid)"
+            DisplayName    = "First permission"
+            Identification = @{
+                Reference = "Permission1"
+            }
         },
         @{
-            name = 'Permission-2'
-            id   = "$(New-Guid)"
+            DisplayName    = "Second permission"
+            Identification = @{
+                Reference = "Permission2"
+            }
         }
     )
 
@@ -61,10 +65,9 @@ try {
     foreach ($permission in $retrievedPermissions) {
         $outputContext.Permissions.Add(
             @{
-                DisplayName    = $permission.name
+                DisplayName    = $permission.DisplayName
                 Identification = @{
-                    Reference   = $permission.id
-                    DisplayName = $permission.name
+                    Reference = $permission.Identification.Reference
                 }
             }
         )

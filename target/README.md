@@ -1,5 +1,9 @@
 # HelloID-Conn-Prov-Target-{connectorName}
 
+<!--
+** for extra information about alert syntax please refer to [Alerts](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#alerts)
+-->
+
 > [!IMPORTANT]
 > This repository contains the connector and configuration code only. The implementer is responsible to acquire the connection details such as username, password, certificate, etc. You might even need to sign a contract or agreement with the supplier before implementing this connector. Please contact the client's application manager to coordinate the connector requirements.
 
@@ -12,12 +16,13 @@
 - [HelloID-Conn-Prov-Target-{connectorName}](#helloid-conn-prov-target-{connectorName})
   - [Table of contents](#table-of-contents)
   - [Introduction](#introduction)
+  - [Supported  features](#supported--features)
   - [Getting started](#getting-started)
     - [Prerequisites](#prerequisites)
     - [Connection settings](#connection-settings)
     - [Correlation configuration](#correlation-configuration)
-    - [Available lifecycle actions](#available-lifecycle-actions)
     - [Field mapping](#field-mapping)
+    - [Account Reference](#account-reference)
   - [Remarks](#remarks)
   - [Development resources](#development-resources)
     - [API endpoints](#api-endpoints)
@@ -28,6 +33,19 @@
 ## Introduction
 
 _HelloID-Conn-Prov-Target-{connectorName}_ is a _target_ connector. _{connectorName}_ provides a set of REST API's that allow you to programmatically interact with its data.
+
+## Supported  features
+
+The following features are available:
+
+| Feature                                   | Supported | Actions                                 | Remarks           |
+| ----------------------------------------- | --------- | --------------------------------------- | ----------------- |
+| **Account Lifecycle**                     | ✅        | Create, Update, Enable, Disable, Delete |                   |
+| **Permissions**                           | ✅        | Retrieve, Grant, Revoke                 | Static or Dynamic |
+| **Resources**                             | ❌        | -                                       |                   |
+| **Entitlement Import: Accounts**          | ✅        | -                                       |                   |
+| **Entitlement Import: Permissions**       | ❌        | -                                       |                   |
+| **Governance Reconciliation Resolutions** | ✅        | -                                       |                   |
 
 ## Getting started
 
@@ -69,27 +87,13 @@ The correlation configuration is used to specify which properties will be used t
 > [!TIP]
 > _For more information on correlation, please refer to our correlation [documentation](https://docs.helloid.com/en/provisioning/target-systems/powershell-v2-target-systems/correlation.html) pages_.
 
-### Available lifecycle actions
-
-The following lifecycle actions are available:
-
-| Action                                  | Description                                                                                 |
-| --------------------------------------- | ------------------------------------------------------------------------------------------- |
-| create.ps1                              | Creates a new account.                                                                      |
-| delete.ps1                              | Removes an existing account or entity.                                                     |
-| disable.ps1                             | Disables an account, preventing access without permanent removal.                           |
-| enable.ps1                              | Enables an account, granting access.                                                       |
-| update.ps1                              | Updates the attributes of an account.                                                      |
-| permissions/groups/grantPermission.ps1  | Grants specific permissions to an account.                                            |
-| permissions/groups/revokePermission.ps1 | Revokes specific permissions from an account.                                         |
-| permissions/groups/permissions.ps1      | Retrieves all available permissions.                                                       |
-| resources/groups/resources.ps1          | Manages resources, such as creating groups.                                                |
-| configuration.json                      | Contains the connection settings and general configuration for the connector.              |
-| fieldMapping.json                       | Defines mappings between person fields and target system person account fields.              |
-
 ### Field mapping
 
 The field mapping can be imported by using the _fieldMapping.json_ file.
+
+### Account Reference
+
+The account reference is populated with the property `id` property from _{connectorName}_
 
 ## Remarks
 
