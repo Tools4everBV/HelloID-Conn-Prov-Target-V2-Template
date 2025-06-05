@@ -2,7 +2,15 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com), and this project adheres to [Semantic Versioning](https://semver.org).
 
-## [3.0.0] - 24-04-2024
+## [3.1.0] - 02-06-2025
+
+### Added
+
+- Import template for account entitlements.
+- Import template for group entitlements.
+- Added code flow for reconciliation resolutions based on `$actionContext.Origin`.
+
+## [3.0.0] - 24-04-2025
 
 ### Added
 - Introduced release workflows and issue templates in the `.github` directory. Publishing this folder triggers **two** GitHub Actions that will _automatically_ create a new release upon PR completion.

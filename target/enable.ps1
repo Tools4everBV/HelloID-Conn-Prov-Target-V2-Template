@@ -61,47 +61,62 @@ try {
     }
 
     # Process
-    switch ($action) {
-        'EnableAccount' {
-            if (-not($actionContext.DryRun -eq $true)) {
-                Write-Information "Enabling {connectorName} account with accountReference: [$($actionContext.References.Account)]"
-                # < Write Enable logic here >
+    switch ($actionContext.Origin) {
+        'enforcement' {
+            switch ($action) {
+                'EnableAccount' {
+                    if (-not($actionContext.DryRun -eq $true)) {
+                        Write-Information "Enabling {connectorName} account with accountReference: [$($actionContext.References.Account)]"
+                        # < Write Enable logic here >
 
-            } else {
-                Write-Information "[DryRun] Enable {connectorName} account with accountReference: [$($actionContext.References.Account)], will be executed during enforcement"
+                    } else {
+                        Write-Information "[DryRun] Enable {connectorName} account with accountReference: [$($actionContext.References.Account)], will be executed during enforcement"
+                    }
+
+                    # Make sure to filter out arrays from $outputContext.Data (If this is not mapped to type Array in the fieldmapping). This is not supported by HelloID.
+                    $outputContext.Success = $true
+                    $outputContext.AuditLogs.Add([PSCustomObject]@{
+                            Message = 'Enable account was successful'
+                            IsError = $false
+                        })
+                    break
+                }
+
+                'NotFound' {
+                    Write-Information "{connectorName} account: [$($actionContext.References.Account)] could not be found, indicating that it may have been deleted. Action initiated by: [$($actionContext.Origin)]"
+                    $outputContext.Success = $false
+                    $outputContext.AuditLogs.Add([PSCustomObject]@{
+                            Message = "{connectorName} account: [$($actionContext.References.Account)] could not be found, indicating that it may have been deleted Action initiated by: [$($actionContext.Origin)]"
+                            IsError = $true
+                        })
+                    break
+                }
             }
+        }
 
-            # Make sure to filter out arrays from $outputContext.Data (If this is not mapped to type Array in the fieldmapping). This is not supported by HelloID.
+        'reconciliation' {
+            Write-Information "Enabling {connectorName} account with accountReference: [$($actionContext.References.Account)]. Action initiated by: [$($actionContext.Origin)]"
+            # < Write reconciliation enable logic here >
+
             $outputContext.Success = $true
             $outputContext.AuditLogs.Add([PSCustomObject]@{
-                    Message = 'Enable account was successful'
+                    Message = "Enable account was sucessful. Action initiated by: [$($actionContext.Origin)]"
                     IsError = $false
                 })
             break
         }
-
-        'NotFound' {
-            Write-Information "{connectorName} account: [$($actionContext.References.Account)] could not be found, indicating that it may have been deleted"
-            $outputContext.Success = $false
-            $outputContext.AuditLogs.Add([PSCustomObject]@{
-                    Message = "{connectorName} account: [$($actionContext.References.Account)] could not be found, indicating that it may have been deleted"
-                    IsError = $true
-                })
-            break
-        }
     }
-
 } catch {
     $outputContext.success = $false
     $ex = $PSItem
     if ($($ex.Exception.GetType().FullName -eq 'Microsoft.PowerShell.Commands.HttpResponseException') -or
         $($ex.Exception.GetType().FullName -eq 'System.Net.WebException')) {
         $errorObj = Resolve-{connectorName}Error -ErrorObject $ex
-        $auditMessage = "Could not enable {connectorName} account. Error: $($errorObj.FriendlyMessage)"
-        Write-Warning "Error at Line '$($errorObj.ScriptLineNumber)': $($errorObj.Line). Error: $($errorObj.ErrorDetails)"
+        $auditMessage = "Could not enable {connectorName} account. Error: $($errorObj.FriendlyMessage). Action initiated by: [$($actionContext.Origin)]"
+        Write-Warning "Error at Line '$($errorObj.ScriptLineNumber)': $($errorObj.Line). Error: $($errorObj.ErrorDetails). Action initiated by: [$($actionContext.Origin)]"
     } else {
-        $auditMessage = "Could not enable {connectorName} account. Error: $($_.Exception.Message)"
-        Write-Warning "Error at Line '$($ex.InvocationInfo.ScriptLineNumber)': $($ex.InvocationInfo.Line). Error: $($ex.Exception.Message)"
+        $auditMessage = "Could not enable {connectorName} account. Error: $($_.Exception.Message). Action initiated by: [$($actionContext.Origin)]"
+        Write-Warning "Error at Line '$($ex.InvocationInfo.ScriptLineNumber)': $($ex.InvocationInfo.Line). Error: $($ex.Exception.Message). Action initiated by: [$($actionContext.Origin)]"
     }
     $outputContext.AuditLogs.Add([PSCustomObject]@{
         Message = $auditMessage
