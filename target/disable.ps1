@@ -61,46 +61,35 @@ try {
     }
 
     # Process
-    switch ($actionContext.Origin) {
-        'enforcement' {
-            switch ($action) {
-                'DisableAccount' {
-                    if (-not($actionContext.DryRun -eq $true)) {
-                        Write-Information "Disabling {connectorName} account with accountReference: [$($actionContext.References.Account)]. Action initiated by: [$($actionContext.Origin)]"
-                        # < Write disable logic here >Or
-                    } else {
-                        Write-Information "[DryRun] Disable {connectorName} account with accountReference: [$($actionContext.References.Account)], will be executed during enforcement"
-                    }
+    switch ($action) {
+        'DisableAccount' {
+            if (-not($actionContext.DryRun -eq $true)) {
+                Write-Information "Disabling {connectorName} account with accountReference: [$($actionContext.References.Account)]. Action initiated by: [$($actionContext.Origin)]"
+                # < Write disable logic here >
 
-                    # Make sure to filter out arrays from $outputContext.Data (If this is not mapped to type Array in the fieldmapping). This is not supported by HelloID.
-                    $outputContext.Success = $true
-                    $outputContext.AuditLogs.Add([PSCustomObject]@{
-                            Message = "Disable account was sucessful. Action initiated by: [$($actionContext.Origin)]"
-                            IsError = $false
-                        })
-                    break
+                # During reconciliation, hardcoded values may need to be set as personContext and actionContext.Data are not available
+                if ($actionContext.Origin -eq 'reconciliation'){
+                    # < Write reconciliation disable logic here >
                 }
-
-                'NotFound' {
-                    Write-Information "{connectorName} account: [$($actionContext.References.Account)] could not be found, indicating that it may have been deleted. Action initiated by: [$($actionContext.Origin)]"
-                    $outputContext.Success = $false
-                    $outputContext.AuditLogs.Add([PSCustomObject]@{
-                            Message = "{connectorName} account: [$($actionContext.References.Account)] could not be found, indicating that it may have been deleted. Action initiated by: [$($actionContext.Origin)]"
-                            IsError = $true
-                        })
-                    break
-                }
+            } else {
+                Write-Information "[DryRun] Disable {connectorName} account with accountReference: [$($actionContext.References.Account)], will be executed during enforcement"
             }
-        }
 
-        'reconciliation' {
-            Write-Information "Disabling {connectorName} account with accountReference: [$($actionContext.References.Account)]. Action initiated by: [$($actionContext.Origin)]"
-            # < Write reconciliation disable logic here >
-
+            # Make sure to filter out arrays from $outputContext.Data (If this is not mapped to type Array in the fieldmapping). This is not supported by HelloID.
             $outputContext.Success = $true
             $outputContext.AuditLogs.Add([PSCustomObject]@{
                     Message = "Disable account was sucessful. Action initiated by: [$($actionContext.Origin)]"
                     IsError = $false
+                })
+            break
+        }
+
+        'NotFound' {
+            Write-Information "{connectorName} account: [$($actionContext.References.Account)] could not be found, indicating that it may have been deleted. Action initiated by: [$($actionContext.Origin)]"
+            $outputContext.Success = $false
+            $outputContext.AuditLogs.Add([PSCustomObject]@{
+                    Message = "{connectorName} account: [$($actionContext.References.Account)] could not be found, indicating that it may have been deleted. Action initiated by: [$($actionContext.Origin)]"
+                    IsError = $true
                 })
             break
         }

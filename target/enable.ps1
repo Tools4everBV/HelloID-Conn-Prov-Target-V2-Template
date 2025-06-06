@@ -61,47 +61,35 @@ try {
     }
 
     # Process
-    switch ($actionContext.Origin) {
-        'enforcement' {
-            switch ($action) {
-                'EnableAccount' {
-                    if (-not($actionContext.DryRun -eq $true)) {
-                        Write-Information "Enabling {connectorName} account with accountReference: [$($actionContext.References.Account)]"
-                        # < Write Enable logic here >
+    switch ($action) {
+        'EnableAccount' {
+            if (-not($actionContext.DryRun -eq $true)) {
+                Write-Information "Enabling {connectorName} account with accountReference: [$($actionContext.References.Account)]"
+                # < Write enable logic here >
 
-                    } else {
-                        Write-Information "[DryRun] Enable {connectorName} account with accountReference: [$($actionContext.References.Account)], will be executed during enforcement"
-                    }
-
-                    # Make sure to filter out arrays from $outputContext.Data (If this is not mapped to type Array in the fieldmapping). This is not supported by HelloID.
-                    $outputContext.Success = $true
-                    $outputContext.AuditLogs.Add([PSCustomObject]@{
-                            Message = 'Enable account was successful'
-                            IsError = $false
-                        })
-                    break
+                # During reconciliation, hardcoded values may need to be set as personContext and actionContext.Data are not available
+                if ($actionContext.Origin -eq 'reconciliation'){
+                    # < Write reconciliation enable logic here >
                 }
-
-                'NotFound' {
-                    Write-Information "{connectorName} account: [$($actionContext.References.Account)] could not be found, indicating that it may have been deleted. Action initiated by: [$($actionContext.Origin)]"
-                    $outputContext.Success = $false
-                    $outputContext.AuditLogs.Add([PSCustomObject]@{
-                            Message = "{connectorName} account: [$($actionContext.References.Account)] could not be found, indicating that it may have been deleted Action initiated by: [$($actionContext.Origin)]"
-                            IsError = $true
-                        })
-                    break
-                }
+            } else {
+                Write-Information "[DryRun] Enable {connectorName} account with accountReference: [$($actionContext.References.Account)], will be executed during enforcement"
             }
-        }
 
-        'reconciliation' {
-            Write-Information "Enabling {connectorName} account with accountReference: [$($actionContext.References.Account)]. Action initiated by: [$($actionContext.Origin)]"
-            # < Write reconciliation enable logic here >
-
+            # Make sure to filter out arrays from $outputContext.Data (If this is not mapped to type Array in the fieldmapping). This is not supported by HelloID.
             $outputContext.Success = $true
             $outputContext.AuditLogs.Add([PSCustomObject]@{
-                    Message = "Enable account was sucessful. Action initiated by: [$($actionContext.Origin)]"
+                    Message = 'Enable account was successful'
                     IsError = $false
+                })
+            break
+        }
+
+        'NotFound' {
+            Write-Information "{connectorName} account: [$($actionContext.References.Account)] could not be found, indicating that it may have been deleted. Action initiated by: [$($actionContext.Origin)]"
+            $outputContext.Success = $false
+            $outputContext.AuditLogs.Add([PSCustomObject]@{
+                    Message = "{connectorName} account: [$($actionContext.References.Account)] could not be found, indicating that it may have been deleted Action initiated by: [$($actionContext.Origin)]"
+                    IsError = $true
                 })
             break
         }

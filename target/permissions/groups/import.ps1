@@ -79,8 +79,9 @@ try {
             AccountReferences = $null
         }
 
-        # Batch members based on the amount of account references,
-        # to make sure the output objects are not above the limit with a max of 500
+        # The code below splits a list of permission members into batches of 3
+        # Each batch is assigned to $permission.AccountReferences and the permission object will be returned to HelloID for each batch
+        # Ensure batching is based on the number of account references to prevent exceeding the maximum limit of 500 account references per batch
         $batchSize = 3
         $batches = 0..($importedPermission.members.Count - 1) | Group-Object { [math]::Floor($_ / $batchSize) }
         foreach ($batch in $batches) {
