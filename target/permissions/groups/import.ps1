@@ -1,5 +1,5 @@
 ####################################################################
-# HelloID-Conn-Prov-Target-{connectorName]-Permissions-Groups-Import
+# HelloID-Conn-Prov-Target-{connectorName}-Permissions-Groups-Import
 # PowerShell V2
 ####################################################################
 
@@ -46,43 +46,45 @@ function Resolve-{connectorName}Error {
 
 try {
     Write-Information 'Starting {connectorName} permission group entitlement import'
-
-    # $splatImportPermissionParams = @{
-    #     Uri     = '<URL to API>'
-    #     Method  = 'GET'
-    # }
-    # $importedPermissions = Invoke-RestMethod @splatGetAllAccountParams
-
-    # Example with dummy data
     $importedPermissions = @(
         @{
-            id = 'Permission1'
+            id          = 'Permission1'
             description = 'First permission'
             displayName = 'First permission'
-            members = @('1001', '1002', '1003')
+            members     = @('1001', '1002', '1003')
         },
         @{
-            id = 'Permission2'
+            id          = 'Permission2'
             description = 'Second permission'
             displayName = 'Second permission'
-            members = @('1004', '1005')
+            members     = @('1004', '1005')
         }
     )
+
+    # # Example of replacing the placeholder with actual code:
+    # $splatImportPermissionParams = @{
+    #     Uri    = $actionContext.Configuration.BaseUrl
+    #     Method = 'GET'
+    # }
+
+    # # Make sure pagination is implemented when available
+    # $importedPermissions = Invoke-RestMethod @splatImportPermissionParams
+
 
     foreach ($importedPermission in $importedPermissions) {
         $permission = @{
             PermissionReference = @{
                 Reference = $importedPermission.id
             }
-            Description       = "$($importedPermission.description)"
-            DisplayName       = "$($importedPermission.name)"
-            AccountReferences = $null
+            Description         = "$($importedPermission.description)"
+            DisplayName         = "$($importedPermission.displayName)"
+            AccountReferences   = $null
         }
 
-        # The code below splits a list of permission members into batches of 3
+        # The code below splits a list of permission members into batches of 100
         # Each batch is assigned to $permission.AccountReferences and the permission object will be returned to HelloID for each batch
         # Ensure batching is based on the number of account references to prevent exceeding the maximum limit of 500 account references per batch
-        $batchSize = 3
+        $batchSize = 100
         $batches = 0..($importedPermission.members.Count - 1) | Group-Object { [math]::Floor($_ / $batchSize) }
         foreach ($batch in $batches) {
             $permission.AccountReferences = [array]($batch.Group | ForEach-Object { $importedPermission.members[$_] })
