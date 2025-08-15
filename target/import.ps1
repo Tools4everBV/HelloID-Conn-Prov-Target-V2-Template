@@ -67,7 +67,13 @@ try {
             $isEnabled = $true
         }
 
-        # Make sure the Username has a value
+        # Make sure the displayName has a value
+        $displayName = "$($importedAccount.GivenName) $($importedAccount.LastName)".trim()
+        if ([string]::IsNullOrEmpty($displayName)) {
+            $displayName = $importedAccount.Id
+        }
+
+        # Make sure the userName has a value
         if ([string]::IsNullOrEmpty($importedAccount.UserName)) {
             $importedAccount.UserName = $importedAccount.Id
         }
@@ -75,7 +81,7 @@ try {
         # Return the result
         Write-Output @{
             AccountReference = $importedAccount.Id
-            DisplayName      = "$($importedAccount.GivenName) $($importedAccount.LastName)".trim()
+            displayName      = $displayName
             UserName         = $importedAccount.UserName
             Enabled          = $isEnabled
             Data             = $data
