@@ -1,5 +1,5 @@
 #################################################
-# HelloID-Conn-Prov-Target-{connectorName]-Import
+# HelloID-Conn-Prov-Target-{connectorName}-Import
 # PowerShell V2
 #################################################
 
@@ -47,23 +47,37 @@ function Resolve-{connectorName}Error {
 try {
     Write-Information 'Starting {connectorName} account entitlement import'
     $splatImportAccountParams = @{
-        Uri     = '<URL to API>'
-        Method  = 'GET'
+        Uri    = $actionContext.Configuration.BaseUrl
+        Method = 'GET'
     }
-    $importedAccounts = Invoke-RestMethod @splatGetAllAccountParams
+
+    # Make sure pagination is implemented when available
+    $importedAccounts = Invoke-RestMethod @splatImportAccountParams
 
     foreach ($importedAccount in $importedAccounts) {
+        # Making sure only fieldMapping fields are imported
         $data = @{}
         foreach ($field in $actionContext.ImportFields) {
             $data[$field] = $importedAccount[$field]
         }
 
+        # Set Enabled based on importedAccount status
+        $isEnabled = $false
+        if ($importedAccount.Status -eq 'Active') {
+            $isEnabled = $true
+        }
+
+        # Make sure the Username has a value
+        if ([string]::IsNullOrEmpty($importedAccount.UserName)) {
+            $importedAccount.UserName = $importedAccount.Id
+        }
+
         # Return the result
         Write-Output @{
-            AccountReference = $importedAccount.ExternalId
-            DisplayName      = $importedAccount.DisplayName
+            AccountReference = $importedAccount.Id
+            DisplayName      = "$($importedAccount.GivenName) $($importedAccount.LastName)".trim()
             UserName         = $importedAccount.UserName
-            Enabled          = $true
+            Enabled          = $isEnabled
             Data             = $data
         }
     }
