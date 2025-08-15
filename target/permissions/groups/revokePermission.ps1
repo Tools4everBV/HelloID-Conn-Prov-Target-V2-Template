@@ -70,13 +70,17 @@ try {
                 Write-Information "Revoking {connectorName} permission: [$($actionContext.PermissionDisplayName)] - [$($actionContext.References.Permission.Reference)]"
                 # < Write Revoke Permission logic here >
 
+                if ($actionContext.Origin -eq 'reconciliation') {
+                    # During reconciliation, hardcoded values may need to be set as personContext and actionContext.Data are not available
+                    # < Write reconciliation Revoke logic here >
+                }
             } else {
                 Write-Information "[DryRun] Revoke {connectorName} permission: [$($actionContext.PermissionDisplayName)] - [$($actionContext.References.Permission.Reference)], will be executed during enforcement"
             }
 
             $outputContext.Success = $true
             $outputContext.AuditLogs.Add([PSCustomObject]@{
-                    Message = "Revoke permission [$($actionContext.PermissionDisplayName)] was successful"
+                    Message = "Revoke permission [$($actionContext.PermissionDisplayName)] from [$($actionContext.References.Account)] was successful. Action initiated by: [$($actionContext.Origin)]"
                     IsError = $false
                 })
         }
@@ -85,7 +89,7 @@ try {
             Write-Information "{connectorName} account: [$($actionContext.References.Account)] could not be found, indicating that it may have been deleted"
             $outputContext.Success = $true
             $outputContext.AuditLogs.Add([PSCustomObject]@{
-                    Message = "{connectorName} account: [$($actionContext.References.Account)] could not be found, indicating that it may have been deleted"
+                    Message = "{connectorName} account: [$($actionContext.References.Account)] could not be found, indicating that it may have been deleted. Action initiated by: [$($actionContext.Origin)]"
                     IsError = $false
                 })
             break
@@ -96,15 +100,15 @@ try {
     $ex = $PSItem
     if ($($ex.Exception.GetType().FullName -eq 'Microsoft.PowerShell.Commands.HttpResponseException') -or
         $($ex.Exception.GetType().FullName -eq 'System.Net.WebException')) {
-        $errorObj = Resolve-{connectorName}Error -ErrorObject $ex
-        $auditMessage = "Could not revoke {connectorName} permission. Error: $($errorObj.FriendlyMessage)"
+        $errorObj = Resolve- { connectorName }Error -ErrorObject $ex
+        $auditMessage = "Could not revoke {connectorName} permission. Error: $($errorObj.FriendlyMessage). Action initiated by: [$($actionContext.Origin)]"
         Write-Warning "Error at Line '$($errorObj.ScriptLineNumber)': $($errorObj.Line). Error: $($errorObj.ErrorDetails)"
     } else {
-        $auditMessage = "Could not revoke {connectorName} permission. Error: $($_.Exception.Message)"
+        $auditMessage = "Could not revoke {connectorName} permission. Error: $($_.Exception.Message). Action initiated by: [$($actionContext.Origin)]"
         Write-Warning "Error at Line '$($ex.InvocationInfo.ScriptLineNumber)': $($ex.InvocationInfo.Line). Error: $($ex.Exception.Message)"
     }
     $outputContext.AuditLogs.Add([PSCustomObject]@{
-        Message = $auditMessage
-        IsError = $true
-    })
+            Message = $auditMessage
+            IsError = $true
+        })
 }
