@@ -65,7 +65,7 @@ try {
         'EnableAccount' {
             if (-not($actionContext.DryRun -eq $true)) {
                 Write-Information "Enabling {connectorName} account with accountReference: [$($actionContext.References.Account)]"
-                # < Write enable logic here >
+                # < Write Enable logic here >
 
             } else {
                 Write-Information "[DryRun] Enable {connectorName} account with accountReference: [$($actionContext.References.Account)], will be executed during enforcement"
@@ -81,10 +81,10 @@ try {
         }
 
         'NotFound' {
-            Write-Information "{connectorName} account: [$($actionContext.References.Account)] could not be found, indicating that it may have been deleted."
+            Write-Information "{connectorName} account: [$($actionContext.References.Account)] could not be found, indicating that it may have been deleted"
             $outputContext.Success = $false
             $outputContext.AuditLogs.Add([PSCustomObject]@{
-                    Message = "{connectorName} account: [$($actionContext.References.Account)] could not be found, indicating that it may have been deleted."
+                    Message = "{connectorName} account: [$($actionContext.References.Account)] could not be found, indicating that it may have been deleted"
                     IsError = $true
                 })
             break

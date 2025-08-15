@@ -86,10 +86,10 @@ try {
 
         'NotFound' {
             Write-Information "{connectorName} account: [$($actionContext.References.Account)] could not be found, indicating that it may have been deleted."
-            $outputContext.Success = $false
+            $outputContext.Success = $true
             $outputContext.AuditLogs.Add([PSCustomObject]@{
                     Message = "{connectorName} account: [$($actionContext.References.Account)] could not be found, indicating that it may have been deleted. Action initiated by: [$($actionContext.Origin)]"
-                    IsError = $true
+                    IsError = $false
                 })
             break
         }
