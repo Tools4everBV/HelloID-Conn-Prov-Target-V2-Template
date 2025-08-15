@@ -103,7 +103,7 @@ try {
         Write-Warning "Error at Line '$($ex.InvocationInfo.ScriptLineNumber)': $($ex.InvocationInfo.Line). Error: $($ex.Exception.Message)"
     }
     $outputContext.AuditLogs.Add([PSCustomObject]@{
-            Message = $auditMessage
-            IsError = $true
-        })
+        Message = $auditMessage
+        IsError = $true
+    })
 }
