@@ -65,16 +65,20 @@ try {
         'DisableAccount' {
             if (-not($actionContext.DryRun -eq $true)) {
                 Write-Information "Disabling {connectorName} account with accountReference: [$($actionContext.References.Account)]"
-                # < Write Disable logic here >
+                # < Write disable logic here >
 
+                if ($actionContext.Origin -eq 'reconciliation') {
+                    # During reconciliation, hardcoded values may need to be set as personContext and actionContext.Data are not available
+                    # < Write reconciliation disable logic here >
+                }
             } else {
                 Write-Information "[DryRun] Disable {connectorName} account with accountReference: [$($actionContext.References.Account)], will be executed during enforcement"
             }
 
-            # Make sure to filter out arrays from $outputContext.Data (If this is not mapped to type Array in the fieldmapping). This is not supported by HelloID.
+            # Make sure to filter out arrays from $outputContext.Data (If this is not mapped to type Array in the fieldMapping). This is not supported by HelloID.
             $outputContext.Success = $true
             $outputContext.AuditLogs.Add([PSCustomObject]@{
-                    Message = 'Disable account was successful'
+                    Message = "Disable account [$($actionContext.References.Account)] was successful. Action initiated by: [$($actionContext.Origin)]"
                     IsError = $false
                 })
             break
@@ -84,7 +88,7 @@ try {
             Write-Information "{connectorName} account: [$($actionContext.References.Account)] could not be found, indicating that it may have been deleted"
             $outputContext.Success = $true
             $outputContext.AuditLogs.Add([PSCustomObject]@{
-                    Message = "{connectorName} account: [$($actionContext.References.Account)] could not be found, indicating that it may have been deleted"
+                    Message = "{connectorName} account: [$($actionContext.References.Account)] could not be found, indicating that it may have been deleted. Action initiated by: [$($actionContext.Origin)]"
                     IsError = $false
                 })
             break
@@ -96,14 +100,14 @@ try {
     if ($($ex.Exception.GetType().FullName -eq 'Microsoft.PowerShell.Commands.HttpResponseException') -or
         $($ex.Exception.GetType().FullName -eq 'System.Net.WebException')) {
         $errorObj = Resolve-{connectorName}Error -ErrorObject $ex
-        $auditMessage = "Could not disable {connectorName} account. Error: $($errorObj.FriendlyMessage)"
+        $auditMessage = "Could not disable {connectorName} account. Error: $($errorObj.FriendlyMessage). Action initiated by: [$($actionContext.Origin)]"
         Write-Warning "Error at Line '$($errorObj.ScriptLineNumber)': $($errorObj.Line). Error: $($errorObj.ErrorDetails)"
     } else {
-        $auditMessage = "Could not disable {connectorName} account. Error: $($_.Exception.Message)"
+        $auditMessage = "Could not disable {connectorName} account. Error: $($_.Exception.Message). Action initiated by: [$($actionContext.Origin)]"
         Write-Warning "Error at Line '$($ex.InvocationInfo.ScriptLineNumber)': $($ex.InvocationInfo.Line). Error: $($ex.Exception.Message)"
     }
     $outputContext.AuditLogs.Add([PSCustomObject]@{
-        Message = $auditMessage
-        IsError = $true
-    })
+            Message = $auditMessage
+            IsError = $true
+        })
 }
