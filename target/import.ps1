@@ -46,13 +46,31 @@ function Resolve-{connectorName}Error {
 
 try {
     Write-Information 'Starting {connectorName} account entitlement import'
-    $splatImportAccountParams = @{
-        Uri    = $actionContext.Configuration.BaseUrl
-        Method = 'GET'
-    }
+    $importedAccounts = @(
+        @{
+            Id         = '1001'
+            NickName   = 'John'
+            FamilyName = 'Doe'
+            UserName   = 'j.doe'
+            Status     = 'Active'
+        },
+        @{
+            Id         = '1002'
+            NickName   = 'Jane'
+            FamilyName = 'Smith'
+            UserName   = 'j.smith'
+            Status     = 'Inactive'
+        }
+    )
 
-    # Make sure pagination is implemented when available
-    $importedAccounts = Invoke-RestMethod @splatImportAccountParams
+    # # Example of replacing the placeholder with actual code:
+    # $splatImportAccountParams = @{
+    #     Uri    = $actionContext.Configuration.BaseUrl
+    #     Method = 'GET'
+    # }
+
+    # # Make sure pagination is implemented when available
+    # $importedAccounts = Invoke-RestMethod @splatImportAccountParams
 
     foreach ($importedAccount in $importedAccounts) {
         # Making sure only fieldMapping fields are imported
@@ -68,7 +86,7 @@ try {
         }
 
         # Make sure the displayName has a value
-        $displayName = "$($importedAccount.GivenName) $($importedAccount.LastName)".trim()
+        $displayName = "$($importedAccount.NickName) $($importedAccount.FamilyName)".trim()
         if ([string]::IsNullOrEmpty($displayName)) {
             $displayName = $importedAccount.Id
         }
