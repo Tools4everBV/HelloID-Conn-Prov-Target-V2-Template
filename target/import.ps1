@@ -64,19 +64,37 @@ try {
     )
 
     # # Example of replacing the placeholder with actual code:
-    # $splatImportAccountParams = @{
-    #     Uri    = $actionContext.Configuration.BaseUrl
-    #     Method = 'GET'
-    # }
+    # $pageSize = 50
+    # $pageNumber = 1
+    # do {
+    #     $splatImportAccountParams = @{
+    #         Uri     = "$($actionContext.Configuration.BaseUrl)/api/users/list?pageNumber=$($pageNumber)&pageSize=$($pageSize)"
+    #         Method  = 'GET'
+    #         Headers = $headers
+    #     }
+    #     $response = Invoke-RestMethod @splatImportAccountParams
+    #     if ($response.data) {
+    #         foreach ($importedAccount in $response.data) {
+    #             $data = $importedAccount | Select-Object -Property $actionContext.ImportFields
+    #             # Enabled has a -not filter because the API uses an isDisabled property, which is the exact opposite of the enabled state used by HelloID.
+    #             Write-Output @{
+    #                 AccountReference = $importedAccount.Id
+    #                 displayName      = $displayName
+    #                 UserName         = $importedAccount.UserName
+    #                 Enabled          = $isEnabled
+    #                 Data             = $data
+    #             }
+    #         }
+    #     }
+    #     $pageNumber++
+    # } while ($pageNumber -le $response.totalPages)
 
-    # # Make sure pagination is implemented when available
-    # $importedAccounts = Invoke-RestMethod @splatImportAccountParams
 
     foreach ($importedAccount in $importedAccounts) {
         # Making sure only fieldMapping fields are imported
         $data = @{}
         foreach ($field in $actionContext.ImportFields) {
-            $data[$field] = $importedAccount[$field]
+            $data[$field] = $importedAccount.$field
         }
 
         # Set Enabled based on importedAccount status
@@ -92,7 +110,7 @@ try {
         }
 
         # Make sure the userName has a value
-        if ([string]::IsNullOrEmpty($importedAccount.UserName)) {
+        if ([string]::IsNullOrWhiteSpace($importedAccount.UserName)) {
             $importedAccount.UserName = $importedAccount.Id
         }
 
