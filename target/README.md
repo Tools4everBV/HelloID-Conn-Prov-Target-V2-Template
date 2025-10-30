@@ -13,12 +13,12 @@
 
 ## Table of contents
 
-- [HelloID-Conn-Prov-Target-{connectorName}](#helloid-conn-prov-target-{connectorName})
+- [HelloID-Conn-Prov-Target-{connectorName}](#helloid-conn-prov-target-connectorname)
   - [Table of contents](#table-of-contents)
   - [Introduction](#introduction)
   - [Supported  features](#supported--features)
   - [Getting started](#getting-started)
-    - [Prerequisites](#prerequisites)
+    - [Requirements](#requirements)
     - [Connection settings](#connection-settings)
     - [Correlation configuration](#correlation-configuration)
     - [Field mapping](#field-mapping)
@@ -49,7 +49,7 @@ The following features are available:
 
 ## Getting started
 
-### Prerequisites
+### Requirements
 
 <!--
 Describe the specific requirements that must be met before using this connector, such as the need for an agent, a certificate or IP whitelisting.
