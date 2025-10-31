@@ -7,7 +7,7 @@
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor [System.Net.SecurityProtocolType]::Tls12
 
 #region functions
-function Resolve-{connectorName}Error {
+function Resolve- { connectorName }Error {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory)]
@@ -65,11 +65,12 @@ try {
         'DeleteAccount' {
             if (-not($actionContext.DryRun -eq $true)) {
                 Write-Information "Deleting {connectorName} account with accountReference: [$($actionContext.References.Account)]"
-                # < Write Delete logic here >
 
                 if ($actionContext.Origin -eq 'reconciliation') {
                     # During reconciliation, hardcoded values may need to be set as personContext and actionContext.Data are not available
                     # < Write reconciliation Delete logic here >
+                } else {
+                    # < Write Delete logic here >
                 }
             } else {
                 Write-Information "[DryRun] Delete {connectorName} account with accountReference: [$($actionContext.References.Account)], will be executed during enforcement"
@@ -99,7 +100,7 @@ try {
     $ex = $PSItem
     if ($($ex.Exception.GetType().FullName -eq 'Microsoft.PowerShell.Commands.HttpResponseException') -or
         $($ex.Exception.GetType().FullName -eq 'System.Net.WebException')) {
-        $errorObj = Resolve-{connectorName}Error -ErrorObject $ex
+        $errorObj = Resolve- { connectorName }Error -ErrorObject $ex
         $auditLogMessage = "Could not delete {connectorName} account. Error: $($errorObj.FriendlyMessage). Action initiated by: [$($actionContext.Origin)]"
         Write-Warning "Error at Line '$($errorObj.ScriptLineNumber)': $($errorObj.Line). Error: $($errorObj.ErrorDetails)"
     } else {
