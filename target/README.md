@@ -18,6 +18,7 @@
   - [Introduction](#introduction)
   - [Supported  features](#supported--features)
   - [Getting started](#getting-started)
+    - [HelloID Icon URL](#helloid-icon-url)
     - [Requirements](#requirements)
     - [Connection settings](#connection-settings)
     - [Correlation configuration](#correlation-configuration)
@@ -55,6 +56,12 @@ Resolutions are not possible because...
 -->
 
 ## Getting started
+
+### HelloID Icon URL
+URL of the icon used for the HelloID Provisioning target system.
+```
+https://raw.githubusercontent.com/Tools4everBV/HelloID-Conn-Prov-Target-ActiveDirectory/refs/heads/main/Icon.png
+```
 
 ### Requirements
 
