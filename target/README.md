@@ -40,12 +40,19 @@ The following features are available:
 
 | Feature                                   | Supported | Actions                                 | Remarks           |
 | ----------------------------------------- | --------- | --------------------------------------- | ----------------- |
-| **Account Lifecycle**                     | ✅        | Create, Update, Enable, Disable, Delete |                   |
-| **Permissions**                           | ✅        | Retrieve, Grant, Revoke                 | Static or Dynamic |
-| **Resources**                             | ❌        | -                                       |                   |
-| **Entitlement Import: Accounts**          | ✅        | -                                       |                   |
-| **Entitlement Import: Permissions**       | ❌        | -                                       |                   |
-| **Governance Reconciliation Resolutions** | ✅        | -                                       |                   |
+| **Account Lifecycle**                     | ✅         | Create, Update, Enable, Disable, Delete |                   |
+| **Permissions**                           | ✅         | Retrieve, Grant, Revoke                 | Static or Dynamic |
+| **Resources**                             | ❌         | -                                       |                   |
+| **Entitlement Import: Accounts**          | ✅         | -                                       |                   |
+| **Entitlement Import: Permissions**       | ❌         | -                                       |                   |
+| **Governance Reconciliation Resolutions** | ✅⚠️        | -                                       |                   |
+
+<!-- 
+Example
+### ⚠️ Governance Reconciliation Resolutions
+Governance reconciliation is supported for reporting purposes.
+Resolutions are not possible because... 
+-->
 
 ## Getting started
 
