@@ -93,10 +93,9 @@ try {
         # The code below splits a list of permission members into batches of 100
         # Each batch is assigned to $permission.AccountReferences and the permission object will be returned to HelloID for each batch
         # Ensure batching is based on the number of account references to prevent exceeding the maximum limit of 500 account references per batch
-        $batchSize = 100
-        $batches = 0..($importedPermission.members.Count - 1) | Group-Object { [math]::Floor($_ / $batchSize) }
-        foreach ($batch in $batches) {
-            $permission.AccountReferences = [array]($batch.Group | ForEach-Object { $importedPermission.members[$_] })
+        $batchSize = 500
+        for ($i = 0; $i -lt $importedPermission.members.Count; $i += $batchSize) {
+            $permission.AccountReferences = $importedPermission.members[$i..([Math]::Min($i + $batchSize - 1, $importedPermission.members.Count - 1))]
             Write-Output $permission
         }
     }

@@ -26,6 +26,11 @@
     - [When performance matters](#when-performance-matters)
       - [Profiler](#profiler)
       - [SpeedScope](#speedscope)
+  - [Understanding Semantic Versioning (MAJOR.MINOR.PATCH)](#understanding-semantic-versioning-majorminorpatch)
+    - [1. Major Version (`MAJOR`)](#1-major-version-major)
+    - [2. Minor Version (`MINOR`)](#2-minor-version-minor)
+    - [3. Patch Version (`PATCH`)](#3-patch-version-patch)
+    - [(MAJOR.MINOR.PATCH) Summary](#majorminorpatch-summary)
   - [Security and compliance](#security-and-compliance)
   - [Other useful VSCode extensions](#other-useful-vscode-extensions)
   - [Contributing](#contributing)
@@ -283,6 +288,48 @@ _Profiler_ is a PowerShell module that originated from `Measure-Script`. _Profil
 SpeedScope is a web viewer for performance profiles and can be downloaded from: https://github.com/jlfwong/speedscope/releases
 
 _Profiler_ can generate flame graphs that can be viewed using _SpeedScope_.
+
+## Understanding Semantic Versioning (MAJOR.MINOR.PATCH)
+By following `major.minor.patch`, developers communicate clearly **how risky an upgrade is** and what kind of changes users can expect.
+Version numbers in GitHub projects (and most software) usually follow **Semantic Versioning (SemVer)**.  
+A version looks like this:
+
+### 1. Major Version (`MAJOR`)
+- **Format:** `X.0.0`
+- **When to increment:**  
+  - You make **breaking changes** to the connector API or behavior.  
+  - Users may need to **update their scripts or configurations**.  
+- **Example in HelloID connector:**  
+  - Suppose your connector initially expects a `Username` field in a request.  
+  - You change it to `UserPrincipalName` and remove `Username`.  
+  - Existing scripts break unless updated.  
+  - Version change: `1.2.3 → 2.0.0`
+
+### 2. Minor Version (`MINOR`)
+- **Format:** `0.X.0`
+- **When to increment:**  
+  - You add **new features** or actions that are **backwards-compatible**.  
+  - Existing configurations still work without changes.  
+- **Example in HelloID connector:**  
+  - You add a new function like `ResetUserPassword()` to your connector.  
+  - Existing functions like `CreateUser()` still work as before.  
+  - Version change: `2.0.0 → 2.1.0`
+
+### 3. Patch Version (`PATCH`)
+- **Format:** `0.0.X`
+- **When to increment:**  
+  - You fix **bugs** or make **small improvements** without changing the API.  
+- **Example in HelloID connector:**  
+  - A bug caused the `GetUser()` function to fail when an optional field was empty.  
+  - You fix it so it gracefully handles empty fields.  
+  - Version change: `2.1.0 → 2.1.1`
+
+### (MAJOR.MINOR.PATCH) Summary
+| Type | Example Change | Backward Compatible? | Example Version Change |
+|------|----------------|----------------------|------------------------|
+| **MAJOR** | Breaking changes | ❌ No | `1.0.0 → 2.0.0` |
+| **MINOR** | New features | ✅ Yes | `1.1.0 → 1.2.0` |
+| **PATCH** | Bug fixes | ✅ Yes | `1.1.1 → 1.1.2` |
 
 ## Security and compliance
 
