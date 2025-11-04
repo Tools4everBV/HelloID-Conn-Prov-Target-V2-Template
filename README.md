@@ -54,6 +54,7 @@ We can't wait to see the amazing PowerShell connectors you'll build with these t
 | ./permissions/groups/grantPermission.ps1     | PowerShell _grant_ lifecycle action                                                        |
 | ./permissions/groups/revokePermission.ps1    | PowerShell _revoke_ lifecycle action                                                       |
 | ./permissions/groups/permissions.ps1         | PowerShell _permissions_ lifecycle action                                                  |
+| ./permissions/groups/import.ps1              | PowerShell _importPermission_ lifecycle action                                                       |
 | ./resources/groups/resources.ps1             | PowerShell _resources_ lifecycle action                                                    |
 | ./test/config.json                           | Prefilled _config.json_ file for easy debugging                                            |
 | ./test/actionContext.json                    | Prefilled _actionContext.json_ file for easy debugging                                     |
@@ -65,6 +66,7 @@ We can't wait to see the amazing PowerShell connectors you'll build with these t
 | disable.ps1                                  | PowerShell _disable_ lifecycle action                                                      |
 | enable.ps1                                   | PowerShell _enable_ lifecycle action                                                       |
 | update.ps1                                   | PowerShell _update_ lifecycle action                                                       |
+| import.ps1                                   | PowerShell _import_ lifecycle action                                                       |
 | configuration.json                           | Default _configuration.json_                                                               |
 | fieldMapping.json                            | Default _fieldMapping.json_                                                                |
 | README.md                                    | A prefilled _readme.md_                                                                    |
@@ -180,13 +182,14 @@ Please refer to the code following [action logic code example](#action-logic-exa
 
 ```powershell
  # Verify if a user must be either [created and correlated] or just [correlated]
+$outputContext.AccountReference = 'Currently not available'
 $correlatedAccount = 'The user object from the target system'
-if ($null -eq $correlatedAccount){
+if ($correlatedAccount.Count -eq 0) {
     $action = 'CreateAccount'
-    $outputContext.AccountReference = 'Currently not available'
-} else {
+} elseif ($correlatedAccount.Count -eq 1) {
     $action = 'CorrelateAccount'
-    $outputContext.AccountReference = $correlatedAccount.id
+} elseif ($correlatedAccount.Count -gt 1) {
+    throw "Multiple accounts found for person where $correlationField is: [$correlationValue]"
 }
 
 # Process
