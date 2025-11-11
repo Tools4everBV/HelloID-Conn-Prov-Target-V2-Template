@@ -1,5 +1,5 @@
 ################################################################
-# HelloID-Conn-Prov-Target-{connectorName}-GrantPermission-Group
+# HelloID-Conn-Prov-Target-{connectorName}-SubPermissions-Group
 # PowerShell V2
 ################################################################
 
@@ -40,15 +40,7 @@ function Resolve-{connectorName}Error {
             $errorDetailsObject = ($httpErrorObj.ErrorDetails | ConvertFrom-Json)
             # Make sure to inspect the error result object and add only the error message as a FriendlyMessage.
             # $httpErrorObj.FriendlyMessage = $errorDetailsObject.message
-
-            # Example of error message handling logic:
-            if ($errorDetailsObject.error_description) {
-                $httpErrorObj.FriendlyMessage = $errorDetailsObject.error_description
-            } elseif ($errorDetailsObject.Error.message) {
-                $httpErrorObj.FriendlyMessage = $errorDetailsObject.Error.message
-            } else {
-                $httpErrorObj.FriendlyMessage = $httpErrorObj.ErrorDetails # Temporarily assignment
-            }
+            $httpErrorObj.FriendlyMessage = $httpErrorObj.ErrorDetails # Temporarily assignment
         } catch {
             $httpErrorObj.FriendlyMessage = "Error: [$($httpErrorObj.ErrorDetails)]"
             Write-Warning $_.Exception.Message
@@ -145,7 +137,7 @@ try {
     $ex = $PSItem
     if ($($ex.Exception.GetType().FullName -eq 'Microsoft.PowerShell.Commands.HttpResponseException') -or
         $($ex.Exception.GetType().FullName -eq 'System.Net.WebException')) {
-        $errorObj = Resolve- { connectorName }Error -ErrorObject $ex
+        $errorObj = Resolve-{connectorName}Error -ErrorObject $ex
         $auditMessage = "Could not manage {connectorName} permissions. Error: $($errorObj.FriendlyMessage)"
         Write-Warning "Error at Line '$($errorObj.ScriptLineNumber)': $($errorObj.Line). Error: $($errorObj.ErrorDetails)"
     } else {

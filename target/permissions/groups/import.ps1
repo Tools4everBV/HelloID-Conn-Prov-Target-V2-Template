@@ -1,5 +1,5 @@
 ####################################################################
-# HelloID-Conn-Prov-Target-{connectorName}-Permissions-Groups-Import
+# HelloID-Conn-Prov-Target-{connectorName}-ImportPermissions-Group
 # PowerShell V2
 ####################################################################
 
@@ -35,15 +35,7 @@ function Resolve-{connectorName}Error {
             $errorDetailsObject = ($httpErrorObj.ErrorDetails | ConvertFrom-Json)
             # Make sure to inspect the error result object and add only the error message as a FriendlyMessage.
             # $httpErrorObj.FriendlyMessage = $errorDetailsObject.message
-
-            # Example of error message handling logic:
-            if ($errorDetailsObject.error_description) {
-                $httpErrorObj.FriendlyMessage = $errorDetailsObject.error_description
-            } elseif ($errorDetailsObject.Error.message) {
-                $httpErrorObj.FriendlyMessage = $errorDetailsObject.Error.message
-            } else {
-                $httpErrorObj.FriendlyMessage = $httpErrorObj.ErrorDetails # Temporarily assignment
-            }
+            $httpErrorObj.FriendlyMessage = $httpErrorObj.ErrorDetails # Temporarily assignment
         } catch {
             $httpErrorObj.FriendlyMessage = "Error: [$($httpErrorObj.ErrorDetails)]"
             Write-Warning $_.Exception.Message

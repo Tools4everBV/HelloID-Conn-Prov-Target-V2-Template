@@ -299,10 +299,10 @@ A version looks like this:
 - **When to increment:**  
   - You make **breaking changes** to the connector API or behavior.  
   - Users may need to **update their scripts or configurations**.  
-- **Example in HelloID connector:**  
-  - Suppose your connector initially expects a `Username` field in a request.  
-  - You change it to `UserPrincipalName` and remove `Username`.  
-  - Existing scripts break unless updated.  
+- **Example in HelloID connector:**
+  - The permission.displayname needs to be deleted otherwise HelloID results in an error.
+  - The powershell version of HelloID changes, which requires changes to the connector.
+  - If there is a change in HelloID which results in an error in the connector.
   - Version change: `1.2.3 → 2.0.0`
 
 ### 2. Minor Version (`MINOR`)
@@ -311,8 +311,9 @@ A version looks like this:
   - You add **new features** or actions that are **backwards-compatible**.  
   - Existing configurations still work without changes.  
 - **Example in HelloID connector:**  
-  - You add a new function like `ResetUserPassword()` to your connector.  
-  - Existing functions like `CreateUser()` still work as before.  
+  - You change an endpoint from /user to /account where the body of the API request stays the same. 
+  - You change the fieldMapping or configuration because the API requirements change but there is no HelloID error.
+  - You add the import scripts to an existing connector.
   - Version change: `2.0.0 → 2.1.0`
 
 ### 3. Patch Version (`PATCH`)
@@ -320,8 +321,10 @@ A version looks like this:
 - **When to increment:**  
   - You fix **bugs** or make **small improvements** without changing the API.  
 - **Example in HelloID connector:**  
-  - A bug caused the `GetUser()` function to fail when an optional field was empty.  
-  - You fix it so it gracefully handles empty fields.  
+  - An API request fails because the auth header was missing.
+  - A bug caused the `GetUser()` function to fail when an optional field was empty.
+  - You change the auditLogMessages to keep them consistent between scripts.
+  - You correct a spelling mistake.
   - Version change: `2.1.0 → 2.1.1`
 
 ### (MAJOR.MINOR.PATCH) Summary
