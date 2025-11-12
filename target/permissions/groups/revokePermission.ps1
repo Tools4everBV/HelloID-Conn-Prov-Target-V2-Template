@@ -37,7 +37,8 @@ function Resolve-{connectorName}Error {
             # $httpErrorObj.FriendlyMessage = $errorDetailsObject.message
             $httpErrorObj.FriendlyMessage = $httpErrorObj.ErrorDetails # Temporarily assignment
         } catch {
-            $httpErrorObj.FriendlyMessage = "Error: [$($httpErrorObj.ErrorDetails)] [$($_.Exception.Message)]"
+            $httpErrorObj.FriendlyMessage = "Error: [$($httpErrorObj.ErrorDetails)]"
+            Write-Warning $_.Exception.Message
         }
         Write-Output $httpErrorObj
     }
@@ -68,11 +69,12 @@ try {
             # Make sure to test with special characters and if needed; add utf8 encoding.
             if (-not($actionContext.DryRun -eq $true)) {
                 Write-Information "Revoking {connectorName} permission: [$($actionContext.PermissionDisplayName)] - [$($actionContext.References.Permission.Reference)]"
-                # < Write Revoke Permission logic here >
 
                 if ($actionContext.Origin -eq 'reconciliation') {
                     # During reconciliation, hardcoded values may need to be set as personContext and actionContext.Data are not available
                     # < Write reconciliation Revoke logic here >
+                } else {
+                    # < Write Revoke Permission logic here >
                 }
             } else {
                 Write-Information "[DryRun] Revoke {connectorName} permission: [$($actionContext.PermissionDisplayName)] - [$($actionContext.References.Permission.Reference)], will be executed during enforcement"
@@ -101,14 +103,14 @@ try {
     if ($($ex.Exception.GetType().FullName -eq 'Microsoft.PowerShell.Commands.HttpResponseException') -or
         $($ex.Exception.GetType().FullName -eq 'System.Net.WebException')) {
         $errorObj = Resolve-{connectorName}Error -ErrorObject $ex
-        $auditMessage = "Could not revoke {connectorName} permission. Error: $($errorObj.FriendlyMessage). Action initiated by: [$($actionContext.Origin)]"
+        $auditLogMessage = "Could not revoke {connectorName} permission. Error: $($errorObj.FriendlyMessage). Action initiated by: [$($actionContext.Origin)]"
         Write-Warning "Error at Line '$($errorObj.ScriptLineNumber)': $($errorObj.Line). Error: $($errorObj.ErrorDetails)"
     } else {
-        $auditMessage = "Could not revoke {connectorName} permission. Error: $($_.Exception.Message). Action initiated by: [$($actionContext.Origin)]"
+        $auditLogMessage = "Could not revoke {connectorName} permission. Error: $($_.Exception.Message). Action initiated by: [$($actionContext.Origin)]"
         Write-Warning "Error at Line '$($ex.InvocationInfo.ScriptLineNumber)': $($ex.InvocationInfo.Line). Error: $($ex.Exception.Message)"
     }
     $outputContext.AuditLogs.Add([PSCustomObject]@{
-            Message = $auditMessage
+            Message = $auditLogMessage
             IsError = $true
         })
 }

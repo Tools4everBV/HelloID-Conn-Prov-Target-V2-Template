@@ -13,12 +13,13 @@
 
 ## Table of contents
 
-- [HelloID-Conn-Prov-Target-{connectorName}](#helloid-conn-prov-target-{connectorName})
+- [HelloID-Conn-Prov-Target-{connectorName}](#helloid-conn-prov-target-connectorname)
   - [Table of contents](#table-of-contents)
   - [Introduction](#introduction)
   - [Supported  features](#supported--features)
   - [Getting started](#getting-started)
-    - [Prerequisites](#prerequisites)
+    - [HelloID Icon URL](#helloid-icon-url)
+    - [Requirements](#requirements)
     - [Connection settings](#connection-settings)
     - [Correlation configuration](#correlation-configuration)
     - [Field mapping](#field-mapping)
@@ -40,16 +41,29 @@ The following features are available:
 
 | Feature                                   | Supported | Actions                                 | Remarks           |
 | ----------------------------------------- | --------- | --------------------------------------- | ----------------- |
-| **Account Lifecycle**                     | ✅        | Create, Update, Enable, Disable, Delete |                   |
-| **Permissions**                           | ✅        | Retrieve, Grant, Revoke                 | Static or Dynamic |
-| **Resources**                             | ❌        | -                                       |                   |
-| **Entitlement Import: Accounts**          | ✅        | -                                       |                   |
-| **Entitlement Import: Permissions**       | ❌        | -                                       |                   |
-| **Governance Reconciliation Resolutions** | ✅        | -                                       |                   |
+| **Account Lifecycle**                     | ✅         | Create, Update, Enable, Disable, Delete |                   |
+| **Permissions**                           | ✅         | Retrieve, Grant, Revoke                 | Static or Dynamic |
+| **Resources**                             | ❌         | -                                       |                   |
+| **Entitlement Import: Accounts**          | ✅         | -                                       |                   |
+| **Entitlement Import: Permissions**       | ❌         | -                                       |                   |
+| **Governance Reconciliation Resolutions** | ✅⚠️        | -                                       |                   |
+
+<!-- 
+Example
+### ⚠️ Governance Reconciliation Resolutions
+Governance reconciliation is supported for reporting purposes.
+Resolutions are not possible because... 
+-->
 
 ## Getting started
 
-### Prerequisites
+### HelloID Icon URL
+URL of the icon used for the HelloID Provisioning target system.
+```
+https://raw.githubusercontent.com/Tools4everBV/HelloID-Conn-Prov-Target-ActiveDirectory/refs/heads/main/Icon.png
+```
+
+### Requirements
 
 <!--
 Describe the specific requirements that must be met before using this connector, such as the need for an agent, a certificate or IP whitelisting.

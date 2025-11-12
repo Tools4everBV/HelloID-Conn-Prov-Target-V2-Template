@@ -37,7 +37,8 @@ function Resolve-{connectorName}Error {
             # $httpErrorObj.FriendlyMessage = $errorDetailsObject.message
             $httpErrorObj.FriendlyMessage = $httpErrorObj.ErrorDetails # Temporarily assignment
         } catch {
-            $httpErrorObj.FriendlyMessage = "Error: [$($httpErrorObj.ErrorDetails)] [$($_.Exception.Message)]"
+            $httpErrorObj.FriendlyMessage = "Error: [$($httpErrorObj.ErrorDetails)]"
+            Write-Warning $_.Exception.Message
         }
         Write-Output $httpErrorObj
     }
@@ -98,12 +99,7 @@ try {
 
         'NoChanges' {
             Write-Information "No changes to {connectorName} account with accountReference: [$($actionContext.References.Account)]"
-
             $outputContext.Success = $true
-            $outputContext.AuditLogs.Add([PSCustomObject]@{
-                    Message = 'No changes will be made to the account during enforcement'
-                    IsError = $false
-                })
             break
         }
 
@@ -123,14 +119,14 @@ try {
     if ($($ex.Exception.GetType().FullName -eq 'Microsoft.PowerShell.Commands.HttpResponseException') -or
         $($ex.Exception.GetType().FullName -eq 'System.Net.WebException')) {
         $errorObj = Resolve-{connectorName}Error -ErrorObject $ex
-        $auditMessage = "Could not update {connectorName} account. Error: $($errorObj.FriendlyMessage)"
+        $auditLogMessage = "Could not update {connectorName} account. Error: $($errorObj.FriendlyMessage)"
         Write-Warning "Error at Line '$($errorObj.ScriptLineNumber)': $($errorObj.Line). Error: $($errorObj.ErrorDetails)"
     } else {
-        $auditMessage = "Could not update {connectorName} account. Error: $($ex.Exception.Message)"
+        $auditLogMessage = "Could not update {connectorName} account. Error: $($ex.Exception.Message)"
         Write-Warning "Error at Line '$($ex.InvocationInfo.ScriptLineNumber)': $($ex.InvocationInfo.Line). Error: $($ex.Exception.Message)"
     }
     $outputContext.AuditLogs.Add([PSCustomObject]@{
-            Message = $auditMessage
+            Message = $auditLogMessage
             IsError = $true
         })
 }

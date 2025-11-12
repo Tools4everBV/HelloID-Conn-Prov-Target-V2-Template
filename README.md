@@ -26,6 +26,11 @@
     - [When performance matters](#when-performance-matters)
       - [Profiler](#profiler)
       - [SpeedScope](#speedscope)
+  - [Understanding Semantic Versioning (MAJOR.MINOR.PATCH)](#understanding-semantic-versioning-majorminorpatch)
+    - [1. Major Version (`MAJOR`)](#1-major-version-major)
+    - [2. Minor Version (`MINOR`)](#2-minor-version-minor)
+    - [3. Patch Version (`PATCH`)](#3-patch-version-patch)
+    - [(MAJOR.MINOR.PATCH) Summary](#majorminorpatch-summary)
   - [Security and compliance](#security-and-compliance)
   - [Other useful VSCode extensions](#other-useful-vscode-extensions)
   - [Contributing](#contributing)
@@ -54,6 +59,7 @@ We can't wait to see the amazing PowerShell connectors you'll build with these t
 | ./permissions/groups/grantPermission.ps1     | PowerShell _grant_ lifecycle action                                                        |
 | ./permissions/groups/revokePermission.ps1    | PowerShell _revoke_ lifecycle action                                                       |
 | ./permissions/groups/permissions.ps1         | PowerShell _permissions_ lifecycle action                                                  |
+| ./permissions/groups/import.ps1              | PowerShell _importPermission_ lifecycle action                                                       |
 | ./resources/groups/resources.ps1             | PowerShell _resources_ lifecycle action                                                    |
 | ./test/config.json                           | Prefilled _config.json_ file for easy debugging                                            |
 | ./test/actionContext.json                    | Prefilled _actionContext.json_ file for easy debugging                                     |
@@ -65,6 +71,7 @@ We can't wait to see the amazing PowerShell connectors you'll build with these t
 | disable.ps1                                  | PowerShell _disable_ lifecycle action                                                      |
 | enable.ps1                                   | PowerShell _enable_ lifecycle action                                                       |
 | update.ps1                                   | PowerShell _update_ lifecycle action                                                       |
+| import.ps1                                   | PowerShell _import_ lifecycle action                                                       |
 | configuration.json                           | Default _configuration.json_                                                               |
 | fieldMapping.json                            | Default _fieldMapping.json_                                                                |
 | README.md                                    | A prefilled _readme.md_                                                                    |
@@ -180,13 +187,14 @@ Please refer to the code following [action logic code example](#action-logic-exa
 
 ```powershell
  # Verify if a user must be either [created and correlated] or just [correlated]
+$outputContext.AccountReference = 'Currently not available'
 $correlatedAccount = 'The user object from the target system'
-if ($null -eq $correlatedAccount){
+if ($correlatedAccount.Count -eq 0) {
     $action = 'CreateAccount'
-    $outputContext.AccountReference = 'Currently not available'
-} else {
+} elseif ($correlatedAccount.Count -eq 1) {
     $action = 'CorrelateAccount'
-    $outputContext.AccountReference = $correlatedAccount.id
+} elseif ($correlatedAccount.Count -gt 1) {
+    throw "Multiple accounts found for person where $correlationField is: [$correlationValue]"
 }
 
 # Process
@@ -280,6 +288,49 @@ _Profiler_ is a PowerShell module that originated from `Measure-Script`. _Profil
 SpeedScope is a web viewer for performance profiles and can be downloaded from: https://github.com/jlfwong/speedscope/releases
 
 _Profiler_ can generate flame graphs that can be viewed using _SpeedScope_.
+
+## Understanding Semantic Versioning (MAJOR.MINOR.PATCH)
+By following `major.minor.patch`, developers communicate clearly **how risky an upgrade is** and what kind of changes users can expect.
+Version numbers in GitHub projects (and most software) usually follow **Semantic Versioning (SemVer)**.  
+A version looks like this:
+
+### 1. Major Version (`MAJOR`)
+- **Format:** `X.0.0`
+- **When to increment:**  
+  - You make **breaking changes** to the connector API or behavior.  
+  - Users may need to **update their scripts or configurations**.  
+- **Example in HelloID connector:**
+  - The displayName is removed from the permission.Reference resulting in entitlement issue's.
+  - You change the fieldMapping or configuration because the API requirements change. This is a major change because something needs to be adjusted in HelloID.
+  - If there is a change in HelloID which results in an error in the connector.
+  - Version change: `1.2.3 → 2.0.0`
+
+### 2. Minor Version (`MINOR`)
+- **Format:** `0.X.0`
+- **When to increment:**  
+  - You add **new features** or actions that are **backwards-compatible**.  
+  - Existing configurations still work without changes.  
+- **Example in HelloID connector:**  
+  - You change an endpoint from /user to /account where the body of the API request stays the same. 
+  - You add the import scripts to an existing connector.
+  - Version change: `2.0.0 → 2.1.0`
+
+### 3. Patch Version (`PATCH`)
+- **Format:** `0.0.X`
+- **When to increment:**  
+  - You fix **bugs** or make **small improvements** without changing the API.  
+- **Example in HelloID connector:**  
+  - An API request fails because the auth header was missing.
+  - You change the auditLogMessages to keep them consistent between scripts.
+  - You correct a spelling mistake.
+  - Version change: `2.1.0 → 2.1.1`
+
+### (MAJOR.MINOR.PATCH) Summary
+| Type | Example Change | Backward Compatible? | Example Version Change |
+|------|----------------|----------------------|------------------------|
+| **MAJOR** | Breaking changes | ❌ No | `1.0.0 → 2.0.0` |
+| **MINOR** | New features | ✅ Yes | `1.1.0 → 1.2.0` |
+| **PATCH** | Bug fixes | ✅ Yes | `1.1.1 → 1.1.2` |
 
 ## Security and compliance
 

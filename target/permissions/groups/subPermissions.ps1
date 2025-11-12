@@ -1,10 +1,15 @@
-##################################################
-# HelloID-Conn-Prov-Target-{connectorName}-Delete
+################################################################
+# HelloID-Conn-Prov-Target-{connectorName}-SubPermissions-Group
 # PowerShell V2
-##################################################
+################################################################
 
 # Enable TLS1.2
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor [System.Net.SecurityProtocolType]::Tls12
+
+# Script Mapping lookup values
+# Lookup values which are used in the mapping to determine the subPermissions
+$PrimaryLookupKey = { $_.CostCenter.code } # Mandatory
+$SecondaryLookupKey = { $_.CostCenter.name } # Mandatory
 
 #region functions
 function Resolve-{connectorName}Error {
@@ -45,6 +50,7 @@ function Resolve-{connectorName}Error {
 }
 #endregion
 
+# Begin
 try {
     # Verify if [aRef] has a value
     if ([string]::IsNullOrEmpty($($actionContext.References.Account))) {
@@ -55,61 +61,91 @@ try {
     $correlatedAccount = 'userInfo'
     # $correlatedAccount = (Invoke-RestMethod @splatGetUserParams)
 
-    if ($null -ne $correlatedAccount) {
-        $action = 'DeleteAccount'
-    } else {
-        $action = 'NotFound'
+    # Collect current permissions
+    $currentPermissions = @{}
+    foreach ($permission in $actionContext.CurrentPermissions) {
+        $currentPermissions[$permission.Reference.Id] = $permission.DisplayName
     }
 
-    # Process
-    switch ($action) {
-        'DeleteAccount' {
-            if (-not($actionContext.DryRun -eq $true)) {
-                Write-Information "Deleting {connectorName} account with accountReference: [$($actionContext.References.Account)]"
+    # Collect desired permissions
+    $desiredPermissions = @{}
+    if (-not($actionContext.Operation -eq 'revoke')) {
+        foreach ($contract in $personContext.Person.Contracts) {
+            if ($contract.Context.InConditions -or ($actionContext.DryRun -eq $true)) {
+                $desiredPermissions[$PrimaryLookupKey] = $SecondaryLookupKey
+            }
+        }
+    }
 
-                if ($actionContext.Origin -eq 'reconciliation') {
-                    # During reconciliation, hardcoded values may need to be set as personContext and actionContext.Data are not available
-                    # < Write reconciliation Delete logic here >
-                } else {
-                    # < Write Delete logic here >
+    # Process desired permissions to grant
+    foreach ($permission in $desiredPermissions.GetEnumerator()) {
+        $outputContext.SubPermissions.Add([PSCustomObject]@{
+                DisplayName = $permission.Value
+                Reference   = [PSCustomObject]@{
+                    Id = $permission.Name
                 }
-            } else {
-                Write-Information "[DryRun] Delete {connectorName} account with accountReference: [$($actionContext.References.Account)], will be executed during enforcement"
+            })
+
+        if (-not $currentPermissions.ContainsKey($permission.Name)) {
+            if (-not($actionContext.DryRun -eq $true)) {
+                # Write permission grant logic here
             }
 
-            # Make sure to filter out arrays from $outputContext.Data (If this is not mapped to type Array in the fieldmapping). This is not supported by HelloID.
-            $outputContext.Success = $true
             $outputContext.AuditLogs.Add([PSCustomObject]@{
-                    Message = "Delete account [$($actionContext.References.Account)] was successful. Action initiated by: [$($actionContext.Origin)]"
+                    Action  = 'GrantPermission'
+                    Message = "Granted access to department share $($permission.Value)"
                     IsError = $false
                 })
-            break
-        }
-
-        'NotFound' {
-            Write-Information "{connectorName} account: [$($actionContext.References.Account)] could not be found, indicating that it may have been deleted"
-            $outputContext.Success = $true
-            $outputContext.AuditLogs.Add([PSCustomObject]@{
-                    Message = "{connectorName} account: [$($actionContext.References.Account)] could not be found, indicating that it may have been deleted. Action initiated by: [$($actionContext.Origin)]"
-                    IsError = $false
-                })
-            break
         }
     }
+
+    # Process current permissions to revoke
+    $newCurrentPermissions = @{}
+    foreach ($permission in $currentPermissions.GetEnumerator()) {
+        if (-not $desiredPermissions.ContainsKey($permission.Name)) {
+            if (-not($actionContext.DryRun -eq $true)) {
+                # Write permission revoke logic here
+            }
+
+            $outputContext.AuditLogs.Add([PSCustomObject]@{
+                    Action  = 'RevokePermission'
+                    Message = "Revoked access to department share $($permission.Value)"
+                    IsError = $false
+                })
+        } else {
+            $newCurrentPermissions[$permission.Name] = $permission.Value
+        }
+    }
+
+    # Process permissions to update
+    if ($actionContext.Operation -eq 'update') {
+        foreach ($permission in $newCurrentPermissions.GetEnumerator()) {
+            if (-not($actionContext.DryRun -eq $true)) {
+                # Write permission update logic here
+            }
+
+            $outputContext.AuditLogs.Add([PSCustomObject]@{
+                    Action  = 'UpdatePermission'
+                    Message = "Updated access to department share $($permission.Value)"
+                    IsError = $false
+                })
+        }
+    }
+    $outputContext.Success = $true
 } catch {
-    $outputContext.success = $false
+    $outputContext.Success = $false
     $ex = $PSItem
     if ($($ex.Exception.GetType().FullName -eq 'Microsoft.PowerShell.Commands.HttpResponseException') -or
         $($ex.Exception.GetType().FullName -eq 'System.Net.WebException')) {
         $errorObj = Resolve-{connectorName}Error -ErrorObject $ex
-        $auditLogMessage = "Could not delete {connectorName} account. Error: $($errorObj.FriendlyMessage). Action initiated by: [$($actionContext.Origin)]"
+        $auditMessage = "Could not manage {connectorName} permissions. Error: $($errorObj.FriendlyMessage)"
         Write-Warning "Error at Line '$($errorObj.ScriptLineNumber)': $($errorObj.Line). Error: $($errorObj.ErrorDetails)"
     } else {
-        $auditLogMessage = "Could not delete {connectorName} account. Error: $($_.Exception.Message). Action initiated by: [$($actionContext.Origin)]"
+        $auditMessage = "Could not manage {connectorName} permissions. Error: $($_.Exception.Message)"
         Write-Warning "Error at Line '$($ex.InvocationInfo.ScriptLineNumber)': $($ex.InvocationInfo.Line). Error: $($ex.Exception.Message)"
     }
     $outputContext.AuditLogs.Add([PSCustomObject]@{
-            Message = $auditLogMessage
+            Message = $auditMessage
             IsError = $true
         })
 }

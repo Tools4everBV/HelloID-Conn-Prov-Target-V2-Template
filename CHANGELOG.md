@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [3.2.0] - 10-11-2025
+
+### Added
+- Added extra tools in the connector readme to avalaible features table for remarks.
+- Added a placeholder icon url to connector readme.
+- Added a template script for subPermissions. 
+
+### Changed
+- Move account processing in import script to paging loop.
+- Update global Readme to include semantic versioning explanation.
+- Update global Readme to correctly state the latest information about governance and what that implies for the connector.
+- Change $importedAccount[$field] to $importedAccount.$field in import script.
+- Check on username in import script is more strict.
+- Change all auditLog variables to auditLogMessage to be consistent across all scripts. 
+- Fixed a bug in reconciliation logic in delete, disable and revoke.
+- Fixed a bug in create where it defaults to the throw in the if statement that determines the action.
+- Renamed prerequisites to requirements in the connector readme.
+
+# Removed
+- remove auditLog from no changes in the update script.
+
+
 ## [3.1.0] - 02-06-2025
 
 ### Added
