@@ -60,7 +60,7 @@ Resolutions are not possible because...
 ### HelloID Icon URL
 URL of the icon used for the HelloID Provisioning target system.
 ```
-https://raw.githubusercontent.com/Tools4everBV/HelloID-Conn-Prov-Target-ActiveDirectory/refs/heads/main/Icon.png
+https://raw.githubusercontent.com/Tools4everBV/HelloID-Conn-Prov-Target-{connectorName}/refs/heads/main/Icon.png
 ```
 
 ### Requirements
@@ -131,9 +131,9 @@ Example:
 
 The following endpoints are used by the connector
 
-| Endpoint | Description               |
-| -------- | ------------------------- |
-| /Users   | Retrieve user information |
+| Endpoint | HTTP Method | Description               |
+| -------- | ----------- | ------------------------- |
+| /Users   | GET, POST   | Retrieve user information |
 
 ### API documentation
 
