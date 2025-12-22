@@ -85,6 +85,7 @@ try {
                     Message = "Revoke permission [$($actionContext.PermissionDisplayName)] from [$($actionContext.References.Account)] was successful. Action initiated by: [$($actionContext.Origin)]"
                     IsError = $false
                 })
+            break
         }
 
         'NotFound' {

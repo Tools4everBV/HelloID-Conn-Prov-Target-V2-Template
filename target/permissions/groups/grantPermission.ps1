@@ -79,6 +79,7 @@ try {
                 Message = "Grant permission [$($actionContext.PermissionDisplayName)] was successful"
                 IsError = $false
             })
+            break
         }
 
         'NotFound' {
