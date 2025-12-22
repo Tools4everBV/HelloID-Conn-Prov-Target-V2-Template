@@ -100,6 +100,10 @@ try {
         'NoChanges' {
             Write-Information "No changes to {connectorName} account with accountReference: [$($actionContext.References.Account)]"
             $outputContext.Success = $true
+            $outputContext.AuditLogs.Add([PSCustomObject]@{
+                    Message = "Skipped updating {connectorName} account with AccountReference: [$($actionContext.References.Account)]. Reason: No changes."
+                    IsError = $false
+                })
             break
         }
 
