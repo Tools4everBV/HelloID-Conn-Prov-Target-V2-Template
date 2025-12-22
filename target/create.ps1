@@ -62,6 +62,8 @@ try {
         }
 
         # Determine if a user needs to be [created] or [correlated]
+        Write-Information "Verifying if a {connectorName} account exists where $correlationField is: [$correlationValue]"
+
         $correlatedAccount = @{
             Id          = (New-Guid).Guid
             DisplayName = $actionContext.Data.DisplayName
