@@ -46,7 +46,7 @@ function Resolve-{connectorName}Error {
 #endregion
 
 try {
-    Write-Information 'Starting {connectorName} permission group entitlement import'
+    Write-Information 'Starting {connectorName} permission entitlement import'
     $importedPermissions = @(
         @{
             id          = 'Permission1'
@@ -91,16 +91,16 @@ try {
             Write-Output $permission
         }
     }
-    Write-Information '{connectorName} permission group entitlement import completed'
+    Write-Information '{connectorName} permission entitlement import completed'
 } catch {
     $ex = $PSItem
     if ($($ex.Exception.GetType().FullName -eq 'Microsoft.PowerShell.Commands.HttpResponseException') -or
         $($ex.Exception.GetType().FullName -eq 'System.Net.WebException')) {
         $errorObj = Resolve-{connectorName}Error -ErrorObject $ex
         Write-Warning "Error at Line '$($errorObj.ScriptLineNumber)': $($errorObj.Line). Error: $($errorObj.ErrorDetails)"
-        Write-Error "Could not import {connectorName} permission group entitlements. Error: $($errorObj.FriendlyMessage)"
+        Write-Error "Could not import {connectorName} permission entitlements. Error: $($errorObj.FriendlyMessage)"
     } else {
         Write-Warning "Error at Line '$($ex.InvocationInfo.ScriptLineNumber)': $($ex.InvocationInfo.Line). Error: $($ex.Exception.Message)"
-        Write-Error "Could not import {connectorName} permission group entitlements. Error: $($ex.Exception.Message)"
+        Write-Error "Could not import {connectorName} permission entitlements. Error: $($ex.Exception.Message)"
     }
 }
