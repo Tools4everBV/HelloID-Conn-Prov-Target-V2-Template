@@ -300,7 +300,7 @@ A version looks like this:
   - You make **breaking changes** to the connector API or behavior.  
   - Users may need to **update their scripts or configurations**.  
 - **Example in HelloID connector:**
-  - The displayName is removed from the permission.Reference resulting in entitlement issue's.
+  - The displayName is removed from the permission.Reference resulting in entitlement issues.
   - You change the fieldMapping or configuration because the API requirements change. This is a major change because something needs to be adjusted in HelloID.
   - If there is a change in HelloID which results in an error in the connector.
   - Version change: `1.2.3 → 2.0.0`
