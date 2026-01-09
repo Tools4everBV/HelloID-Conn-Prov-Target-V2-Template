@@ -37,7 +37,7 @@ function Resolve-{connectorName}Error {
             # $httpErrorObj.FriendlyMessage = $errorDetailsObject.message
             $httpErrorObj.FriendlyMessage = $httpErrorObj.ErrorDetails # Temporarily assignment
         } catch {
-            $httpErrorObj.FriendlyMessage = "Error: [$($httpErrorObj.ErrorDetails)]"
+            $httpErrorObj.FriendlyMessage = $httpErrorObj.ErrorDetails
             Write-Warning $_.Exception.Message
         }
         Write-Output $httpErrorObj
@@ -62,6 +62,8 @@ try {
         }
 
         # Determine if a user needs to be [created] or [correlated]
+        Write-Information "Verifying if a {connectorName} account exists where $correlationField is: [$correlationValue]"
+
         $correlatedAccount = @{
             Id          = (New-Guid).Guid
             DisplayName = $actionContext.Data.DisplayName

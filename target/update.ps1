@@ -37,7 +37,7 @@ function Resolve-{connectorName}Error {
             # $httpErrorObj.FriendlyMessage = $errorDetailsObject.message
             $httpErrorObj.FriendlyMessage = $httpErrorObj.ErrorDetails # Temporarily assignment
         } catch {
-            $httpErrorObj.FriendlyMessage = "Error: [$($httpErrorObj.ErrorDetails)]"
+            $httpErrorObj.FriendlyMessage = $httpErrorObj.ErrorDetails
             Write-Warning $_.Exception.Message
         }
         Write-Output $httpErrorObj
@@ -100,6 +100,10 @@ try {
         'NoChanges' {
             Write-Information "No changes to {connectorName} account with accountReference: [$($actionContext.References.Account)]"
             $outputContext.Success = $true
+            $outputContext.AuditLogs.Add([PSCustomObject]@{
+                    Message = "Skipped updating {connectorName} account with AccountReference: [$($actionContext.References.Account)]. Reason: No changes."
+                    IsError = $false
+                })
             break
         }
 

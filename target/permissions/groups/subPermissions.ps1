@@ -42,7 +42,7 @@ function Resolve-{connectorName}Error {
             # $httpErrorObj.FriendlyMessage = $errorDetailsObject.message
             $httpErrorObj.FriendlyMessage = $httpErrorObj.ErrorDetails # Temporarily assignment
         } catch {
-            $httpErrorObj.FriendlyMessage = "Error: [$($httpErrorObj.ErrorDetails)]"
+            $httpErrorObj.FriendlyMessage = $httpErrorObj.ErrorDetails
             Write-Warning $_.Exception.Message
         }
         Write-Output $httpErrorObj
@@ -93,7 +93,7 @@ try {
 
             $outputContext.AuditLogs.Add([PSCustomObject]@{
                     Action  = 'GrantPermission'
-                    Message = "Granted access to department share $($permission.Value)"
+                    Message = "Granted access to permission $($permission.Value)"
                     IsError = $false
                 })
         }
@@ -109,7 +109,7 @@ try {
 
             $outputContext.AuditLogs.Add([PSCustomObject]@{
                     Action  = 'RevokePermission'
-                    Message = "Revoked access to department share $($permission.Value)"
+                    Message = "Revoked access to permission $($permission.Value)"
                     IsError = $false
                 })
         } else {
@@ -126,7 +126,7 @@ try {
 
             $outputContext.AuditLogs.Add([PSCustomObject]@{
                     Action  = 'UpdatePermission'
-                    Message = "Updated access to department share $($permission.Value)"
+                    Message = "Updated access to permission $($permission.Value)"
                     IsError = $false
                 })
         }

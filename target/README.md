@@ -16,7 +16,7 @@
 - [HelloID-Conn-Prov-Target-{connectorName}](#helloid-conn-prov-target-connectorname)
   - [Table of contents](#table-of-contents)
   - [Introduction](#introduction)
-  - [Supported  features](#supported--features)
+  - [Supported features](#supported-features)
   - [Getting started](#getting-started)
     - [HelloID Icon URL](#helloid-icon-url)
     - [Requirements](#requirements)
@@ -33,9 +33,9 @@
 
 ## Introduction
 
-_HelloID-Conn-Prov-Target-{connectorName}_ is a _target_ connector. _{connectorName}_ provides a set of REST API's that allow you to programmatically interact with its data.
+_HelloID-Conn-Prov-Target-{connectorName}_ is a _target_ connector. _{connectorName}_ provides a set of REST APIs that allow you to programmatically interact with its data.
 
-## Supported  features
+## Supported features
 
 The following features are available:
 
@@ -60,7 +60,7 @@ Resolutions are not possible because...
 ### HelloID Icon URL
 URL of the icon used for the HelloID Provisioning target system.
 ```
-https://raw.githubusercontent.com/Tools4everBV/HelloID-Conn-Prov-Target-ActiveDirectory/refs/heads/main/Icon.png
+https://raw.githubusercontent.com/Tools4everBV/HelloID-Conn-Prov-Target-{connectorName}/refs/heads/main/Icon.png
 ```
 
 ### Requirements
@@ -131,9 +131,9 @@ Example:
 
 The following endpoints are used by the connector
 
-| Endpoint | Description               |
-| -------- | ------------------------- |
-| /Users   | Retrieve user information |
+| Endpoint | HTTP Method      | Description                                  |
+| -------- | ---------------- | -------------------------------------------- |
+| /Users   | GET, POST, PATCH | Retrieve, Create and update user information |
 
 ### API documentation
 

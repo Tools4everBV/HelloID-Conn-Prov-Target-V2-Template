@@ -1,10 +1,14 @@
 ####################################################################
-# HelloID-Conn-Prov-Target-{connectorName}-ImportPermissions-Group
+# HelloID-Conn-Prov-Target-{connectorName}-ImportSubPermissions-Group
 # PowerShell V2
 ####################################################################
 
 # Enable TLS1.2
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor [System.Net.SecurityProtocolType]::Tls12
+
+# Configure, must be the same as the values used in retrieve permissions
+$permissionReference = 'permissionReference'
+$permissionDisplayName = 'permissionDisplayName'
 
 #region functions
 function Resolve-{connectorName}Error {
@@ -74,12 +78,16 @@ try {
 
     foreach ($importedPermission in $importedPermissions) {
         $permission = @{
-            PermissionReference = @{
-                Reference = $importedPermission.id
+            PermissionReference      = @{
+                Reference = $permissionReference
             }
-            Description         = "$($importedPermission.description)"
-            DisplayName         = "$($importedPermission.displayName)"
-            AccountReferences   = $null
+            Description              = $permissionDisplayName
+            DisplayName              = $permissionDisplayName
+            AccountReferences        = $null
+            SubPermissionReference   = @{
+                Id = $importedPermission.id
+            }
+            SubPermissionDisplayName = "$($importedPermission.displayName)"
         }
 
         # The code below splits a list of permission members into batches of 100
