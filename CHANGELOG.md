@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [3.3.0] - 09-01-2026
+
+### Added
+- Additional log message during correlation
+- HTTP method to endpoint table in the readme
+- Missing break statement
+- Import script for subPermissions
+- AuditLog message in noChanges action in the update
+
+### Changed
+- Change icon URL in the readme
+- Typo's in the readme
+- SubPermission logging to be more generic 
+
+# Removed
+- Double [Error:] in error handling
+- Permisison displayName in dryRun
+
 ## [3.2.0] - 10-11-2025
 
 ### Added
