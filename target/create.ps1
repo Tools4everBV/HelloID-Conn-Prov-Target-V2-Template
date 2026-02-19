@@ -23,7 +23,8 @@ function Resolve-{connectorName}Error {
         }
         if (-not [string]::IsNullOrEmpty($ErrorObject.ErrorDetails.Message)) {
             $httpErrorObj.ErrorDetails = $ErrorObject.ErrorDetails.Message
-        } elseif ($ErrorObject.Exception.GetType().FullName -eq 'System.Net.WebException') {
+        }
+        elseif ($ErrorObject.Exception.GetType().FullName -eq 'System.Net.WebException') {
             if ($null -ne $ErrorObject.Exception.Response) {
                 $streamReaderResponse = [System.IO.StreamReader]::new($ErrorObject.Exception.Response.GetResponseStream()).ReadToEnd()
                 if (-not [string]::IsNullOrEmpty($streamReaderResponse)) {
@@ -36,7 +37,8 @@ function Resolve-{connectorName}Error {
             # Make sure to inspect the error result object and add only the error message as a FriendlyMessage.
             # $httpErrorObj.FriendlyMessage = $errorDetailsObject.message
             $httpErrorObj.FriendlyMessage = $httpErrorObj.ErrorDetails # Temporarily assignment
-        } catch {
+        }
+        catch {
             $httpErrorObj.FriendlyMessage = $httpErrorObj.ErrorDetails
             Write-Warning $_.Exception.Message
         }
@@ -68,21 +70,23 @@ try {
             Id          = (New-Guid).Guid
             DisplayName = $actionContext.Data.DisplayName
         }
-        # Example of replacing the placeholder with actual code:
+        # Example to replace the placeholder code with:
         # Retrieve user details using an API call and store the result in $correlatedAccount
         # $correlatedAccount = (Invoke-RestMethod @splatGetUserParams)
     }
 
     if ($correlatedAccount.Count -eq 0) {
-        $action = 'CreateAccount'
-    } elseif ($correlatedAccount.Count -eq 1) {
-        $action = 'CorrelateAccount'
-    } elseif ($correlatedAccount.Count -gt 1) {
+        $processAction = 'CreateAccount'
+    }
+    elseif ($correlatedAccount.Count -eq 1) {
+        $processAction = 'CorrelateAccount'
+    }
+    elseif ($correlatedAccount.Count -gt 1) {
         throw "Multiple accounts found for person where $correlationField is: [$correlationValue]"
     }
 
     # Process
-    switch ($action) {
+    switch ($processAction) {
         'CreateAccount' {
             $splatCreateParams = @{
                 Uri    = $actionContext.Configuration.BaseUrl
@@ -100,7 +104,8 @@ try {
                 # Make sure to filter out arrays from $outputContext.Data (If this is not mapped to type Array in the fieldmapping). This is not supported by HelloID.
                 $outputContext.Data = $createdAccount
                 $outputContext.AccountReference = $createdAccount.Id
-            } else {
+            }
+            else {
                 Write-Information '[DryRun] Create and correlate {connectorName} account, will be executed during enforcement'
             }
             $auditLogMessage = "Create account was successful. AccountReference is: [$($outputContext.AccountReference)]"
@@ -121,11 +126,12 @@ try {
 
     $outputContext.success = $true
     $outputContext.AuditLogs.Add([PSCustomObject]@{
-            Action  = $action
+            Action  = $processAction
             Message = $auditLogMessage
             IsError = $false
         })
-} catch {
+}
+catch {
     $outputContext.success = $false
     $ex = $PSItem
     if ($($ex.Exception.GetType().FullName -eq 'Microsoft.PowerShell.Commands.HttpResponseException') -or
@@ -133,7 +139,8 @@ try {
         $errorObj = Resolve-{connectorName}Error -ErrorObject $ex
         $auditLogMessage = "Could not create or correlate {connectorName} account. Error: $($errorObj.FriendlyMessage)"
         Write-Warning "Error at Line '$($errorObj.ScriptLineNumber)': $($errorObj.Line). Error: $($errorObj.ErrorDetails)"
-    } else {
+    }
+    else {
         $auditLogMessage = "Could not create or correlate {connectorName} account. Error: $($ex.Exception.Message)"
         Write-Warning "Error at Line '$($ex.InvocationInfo.ScriptLineNumber)': $($ex.InvocationInfo.Line). Error: $($ex.Exception.Message)"
     }
