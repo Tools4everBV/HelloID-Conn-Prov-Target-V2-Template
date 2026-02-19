@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [3.4.0] - 19-02-2026
+
+### Added
+- Account reference to audit logs in disable, delete and revoke scripts for reconciliation
+- NotFound processAction for subPermission script
+
+### Changed
+- Commented example code in the Import script
+- DisplayName now starts with capital letter 
+- Code formatting in files
+- Changed comment with aRef to accountReference 
+- Renamed action to processAction 
+- Changed batchsize calculation in Import script 
+
+### Removed
+- Forum link in the README.md
+- Issue template from .github folder
+
 ## [3.3.0] - 09-01-2026
 
 ### Added

@@ -23,7 +23,8 @@ function Resolve-{connectorName}Error {
         }
         if (-not [string]::IsNullOrEmpty($ErrorObject.ErrorDetails.Message)) {
             $httpErrorObj.ErrorDetails = $ErrorObject.ErrorDetails.Message
-        } elseif ($ErrorObject.Exception.GetType().FullName -eq 'System.Net.WebException') {
+        }
+        elseif ($ErrorObject.Exception.GetType().FullName -eq 'System.Net.WebException') {
             if ($null -ne $ErrorObject.Exception.Response) {
                 $streamReaderResponse = [System.IO.StreamReader]::new($ErrorObject.Exception.Response.GetResponseStream()).ReadToEnd()
                 if (-not [string]::IsNullOrEmpty($streamReaderResponse)) {
@@ -36,7 +37,8 @@ function Resolve-{connectorName}Error {
             # Make sure to inspect the error result object and add only the error message as a FriendlyMessage.
             # $httpErrorObj.FriendlyMessage = $errorDetailsObject.message
             $httpErrorObj.FriendlyMessage = $httpErrorObj.ErrorDetails # Temporarily assignment
-        } catch {
+        }
+        catch {
             $httpErrorObj.FriendlyMessage = $httpErrorObj.ErrorDetails
             Write-Warning $_.Exception.Message
         }
@@ -46,7 +48,7 @@ function Resolve-{connectorName}Error {
 #endregion
 
 try {
-    # Verify if [aRef] has a value
+    # Verify if [accountReference] has a value
     if ([string]::IsNullOrEmpty($($actionContext.References.Account))) {
         throw 'The account reference could not be found'
     }
@@ -56,19 +58,21 @@ try {
     # $correlatedAccount = (Invoke-RestMethod @splatGetUserParams)
 
     if ($null -ne $correlatedAccount) {
-        $action = 'EnableAccount'
-    } else {
-        $action = 'NotFound'
+        $processAction = 'EnableAccount'
+    }
+    else {
+        $processAction = 'NotFound'
     }
 
     # Process
-    switch ($action) {
+    switch ($processAction) {
         'EnableAccount' {
             if (-not($actionContext.DryRun -eq $true)) {
                 Write-Information "Enabling {connectorName} account with accountReference: [$($actionContext.References.Account)]"
                 # < Write Enable logic here >
 
-            } else {
+            }
+            else {
                 Write-Information "[DryRun] Enable {connectorName} account with accountReference: [$($actionContext.References.Account)], will be executed during enforcement"
             }
 
@@ -92,7 +96,8 @@ try {
         }
     }
 
-} catch {
+}
+catch {
     $outputContext.success = $false
     $ex = $PSItem
     if ($($ex.Exception.GetType().FullName -eq 'Microsoft.PowerShell.Commands.HttpResponseException') -or
@@ -100,12 +105,13 @@ try {
         $errorObj = Resolve-{connectorName}Error -ErrorObject $ex
         $auditLogMessage = "Could not enable {connectorName} account. Error: $($errorObj.FriendlyMessage)"
         Write-Warning "Error at Line '$($errorObj.ScriptLineNumber)': $($errorObj.Line). Error: $($errorObj.ErrorDetails)"
-    } else {
+    }
+    else {
         $auditLogMessage = "Could not enable {connectorName} account. Error: $($_.Exception.Message)"
         Write-Warning "Error at Line '$($ex.InvocationInfo.ScriptLineNumber)': $($ex.InvocationInfo.Line). Error: $($ex.Exception.Message)"
     }
     $outputContext.AuditLogs.Add([PSCustomObject]@{
-        Message = $auditLogMessage
-        IsError = $true
-    })
+            Message = $auditLogMessage
+            IsError = $true
+        })
 }

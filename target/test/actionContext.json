@@ -17,7 +17,7 @@
         "FamilyName": "Bos",
         "StartDate": "2021-01-01T23:09:08.2863496",
         "UserName": "casey.bos1"
-      },
+    },
     "CorrelationConfiguration": {
         "Enabled": true,
         "PersonField": "Person.ExternalId",

@@ -23,7 +23,8 @@ function Resolve-{connectorName}Error {
         }
         if (-not [string]::IsNullOrEmpty($ErrorObject.ErrorDetails.Message)) {
             $httpErrorObj.ErrorDetails = $ErrorObject.ErrorDetails.Message
-        } elseif ($ErrorObject.Exception.GetType().FullName -eq 'System.Net.WebException') {
+        }
+        elseif ($ErrorObject.Exception.GetType().FullName -eq 'System.Net.WebException') {
             if ($null -ne $ErrorObject.Exception.Response) {
                 $streamReaderResponse = [System.IO.StreamReader]::new($ErrorObject.Exception.Response.GetResponseStream()).ReadToEnd()
                 if (-not [string]::IsNullOrEmpty($streamReaderResponse)) {
@@ -36,7 +37,8 @@ function Resolve-{connectorName}Error {
             # Make sure to inspect the error result object and add only the error message as a FriendlyMessage.
             # $httpErrorObj.FriendlyMessage = $errorDetailsObject.message
             $httpErrorObj.FriendlyMessage = $httpErrorObj.ErrorDetails # Temporarily assignment
-        } catch {
+        }
+        catch {
             $httpErrorObj.FriendlyMessage = $httpErrorObj.ErrorDetails
             Write-Warning $_.Exception.Message
         }
@@ -56,7 +58,7 @@ try {
             Status     = 'Active'
         },
         @{
-            Id         = '1002'
+            Id         = '1002' 
             NickName   = 'Jane'
             FamilyName = 'Smith'
             UserName   = 'j.smith'
@@ -64,7 +66,7 @@ try {
         }
     )
 
-    # # Example of replacing the placeholder with actual code:
+    # # Example to replace the placeholder code with:
     # $pageSize = 50
     # $pageNumber = 1
     # do {
@@ -77,12 +79,24 @@ try {
     #     if ($response.data) {
     #         foreach ($importedAccount in $response.data) {
     #             $data = $importedAccount | Select-Object -Property $actionContext.ImportFields
-    #             # Enabled has a -not filter because the API uses an isDisabled property, which is the exact opposite of the enabled state used by HelloID.
+
+    #             # Make sure the displayName has a value
+    #             $displayName = "$($importedAccount.firstName) $($importedAccount.lastName)".trim()
+    #             if ([string]::IsNullOrEmpty($displayName)) {
+    #                 $displayName = $importedAccount.Id
+    #             }
+
+    #             # Make sure the userName has a value
+    #             $username = "$($importedAccount.userName)"
+    #             if ([string]::IsNullOrWhiteSpace($importedAccount.userName)) {
+    #                 $username = "$($importedAccount.Id)"
+    #             }
+
     #             Write-Output @{
     #                 AccountReference = $importedAccount.Id
-    #                 displayName      = $displayName
-    #                 UserName         = $importedAccount.UserName
-    #                 Enabled          = $isEnabled
+    #                 DisplayName      = $displayName
+    #                 UserName         = $username
+    #                 Enabled          = $importedAccount.isEnabled
     #                 Data             = $data
     #             }
     #         }
@@ -118,21 +132,23 @@ try {
         # Return the result
         Write-Output @{
             AccountReference = $importedAccount.Id
-            displayName      = $displayName
+            DisplayName      = $displayName
             UserName         = $importedAccount.UserName
             Enabled          = $isEnabled
             Data             = $data
         }
     }
     Write-Information '{connectorName} account entitlement import completed'
-} catch {
+}
+catch {
     $ex = $PSItem
     if ($($ex.Exception.GetType().FullName -eq 'Microsoft.PowerShell.Commands.HttpResponseException') -or
         $($ex.Exception.GetType().FullName -eq 'System.Net.WebException')) {
-        $errorObj = Resolve-{connectorName}Error -ErrorObject $ex
+        $errorObj = Resolve- { connectorName }Error -ErrorObject $ex
         Write-Warning "Error at Line '$($errorObj.ScriptLineNumber)': $($errorObj.Line). Error: $($errorObj.ErrorDetails)"
         Write-Error "Could not import {connectorName} account entitlements. Error: $($errorObj.FriendlyMessage)"
-    } else {
+    }
+    else {
         Write-Warning "Error at Line '$($ex.InvocationInfo.ScriptLineNumber)': $($ex.InvocationInfo.Line). Error: $($ex.Exception.Message)"
         Write-Error "Could not import {connectorName} account entitlements. Error: $($ex.Exception.Message)"
     }
