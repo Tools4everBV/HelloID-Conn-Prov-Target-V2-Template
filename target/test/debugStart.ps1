@@ -33,7 +33,8 @@ class CustomList {
         $scriptBlock = {
             if ($obj.IsError) {
                 $psEditor.Window.ShowErrorMessage("Message: [$($obj.Message)]. Action: [$($obj.Action)]")
-            } else {
+            }
+            else {
                 $psEditor.Window.ShowInformationMessage("Message: [$($obj.Message)]. Action: [$($obj.Action)]")
             }
         }
