@@ -68,18 +68,18 @@ try {
         }
         $propertiesChanged = Compare-Object @splatCompareProperties -PassThru | Where-Object { $_.SideIndicator -eq '=>' }
         if ($propertiesChanged) {
-            $processAction = 'UpdateAccount'
+            $lifecycleProcess = 'UpdateAccount'
         }
         else {
-            $processAction = 'NoChanges'
+            $lifecycleProcess = 'NoChanges'
         }
     }
     else {
-        $processAction = 'NotFound'
+        $lifecycleProcess = 'NotFound'
     }
 
     # Process
-    switch ($processAction) {
+    switch ($lifecycleProcess) {
         'UpdateAccount' {
             Write-Information "Account property(s) required to update: $($propertiesChanged.Name -join ', ')"
 
@@ -129,11 +129,11 @@ catch {
     if ($($ex.Exception.GetType().FullName -eq 'Microsoft.PowerShell.Commands.HttpResponseException') -or
         $($ex.Exception.GetType().FullName -eq 'System.Net.WebException')) {
         $errorObj = Resolve-{connectorName}Error -ErrorObject $ex
-        $auditLogMessage = "Could not update {connectorName} account. Error: $($errorObj.FriendlyMessage)"
+        $auditLogMessage = "Could not update {connectorName} account: [$($actionContext.References.Account)]. Error: $($errorObj.FriendlyMessage)"
         Write-Warning "Error at Line '$($errorObj.ScriptLineNumber)': $($errorObj.Line). Error: $($errorObj.ErrorDetails)"
     }
     else {
-        $auditLogMessage = "Could not update {connectorName} account. Error: $($ex.Exception.Message)"
+        $auditLogMessage = "Could not update {connectorName} account: [$($actionContext.References.Account)]. Error: $($ex.Exception.Message)"
         Write-Warning "Error at Line '$($ex.InvocationInfo.ScriptLineNumber)': $($ex.InvocationInfo.Line). Error: $($ex.Exception.Message)"
     }
     $outputContext.AuditLogs.Add([PSCustomObject]@{

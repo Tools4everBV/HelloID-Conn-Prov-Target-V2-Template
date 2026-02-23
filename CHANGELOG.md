@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com), and this project adheres to [Semantic Versioning](https://semver.org).
 
-## [3.4.0] - 19-02-2026
+## [4.3.0] - 19-02-2026
 
 ### Added
 - Account reference to audit logs in disable, delete and revoke scripts for reconciliation

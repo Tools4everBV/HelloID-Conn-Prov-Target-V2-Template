@@ -59,14 +59,14 @@ try {
     # $correlatedAccount = (Invoke-RestMethod @splatGetUserParams)
 
     if ($null -ne $correlatedAccount) {
-        $processAction = 'GrantPermission'
+        $lifecycleProcess = 'GrantPermission'
     }
     else {
-        $processAction = 'NotFound'
+        $lifecycleProcess = 'NotFound'
     }
 
     # Process
-    switch ($processAction) {
+    switch ($lifecycleProcess) {
         'GrantPermission' {
             # Make sure to test with special characters and if needed; add utf8 encoding.
             if (-not($actionContext.DryRun -eq $true)) {
@@ -103,11 +103,11 @@ catch {
     if ($($ex.Exception.GetType().FullName -eq 'Microsoft.PowerShell.Commands.HttpResponseException') -or
         $($ex.Exception.GetType().FullName -eq 'System.Net.WebException')) {
         $errorObj = Resolve-{connectorName}Error -ErrorObject $ex
-        $auditLogMessage = "Could not grant {connectorName} permission. Error: $($errorObj.FriendlyMessage)"
+        $auditLogMessage = "Could not grant {connectorName} permission for account: [$($actionContext.References.Account)]. Error: $($errorObj.FriendlyMessage)"
         Write-Warning "Error at Line '$($errorObj.ScriptLineNumber)': $($errorObj.Line). Error: $($errorObj.ErrorDetails)"
     }
     else {
-        $auditLogMessage = "Could not grant {connectorName} permission. Error: $($_.Exception.Message)"
+        $auditLogMessage = "Could not grant {connectorName} permission for account: [$($actionContext.References.Account)]. Error: $($_.Exception.Message)"
         Write-Warning "Error at Line '$($ex.InvocationInfo.ScriptLineNumber)': $($ex.InvocationInfo.Line). Error: $($ex.Exception.Message)"
     }
     $outputContext.AuditLogs.Add([PSCustomObject]@{

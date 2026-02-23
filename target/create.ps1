@@ -76,17 +76,17 @@ try {
     }
 
     if ($correlatedAccount.Count -eq 0) {
-        $processAction = 'CreateAccount'
+        $lifecycleProcess = 'CreateAccount'
     }
     elseif ($correlatedAccount.Count -eq 1) {
-        $processAction = 'CorrelateAccount'
+        $lifecycleProcess = 'CorrelateAccount'
     }
     elseif ($correlatedAccount.Count -gt 1) {
         throw "Multiple accounts found for person where $correlationField is: [$correlationValue]"
     }
 
     # Process
-    switch ($processAction) {
+    switch ($lifecycleProcess) {
         'CreateAccount' {
             $splatCreateParams = @{
                 Uri    = $actionContext.Configuration.BaseUrl
@@ -126,7 +126,7 @@ try {
 
     $outputContext.success = $true
     $outputContext.AuditLogs.Add([PSCustomObject]@{
-            Action  = $processAction
+            Action  = $lifecycleProcess
             Message = $auditLogMessage
             IsError = $false
         })
@@ -137,11 +137,11 @@ catch {
     if ($($ex.Exception.GetType().FullName -eq 'Microsoft.PowerShell.Commands.HttpResponseException') -or
         $($ex.Exception.GetType().FullName -eq 'System.Net.WebException')) {
         $errorObj = Resolve-{connectorName}Error -ErrorObject $ex
-        $auditLogMessage = "Could not create or correlate {connectorName} account. Error: $($errorObj.FriendlyMessage)"
+        $auditLogMessage = "Could not create or correlate {connectorName} account: [$($actionContext.References.Account)]. Error: $($errorObj.FriendlyMessage)"
         Write-Warning "Error at Line '$($errorObj.ScriptLineNumber)': $($errorObj.Line). Error: $($errorObj.ErrorDetails)"
     }
     else {
-        $auditLogMessage = "Could not create or correlate {connectorName} account. Error: $($ex.Exception.Message)"
+        $auditLogMessage = "Could not create or correlate {connectorName} account: [$($actionContext.References.Account)]. Error: $($ex.Exception.Message)"
         Write-Warning "Error at Line '$($ex.InvocationInfo.ScriptLineNumber)': $($ex.InvocationInfo.Line). Error: $($ex.Exception.Message)"
     }
     $outputContext.AuditLogs.Add([PSCustomObject]@{

@@ -58,14 +58,14 @@ try {
     # $correlatedAccount = (Invoke-RestMethod @splatGetUserParams)
 
     if ($null -ne $correlatedAccount) {
-        $processAction = 'EnableAccount'
+        $lifecycleProcess = 'EnableAccount'
     }
     else {
-        $processAction = 'NotFound'
+        $lifecycleProcess = 'NotFound'
     }
 
     # Process
-    switch ($processAction) {
+    switch ($lifecycleProcess) {
         'EnableAccount' {
             if (-not($actionContext.DryRun -eq $true)) {
                 Write-Information "Enabling {connectorName} account with accountReference: [$($actionContext.References.Account)]"
@@ -96,18 +96,18 @@ try {
         }
     }
 
-}
+} 
 catch {
     $outputContext.success = $false
     $ex = $PSItem
     if ($($ex.Exception.GetType().FullName -eq 'Microsoft.PowerShell.Commands.HttpResponseException') -or
         $($ex.Exception.GetType().FullName -eq 'System.Net.WebException')) {
         $errorObj = Resolve-{connectorName}Error -ErrorObject $ex
-        $auditLogMessage = "Could not enable {connectorName} account. Error: $($errorObj.FriendlyMessage)"
+        $auditLogMessage = "Could not enable {connectorName} account: [$($actionContext.References.Account)]. Error: $($errorObj.FriendlyMessage)"
         Write-Warning "Error at Line '$($errorObj.ScriptLineNumber)': $($errorObj.Line). Error: $($errorObj.ErrorDetails)"
     }
     else {
-        $auditLogMessage = "Could not enable {connectorName} account. Error: $($_.Exception.Message)"
+        $auditLogMessage = "Could not enable {connectorName} account: [$($actionContext.References.Account)]. Error: $($_.Exception.Message)"
         Write-Warning "Error at Line '$($ex.InvocationInfo.ScriptLineNumber)': $($ex.InvocationInfo.Line). Error: $($ex.Exception.Message)"
     }
     $outputContext.AuditLogs.Add([PSCustomObject]@{

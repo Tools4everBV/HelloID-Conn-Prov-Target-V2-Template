@@ -190,15 +190,15 @@ Please refer to the code following [action logic code example](#action-logic-exa
 $outputContext.AccountReference = 'Currently not available'
 $correlatedAccount = 'The user object from the target system'
 if ($correlatedAccount.Count -eq 0) {
-    $processAction = 'CreateAccount'
+    $lifecycleProcess = 'CreateAccount'
 } elseif ($correlatedAccount.Count -eq 1) {
-    $processAction = 'CorrelateAccount'
+    $lifecycleProcess = 'CorrelateAccount'
 } elseif ($correlatedAccount.Count -gt 1) {
     throw "Multiple accounts found for person where $correlationField is: [$correlationValue]"
 }
 
 # Process
-  switch ($processAction) {
+  switch ($lifecycleProcess) {
       'CreateAccount' {
           Write-Information 'Creating and correlating {connectorName} account'
 
@@ -227,7 +227,7 @@ if ($correlatedAccount.Count -eq 0) {
 
   $outputContext.success = $true
   $outputContext.AuditLogs.Add([PSCustomObject]@{
-      Action  = $processAction
+      Action  = $lifecycleProcess
       Message = $auditLogMessage
       IsError = $false
   })

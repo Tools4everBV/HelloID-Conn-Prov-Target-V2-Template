@@ -58,14 +58,14 @@ try {
     # $correlatedAccount = (Invoke-RestMethod @splatGetUserParams)
 
     if ($null -ne $correlatedAccount) {
-        $processAction = 'DisableAccount'
+        $lifecycleProcess = 'DisableAccount'
     }
     else {
-        $processAction = 'NotFound'
+        $lifecycleProcess = 'NotFound'
     }
 
     # Process
-    switch ($processAction) {
+    switch ($lifecycleProcess) {
         'DisableAccount' {
             if (-not($actionContext.DryRun -eq $true)) {
                 Write-Information "Disabling {connectorName} account with accountReference: [$($actionContext.References.Account)]"

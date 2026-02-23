@@ -59,14 +59,14 @@ try {
     # $correlatedAccount = (Invoke-RestMethod @splatGetUserParams)
 
     if ($null -ne $correlatedAccount) {
-        $processAction = 'RevokePermission'
+        $lifecycleProcess = 'RevokePermission'
     }
     else {
-        $processAction = 'NotFound'
+        $lifecycleProcess = 'NotFound'
     }
 
     # Process
-    switch ($processAction) {
+    switch ($lifecycleProcess) {
         'RevokePermission' {
 
             # Make sure to test with special characters and if needed; add utf8 encoding.

@@ -58,14 +58,14 @@ try {
     # $correlatedAccount = (Invoke-RestMethod @splatGetUserParams)
 
     if ($null -ne $correlatedAccount) {
-        $processAction = 'DeleteAccount'
+        $lifecycleProcess = 'DeleteAccount'
     }
     else {
-        $processAction = 'NotFound'
+        $lifecycleProcess = 'NotFound'
     }
 
     # Process
-    switch ($processAction) {
+    switch ($lifecycleProcess) {
         'DeleteAccount' {
             if (-not($actionContext.DryRun -eq $true)) {
                 Write-Information "Deleting {connectorName} account with accountReference: [$($actionContext.References.Account)]"

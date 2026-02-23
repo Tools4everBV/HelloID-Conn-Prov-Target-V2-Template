@@ -64,13 +64,13 @@ try {
     # $correlatedAccount = (Invoke-RestMethod @splatGetUserParams)
 
     if ($null -ne $correlatedAccount) {
-        $processAction = 'ManageSubPermissions'
+        $lifecycleProcess = 'ManageSubPermissions'
     }
     else {
-        $processAction = 'NotFound'
+        $lifecycleProcess = 'NotFound'
     }
 
-    switch ($processAction) {
+    switch ($lifecycleProcess) {
         'ManageSubPermissions' {
             # Collect current permissions
             $currentPermissions = @{}
@@ -146,6 +146,7 @@ try {
             $outputContext.Success = $true
             break
         }
+
         'NotFound' {
             Write-Information "{connectorName} account: [$($actionContext.References.Account)] could not be found, indicating that it may have been deleted"
             $outputContext.Success = $false
