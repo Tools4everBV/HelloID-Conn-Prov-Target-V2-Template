@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [4.1.0] - 26-02-2026
+
+### Added
+- Account `UpdateResource` example in `resources.ps1` script
+
 ## [4.0.0] - 19-02-2026
 
 ### Added
@@ -10,11 +15,11 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Changed
 - Commented example code in the Import script
-- DisplayName now starts with capital letter 
+- DisplayName now starts with capital letter
 - Code formatting in files
-- Changed comment with aRef to accountReference 
-- Renamed action to processAction 
-- Changed batchsize calculation in Import script 
+- Changed comment with aRef to accountReference
+- Renamed action to processAction
+- Changed batchsize calculation in Import script
 
 ### Removed
 - Forum link in the README.md
@@ -32,7 +37,7 @@ All notable changes to this project will be documented in this file. The format 
 ### Changed
 - Change icon URL in the readme
 - Typo's in the readme
-- SubPermission logging to be more generic 
+- SubPermission logging to be more generic
 
 # Removed
 - Double [Error:] in error handling
@@ -43,7 +48,7 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
 - Added extra tools in the connector readme to avalaible features table for remarks.
 - Added a placeholder icon url to connector readme.
-- Added a template script for subPermissions. 
+- Added a template script for subPermissions.
 
 ### Changed
 - Move account processing in import script to paging loop.
@@ -51,7 +56,7 @@ All notable changes to this project will be documented in this file. The format 
 - Update global Readme to correctly state the latest information about governance and what that implies for the connector.
 - Change $importedAccount[$field] to $importedAccount.$field in import script.
 - Check on username in import script is more strict.
-- Change all auditLog variables to auditLogMessage to be consistent across all scripts. 
+- Change all auditLog variables to auditLogMessage to be consistent across all scripts.
 - Fixed a bug in reconciliation logic in delete, disable and revoke.
 - Fixed a bug in create where it defaults to the throw in the if statement that determines the action.
 - Renamed prerequisites to requirements in the connector readme.

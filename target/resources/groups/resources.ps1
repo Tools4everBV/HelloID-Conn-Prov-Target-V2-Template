@@ -67,7 +67,26 @@ try {
                 }
 
                 $outputContext.AuditLogs.Add([PSCustomObject]@{
+                        Action  = 'CreateResource'
                         Message = "Created resource: [$($resource)]"
+                        IsError = $false
+                    })
+            }
+
+            # If resource requires Update
+            if ($True) {
+                if (-not ($actionContext.DryRun -eq $True)) {
+                    Write-Information "Update [$($resource)] {connectorName} resource"
+                    # < Write resource update logic here >
+
+                }
+                else {
+                    Write-Information "[DryRun] Update {connectorName} [$($resource)] resource, will be executed during enforcement"
+                }
+
+                $outputContext.AuditLogs.Add([PSCustomObject]@{
+                        Action  = 'UpdateResource'
+                        Message = "Updated resource: [$($resource)]"
                         IsError = $false
                     })
             }
