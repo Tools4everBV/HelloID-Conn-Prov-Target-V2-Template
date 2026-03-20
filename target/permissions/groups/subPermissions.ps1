@@ -8,8 +8,8 @@
 
 # Script Mapping lookup values
 # Lookup values which are used in the mapping to determine the subPermissions
-$PrimaryLookupKey = { $_.CostCenter.code } # Mandatory
-$SecondaryLookupKey = { $_.CostCenter.name } # Mandatory
+$PrimaryLookupKey = { $_.Department.ExternalId } # Mandatory
+$SecondaryLookupKey = { $_.Title.ExternalId } # Mandatory
 
 #region functions
 function Resolve-{connectorName}Error {
@@ -83,7 +83,13 @@ try {
             if (-not($actionContext.Operation -eq 'revoke')) {
                 foreach ($contract in $personContext.Person.Contracts) {
                     if ($contract.Context.InConditions -or ($actionContext.DryRun -eq $true)) {
-                        $desiredPermissions[$PrimaryLookupKey] = $SecondaryLookupKey
+                        $primaryValue = $contract | ForEach-Object $PrimaryLookupKey
+                        $secondaryValue = $contract | ForEach-Object $SecondaryLookupKey
+                        $mappedItem = @{
+                            Name = "$($primaryValue):$($secondaryValue)"
+                            Id   = "$($primaryValue):$($secondaryValue)"
+                        }
+                        $desiredPermissions[$mappedItem.Name] = $mappedItem.Id
                     }
                 }
             }
