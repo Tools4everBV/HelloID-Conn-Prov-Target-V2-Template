@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [4.1.1] - 20-03-2026
+
+### Changed
+- Fixed LookupKeys do not resolve correctly in `subPermissions.ps1`
+
 ## [4.1.0] - 26-02-2026
 
 ### Added
