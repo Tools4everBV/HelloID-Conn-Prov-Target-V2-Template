@@ -40,7 +40,7 @@ jobs:
       - name: Replace placeholders and move files to root
         run: |
           mkdir -p temp_root
-          cp -r Target/* temp_root/
+          cp -r target/* temp_root/
 
           [ -f temp_root/README-target.md ] && mv temp_root/README-target.md temp_root/README.md
           [ -f temp_root/CHANGELOG-target.md ] && mv temp_root/CHANGELOG-target.md temp_root/CHANGELOG.md
@@ -61,7 +61,7 @@ jobs:
           done
 
           cp -r temp_root/* .
-          rm -rf temp_root Target test
+          rm -rf temp_root target test
           rm -f .github/workflows/bootStrapTemplate.yaml
 
       - name: Commit & push changes
