@@ -63,6 +63,7 @@ jobs:
           cp -r temp_root/* .
           rm -rf temp_root target test
           rm -f .github/workflows/bootStrapTemplate.yaml
+          rm -f CONTRIBUTING.md
 
       - name: Commit & push changes
         run: |
