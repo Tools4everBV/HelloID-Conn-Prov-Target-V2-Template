@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [4.1.2] - 07-09-2026
+
+### Changed
+- Limited username in Import script to 100 characters. *To avoid unwanted reconciliation failures*
+
 ## [4.1.1] - 20-03-2026
 
 ### Changed
