@@ -133,7 +133,7 @@ try {
         Write-Output @{
             AccountReference = $importedAccount.Id
             DisplayName      = $displayName
-            UserName         = $importedAccount.UserName
+            UserName         = "$($importedAccount.UserName)".Substring(0, [math]::Min($importedAccount.UserName.Length, 100))
             Enabled          = $isEnabled
             Data             = $data
         }
