@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [4.1.3] - 06-11-2026
+
+### Changed
+- Added `-CaseSensitive` to `Compare-Object` in `update.ps1`, so changes that only differ in casing are detected
+
 ## [4.1.2] - 07-09-2026
 
 ### Changed

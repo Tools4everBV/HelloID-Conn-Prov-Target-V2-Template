@@ -66,7 +66,7 @@ try {
             ReferenceObject  = @($correlatedAccount.PSObject.Properties)
             DifferenceObject = @($actionContext.Data.PSObject.Properties)
         }
-        $propertiesChanged = Compare-Object @splatCompareProperties -PassThru | Where-Object { $_.SideIndicator -eq '=>' }
+        $propertiesChanged = Compare-Object @splatCompareProperties -CaseSensitive -PassThru | Where-Object { $_.SideIndicator -eq '=>' }
         if ($propertiesChanged) {
             $lifecycleProcess = 'UpdateAccount'
         }
