@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Changed
 - Added `-CaseSensitive` to `Compare-Object` in `update.ps1`, so changes that only differ in casing are detected
+- Removed the additional DryRun condition for including contracts in `subPermissions.ps1`. *Requires the HelloID release where contracts are `InConditions` by default in a dry run*
 
 ## [4.1.2] - 07-09-2026
 
