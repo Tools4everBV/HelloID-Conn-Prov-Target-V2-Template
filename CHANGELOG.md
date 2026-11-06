@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [4.1.4] - 06-11-2026
+
+### Changed
+- Added a default `Select-Object` filter on `$outputContext.Data` in `create.ps1` and `update.ps1`, so only the mapped properties are returned to HelloID
+
 ## [4.1.3] - 06-11-2026
 
 ### Changed
