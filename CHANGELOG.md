@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file. The format 
 - Added a default `Select-Object` filter on `$outputContext.Data` in `create.ps1` and `update.ps1`, so only the mapped properties are returned to HelloID
 - Skip the enable, disable, grant and revoke actions when no change is required (new `NoChanges` state, same pattern as `update.ps1`)
 - Removed `DisplayName` from the permission object in `import.ps1` and `importSubPermissions.ps1`, as it now comes from the permissions retrieve script
+- Removed "Action initiated by" from the audit and error messages in `disable.ps1`, `delete.ps1` and `revokePermission.ps1`
 
 ## [4.1.3] - 06-11-2026
 
