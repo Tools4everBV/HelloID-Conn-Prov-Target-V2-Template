@@ -57,11 +57,15 @@ try {
     $correlatedAccount = 'userInfo'
     # $correlatedAccount = (Invoke-RestMethod @splatGetUserParams)
 
-    if ($null -ne $correlatedAccount) {
-        $lifecycleProcess = 'EnableAccount'
+    if ($null -eq $correlatedAccount) {
+        $lifecycleProcess = 'NotFound'
+    }
+    # Adjust to the property that holds the enabled state in the target system
+    elseif ($correlatedAccount.IsEnabled -eq $true) {
+        $lifecycleProcess = 'NoChanges'
     }
     else {
-        $lifecycleProcess = 'NotFound'
+        $lifecycleProcess = 'EnableAccount'
     }
 
     # Process
@@ -80,6 +84,16 @@ try {
             $outputContext.Success = $true
             $outputContext.AuditLogs.Add([PSCustomObject]@{
                     Message = 'Enable account was successful'
+                    IsError = $false
+                })
+            break
+        }
+
+        'NoChanges' {
+            Write-Information "{connectorName} account: [$($actionContext.References.Account)] is already enabled"
+            $outputContext.Success = $true
+            $outputContext.AuditLogs.Add([PSCustomObject]@{
+                    Message = "Skipped enabling {connectorName} account with AccountReference: [$($actionContext.References.Account)]. Reason: Account is already enabled."
                     IsError = $false
                 })
             break

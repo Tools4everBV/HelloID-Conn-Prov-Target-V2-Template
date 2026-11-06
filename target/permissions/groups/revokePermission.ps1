@@ -58,11 +58,18 @@ try {
     $correlatedAccount = 'userInfo'
     # $correlatedAccount = (Invoke-RestMethod @splatGetUserParams)
 
-    if ($null -ne $correlatedAccount) {
-        $lifecycleProcess = 'RevokePermission'
+    # Verify if the permission is still assigned to the account
+    $permissionAssigned = $true
+    # $permissionAssigned = (Invoke-RestMethod @splatGetPermissionParams) -contains $actionContext.References.Permission.Reference
+
+    if ($null -eq $correlatedAccount) {
+        $lifecycleProcess = 'NotFound'
+    }
+    elseif (-not $permissionAssigned) {
+        $lifecycleProcess = 'NoChanges'
     }
     else {
-        $lifecycleProcess = 'NotFound'
+        $lifecycleProcess = 'RevokePermission'
     }
 
     # Process
@@ -88,6 +95,16 @@ try {
             $outputContext.Success = $true
             $outputContext.AuditLogs.Add([PSCustomObject]@{
                     Message = "Revoke permission: [$($actionContext.PermissionDisplayName)] from [$($actionContext.References.Account)] was successful. Action initiated by: [$($actionContext.Origin)]"
+                    IsError = $false
+                })
+            break
+        }
+
+        'NoChanges' {
+            Write-Information "Permission: [$($actionContext.PermissionDisplayName)] is already absent from {connectorName} account: [$($actionContext.References.Account)]"
+            $outputContext.Success = $true
+            $outputContext.AuditLogs.Add([PSCustomObject]@{
+                    Message = "Skipped revoking permission: [$($actionContext.PermissionDisplayName)] from [$($actionContext.References.Account)]. Reason: Permission is already absent."
                     IsError = $false
                 })
             break
