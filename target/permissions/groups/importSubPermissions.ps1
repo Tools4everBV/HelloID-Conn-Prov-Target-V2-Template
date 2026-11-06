@@ -84,7 +84,6 @@ try {
                 Reference = $permissionReference
             }
             Description              = $permissionDisplayName
-            DisplayName              = $permissionDisplayName
             AccountReferences        = $null
             SubPermissionReference   = @{
                 Id = $importedPermission.id

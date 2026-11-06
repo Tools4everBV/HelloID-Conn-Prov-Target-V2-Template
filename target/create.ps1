@@ -102,7 +102,7 @@ try {
                 $createdAccount = Invoke-RestMethod @splatCreateParams
 
                 # Make sure to filter out arrays from $outputContext.Data (If this is not mapped to type Array in the fieldmapping). This is not supported by HelloID.
-                $outputContext.Data = $createdAccount
+                $outputContext.Data = $createdAccount | Select-Object -Property @($outputContext.Data.PSObject.Properties.Name)
                 $outputContext.AccountReference = $createdAccount.Id
             }
             else {
@@ -116,7 +116,7 @@ try {
             Write-Information 'Correlating {connectorName} account'
 
             # Make sure to filter out arrays from $outputContext.Data (If this is not mapped to type Array in the fieldmapping). This is not supported by HelloID.
-            $outputContext.Data = $correlatedAccount
+            $outputContext.Data = $correlatedAccount | Select-Object -Property @($outputContext.Data.PSObject.Properties.Name)
             $outputContext.AccountReference = $correlatedAccount.Id
             $outputContext.AccountCorrelated = $true
             $auditLogMessage = "Correlated account: [$($outputContext.AccountReference)] on field: [$($correlationField)] with value: [$($correlationValue)]"

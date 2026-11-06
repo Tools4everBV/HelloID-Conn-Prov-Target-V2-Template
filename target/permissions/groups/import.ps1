@@ -80,7 +80,6 @@ try {
                 Reference = $importedPermission.id
             }
             Description         = "$($importedPermission.description)"
-            DisplayName         = "$($importedPermission.displayName)"
             AccountReferences   = $null
         }
 

@@ -58,11 +58,18 @@ try {
     $correlatedAccount = 'userInfo'
     # $correlatedAccount = (Invoke-RestMethod @splatGetUserParams)
 
-    if ($null -ne $correlatedAccount) {
-        $lifecycleProcess = 'GrantPermission'
+    # Verify if the permission is already assigned to the account
+    $permissionAssigned = $false
+    # $permissionAssigned = (Invoke-RestMethod @splatGetPermissionParams) -contains $actionContext.References.Permission.Reference
+
+    if ($null -eq $correlatedAccount) {
+        $lifecycleProcess = 'NotFound'
+    }
+    elseif ($permissionAssigned) {
+        $lifecycleProcess = 'NoChanges'
     }
     else {
-        $lifecycleProcess = 'NotFound'
+        $lifecycleProcess = 'GrantPermission'
     }
 
     # Process
@@ -81,6 +88,16 @@ try {
             $outputContext.Success = $true
             $outputContext.AuditLogs.Add([PSCustomObject]@{
                     Message = "Grant permission [$($actionContext.PermissionDisplayName)] was successful"
+                    IsError = $false
+                })
+            break
+        }
+
+        'NoChanges' {
+            Write-Information "Permission: [$($actionContext.PermissionDisplayName)] is already assigned to {connectorName} account: [$($actionContext.References.Account)]"
+            $outputContext.Success = $true
+            $outputContext.AuditLogs.Add([PSCustomObject]@{
+                    Message = "Skipped granting permission [$($actionContext.PermissionDisplayName)]. Reason: Permission is already assigned."
                     IsError = $false
                 })
             break
