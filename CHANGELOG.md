@@ -2,19 +2,15 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com), and this project adheres to [Semantic Versioning](https://semver.org).
 
-## [4.1.4] - 06-11-2026
+## [4.2.0] - 06-11-2026
 
 ### Changed
-- Added a default `Select-Object` filter on `$outputContext.Data` in `create.ps1` and `update.ps1`, so only the mapped properties are returned to HelloID
-- Skip the enable, disable, grant and revoke actions when no change is required (new `NoChanges` state, same pattern as `update.ps1`)
-- Removed `DisplayName` from the permission object in `import.ps1` and `importSubPermissions.ps1`, as it now comes from the permissions retrieve script
-- Removed "Action initiated by" from the audit and error messages in `disable.ps1`, `delete.ps1` and `revokePermission.ps1`
-
-## [4.1.3] - 06-11-2026
-
-### Changed
-- Added `-CaseSensitive` to `Compare-Object` in `update.ps1`, so changes that only differ in casing are detected
-- Removed the additional DryRun condition for including contracts in `subPermissions.ps1`. *Requires the HelloID release where contracts are `InConditions` by default in a dry run*
+- Added `-CaseSensitive` to `Compare-Object` in `update.ps1`, so changes that only differ in casing are detected (#107)
+- Added a default `Select-Object` filter on `$outputContext.Data` in `create.ps1` and `update.ps1`, so only the mapped properties are returned to HelloID (#106)
+- Skip the enable, disable, grant and revoke actions when no change is required (new `NoChanges` state, same pattern as `update.ps1`) (#103)
+- Removed the additional DryRun condition for including contracts in `subPermissions.ps1` (#102)
+- Removed `DisplayName` from the permission object in `import.ps1` and `importSubPermissions.ps1`, as it now comes from the permissions retrieve script (#101)
+- Removed "Action initiated by" from the audit and error messages in `disable.ps1`, `delete.ps1` and `revokePermission.ps1` (#100)
 
 ## [4.1.2] - 07-09-2026
 
