@@ -66,7 +66,7 @@ try {
             ReferenceObject  = @($correlatedAccount.PSObject.Properties)
             DifferenceObject = @($actionContext.Data.PSObject.Properties)
         }
-        $propertiesChanged = Compare-Object @splatCompareProperties -PassThru | Where-Object { $_.SideIndicator -eq '=>' }
+        $propertiesChanged = Compare-Object @splatCompareProperties -CaseSensitive -PassThru | Where-Object { $_.SideIndicator -eq '=>' }
         if ($propertiesChanged) {
             $lifecycleProcess = 'UpdateAccount'
         }
@@ -93,7 +93,8 @@ try {
                 Write-Information "[DryRun] Update {connectorName} account with accountReference: [$($actionContext.References.Account)], will be executed during enforcement"
             }
 
-            # Make sure to filter out arrays from $outputContext.Data (If this is not mapped to type Array in the fieldmapping). This is not supported by HelloID.
+            # Only return the properties that are mapped in the fieldmapping, all other properties are filtered out. Arrays are not supported by HelloID, unless the field is mapped to type Array in the fieldmapping.
+            $outputContext.Data = $correlatedAccount | Select-Object -Property @($outputContext.Data.PSObject.Properties.Name)
             $outputContext.Success = $true
             $outputContext.AuditLogs.Add([PSCustomObject]@{
                     Message = "Update account was successful, Account property(s) updated: [$($propertiesChanged.name -join ',')]"
